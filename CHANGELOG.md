@@ -24,6 +24,8 @@ Changelog structure and semantic versioning after v1.
 
 ### Documentation
 
+- Link contributors directly to the normative specification decision register.
+
 - Correct stale package, standalone, and authoritative-source links in public
   documentation.
 
