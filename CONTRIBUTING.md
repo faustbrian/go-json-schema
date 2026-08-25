@@ -1,33 +1,55 @@
 # Contributing
 
-Use Go 1.26.6 or newer. Keep changes focused, format with `gofmt`, and run
-`make check` plus `go test -race ./...` before review.
-Use `make check-release` for the tool-backed coverage, mutation, static
-analysis, API, documentation, vulnerability, workflow, and benchmark gates.
-It intentionally fails while any release requirement remains unmet.
+## Before Editing
 
-Normative behavior changes must cite a primary specification section, add the
-smallest local regression under `testdata/regressions` when the official suite
-does not cover it, and update the dialect/keyword matrix. Never edit an
-official fixture. Update the pinned suite only through
-`scripts/sync-official-suite.sh` after reviewing upstream changes and case
-counts.
+1. Read [`AGENTS.md`](AGENTS.md) and the affected module's goals and docs.
+2. Run `make inventory` and the narrow baseline gate for the module.
+3. Identify owned dependencies and reverse dependants in `modules.json`.
+4. Preserve unrelated work and generated/corpus provenance.
 
-Contributors changing parsing, compilation, reference resolution, validation,
-annotations, output, or protocol behavior must review
-[`docs/specification-decisions.md`](docs/specification-decisions.md). Update an
-existing stable decision instead of replacing its history, or add a new stable
-decision with normative sources, alternatives, peer behavior, consequences,
-executable evidence, and reconsideration conditions. An unresolved material
-contradiction blocks the affected conformance or release claim.
+## Changes
 
-New keywords require dialect placement, schema form, meta-validation,
-compilation, evaluation, annotation/evaluated-location behavior, output,
-limits, cancellation, malformed-schema tests, cross-draft tests, and
-conformance evidence. New formats require their normative source, assertion
-policy, hostile inputs, Unicode handling, and bounded behavior.
+Keep commits focused and conventional. Update every affected changelog with
+the behavior and migration impact. Public API changes require compatibility
+evidence and documentation. Specification behavior requires a decision record,
+fixture coverage, and interoperability evidence.
 
-Public API additions need complete Go documentation, examples, ownership and
-concurrency contracts, typed failure behavior, and compatibility review. New
-third-party dependencies require the review recorded in
-`docs/dependencies.md`.
+New direct dependencies and dependency updates must follow the
+[dependency governance policy](docs/dependency-governance.md). Package-local
+update bots are forbidden; the root policy owns every module and action update.
+
+Specification-backed changes must follow the
+[specification governance contract](docs/specification-governance.md), update
+the affected stable decision entries, and complete the Specification Decisions
+section of the pull request template. An unresolved interpretation or stale
+source pin is release-blocking; peer behavior cannot silently select policy.
+
+Do not add package-local workflows, permanent replacements, machine-specific
+paths, bypass flags, broad mutation exclusions, or aggregate quality metrics
+that hide a failing package.
+
+## Verification
+
+Run during development:
+
+```bash
+make inventory
+make specification-decisions
+make check MODULES=pkg/<library>
+```
+
+Before submitting a repository-wide change:
+
+```bash
+make ci-changed BASE=origin/main
+```
+
+The full scheduled and release gate is `make ci`. Report every unavailable or
+failing command; do not describe partial results as release-ready.
+
+## Adding A Module
+
+Follow [module lifecycle procedures](docs/module-lifecycle.md). New modules
+require an explicit purpose, ownership boundary, dependency review, package
+catalog entry, full quality gates, documentation, changelog, license, security
+policy, compatibility plan, and release dry-run.

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	jsonschema "github.com/faustbrian/golib/pkg/json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema"
 )
 
 func Example() {

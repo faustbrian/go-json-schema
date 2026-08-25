@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	jsonschema "github.com/faustbrian/golib/pkg/json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema"
 )
 
 func TestServeImplementsBowtieProtocol(t *testing.T) {

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "repository": "github.com/faustbrian/go-json-schema",
+  "packages": [
+    {
+      "module_directory": ".",
+      "directory": ".",
+      "name": "jsonschema",
+      "import_path": "github.com/faustbrian/go-json-schema",
+      "kind": "public",
+      "production": true,
+      "executable": true,
+      "coverage_required": true,
+      "build_required": true,
+      "build_tags": []
+    },
+    {
+      "module_directory": ".",
+      "directory": "cmd/bowtie-json-schema",
+      "name": "main",
+      "import_path": "github.com/faustbrian/go-json-schema/cmd/bowtie-json-schema",
+      "kind": "command",
+      "production": true,
+      "executable": true,
+      "coverage_required": true,
+      "build_required": true,
+      "build_tags": []
+    },
+    {
+      "module_directory": ".",
+      "directory": "internal/cmd/conformance-manifest",
+      "name": "main",
+      "import_path": "github.com/faustbrian/go-json-schema/internal/cmd/conformance-manifest",
+      "kind": "tooling",
+      "production": false,
+      "executable": true,
+      "coverage_required": false,
+      "build_required": true,
+      "build_tags": []
+    }
+  ]
+}

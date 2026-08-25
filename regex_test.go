@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	jsonschema "github.com/faustbrian/golib/pkg/json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema"
 )
 
 func TestPatternUsesECMAScriptLookaroundAndBackreferences(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"context"
 	"testing"
 
-	owned "github.com/faustbrian/golib/pkg/json-schema"
+	owned "github.com/faustbrian/go-json-schema"
 	kaptin "github.com/kaptinlin/jsonschema"
 	tekuri "github.com/santhosh-tekuri/jsonschema/v6"
 )

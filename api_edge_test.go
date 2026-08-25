@@ -7,7 +7,7 @@ import (
 	"testing"
 	"testing/fstest"
 
-	jsonschema "github.com/faustbrian/golib/pkg/json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema"
 )
 
 func TestCustomKeywordValuesExposeExactReadOnlyViews(t *testing.T) {

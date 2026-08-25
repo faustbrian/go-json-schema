@@ -1,4 +1,4 @@
-module github.com/faustbrian/golib/pkg/json-schema
+module github.com/faustbrian/go-json-schema
 
 go 1.26.6
 

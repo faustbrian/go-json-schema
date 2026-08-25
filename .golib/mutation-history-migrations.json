@@ -1,0 +1,67 @@
+{
+  "schema_version": 3,
+  "reason": "Exact mutation checkpoints retained across history rewrites only when the approved old and replacement package input fingerprints, tool version, and report digest match.",
+  "verifier_migration_review": {
+    "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+    "reason": "Each listed checkpoint was executed with the complete current Gremlins semantic patch set introduced by ac300cf3; the four omitted checkpoints require fresh campaigns.",
+    "reviewed_at": "2026-08-20"
+  },
+  "verifier_migrations": [
+    {
+      "execution_revision": "d7d487f309f3921eff48c5bb277ff11a4fef7077",
+      "gate_input_digest": "a161981d302f4f30aa8fba08d082a96438d37351f4f8d22e1f88be3f8f6cd3b4",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "gremlins_version": "v0.6.0",
+      "module": ".",
+      "package": ".",
+      "report_sha256": "85cd18aa693252fa7650aa543a668244e62fd27e826534d4c0a11dee2786a2d6"
+    },
+    {
+      "execution_revision": "d7d487f309f3921eff48c5bb277ff11a4fef7077",
+      "gate_input_digest": "dae0b88cf686d8547a1524a0c11c2d54f4320a55e829b9cb8e0a6c03159d8108",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "gremlins_version": "v0.6.0",
+      "module": ".",
+      "package": "cmd/bowtie-json-schema",
+      "report_sha256": "38ed8c9235192a06e4cafe44073e1549e02919c44fc57759c0ea230de577c799"
+    }
+  ],
+  "entries": [
+    {
+      "execution_revision": "8cb85e2f184a5fd013396bdb6521ecead1a61cc4",
+      "gate_input_digest": "307bf22948c931de2c51dac31990502e52b2b30e06c7cd860351379f5e7aef91",
+      "gremlins_version": "v0.6.0",
+      "module": ".",
+      "package": ".",
+      "report_sha256": "c5fa2bd84bac0389d603e5c01d1e5cbbdf1534701dd1c336953084d440a0ccab"
+    },
+    {
+      "execution_revision": "8cb85e2f184a5fd013396bdb6521ecead1a61cc4",
+      "gate_input_digest": "b00966fb7958a2d5a28ec95061bfbeeef3dc1bcc17ef563cbbb45578528586a6",
+      "gremlins_version": "v0.6.0",
+      "module": ".",
+      "package": "cmd/bowtie-json-schema",
+      "report_sha256": "1801c479d8a6e540ac6495bc78ba282e7978921c5c5057adf08c735ff6738580"
+    },
+    {
+      "module": ".",
+      "package": ".",
+      "execution_revision": "d7d487f309f3921eff48c5bb277ff11a4fef7077",
+      "gate_input_digest": "a161981d302f4f30aa8fba08d082a96438d37351f4f8d22e1f88be3f8f6cd3b4",
+      "replacement_gate_input_digest": "e33c310515bd2802c00e4912feb1f8641c677f0f4d96ae06813fcd2a3e992b32",
+      "gremlins_version": "v0.6.0",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "report_sha256": "85cd18aa693252fa7650aa543a668244e62fd27e826534d4c0a11dee2786a2d6"
+    },
+    {
+      "module": ".",
+      "package": "cmd/bowtie-json-schema",
+      "execution_revision": "d7d487f309f3921eff48c5bb277ff11a4fef7077",
+      "gate_input_digest": "dae0b88cf686d8547a1524a0c11c2d54f4320a55e829b9cb8e0a6c03159d8108",
+      "replacement_gate_input_digest": "9f1fff9e7a647c451ef1f578999ad64209b0be938c5db37d9f54f52b532c8471",
+      "gremlins_version": "v0.6.0",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "report_sha256": "38ed8c9235192a06e4cafe44073e1549e02919c44fc57759c0ea230de577c799"
+    }
+  ]
+}

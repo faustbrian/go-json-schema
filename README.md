@@ -1,5 +1,15 @@
 # json-schema
 
+[![CI](https://github.com/faustbrian/go-json-schema/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/faustbrian/go-json-schema/actions/workflows/ci.yml)
+[![CodeQL](https://img.shields.io/badge/CodeQL-required-blue)](https://github.com/faustbrian/go-json-schema/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/coverage-100%25_required-blue)](CONTRIBUTING.md#verification)
+[![Mutation](https://img.shields.io/badge/mutation-100%25_required-blue)](CONTRIBUTING.md#verification)
+[![Documentation](https://img.shields.io/badge/docs-checked_in_CI-blue)](docs/)
+[![Go Reference](https://pkg.go.dev/badge/github.com/faustbrian/go-json-schema.svg)](https://pkg.go.dev/github.com/faustbrian/go-json-schema)
+[![Release](https://img.shields.io/github/v/release/faustbrian/go-json-schema?sort=semver)](https://github.com/faustbrian/go-json-schema/releases)
+[![Go](https://img.shields.io/badge/go-1.26.6-00ADD8?logo=go)](https://go.dev/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 `json-schema` is an exact-number, dialect-aware JSON Schema compiler and
 validator for Go. It supports Draft 3, Draft 4, Draft 6, Draft 7, Draft
 2019-09, and Draft 2020-12 without implicit network access or global mutable
@@ -8,7 +18,7 @@ registries.
 The pinned official suite currently passes 8,505 cases across 354 mandatory
 and optional fixture files with zero skips and zero failures. This is
 executable compatibility evidence, not by itself a `v1.0.0` release claim.
-The module remains pre-v1 until every gate in [Conformance](docs/conformance.md)
+The stable v1 module remains subject to every gate in [Conformance](docs/conformance.md)
 and [Releasing](RELEASING.md) is satisfied.
 
 The minimum supported toolchain is Go 1.26.6.

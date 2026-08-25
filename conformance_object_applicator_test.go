@@ -3,7 +3,7 @@ package jsonschema_test
 import (
 	"testing"
 
-	jsonschema "github.com/faustbrian/golib/pkg/json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema"
 )
 
 func TestOfficialObjectApplicatorFixtures(t *testing.T) {

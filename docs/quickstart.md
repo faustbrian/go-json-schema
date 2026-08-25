@@ -4,7 +4,7 @@ Install the module using the version selected by your application's dependency
 policy:
 
 ```sh
-go get github.com/faustbrian/golib/pkg/json-schema
+go get github.com/faustbrian/go-json-schema
 ```
 
 Compile once and validate many times:
@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"log"
 
-	jsonschema "github.com/faustbrian/golib/pkg/json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema"
 )
 
 func main() {

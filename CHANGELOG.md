@@ -5,6 +5,12 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+## 1.0.0 - 2026-08-25
+
+### Changed
+
+- Publish the module from its standalone `github.com/faustbrian/go-json-schema` identity while preserving its documented API and behavior.
+
 ### Documentation
 
 - Link the package README to the repository-wide Golib documentation portal.

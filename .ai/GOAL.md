@@ -65,7 +65,7 @@ sources, including:
 - Bowtie's implementation protocol and compliance reports as independent
   interoperability evidence, never as a replacement for the specification.
 
-The existing PHP package at `/Users/brian/Developer/cline/json-schema` MAY be
+The existing PHP package at `https://github.com/faustbrian/json-schema` MAY be
 used as behavioral and adoption reference. It MUST NOT override normative
 specification behavior, and its architecture MUST NOT be translated blindly
 into Go.
@@ -494,7 +494,7 @@ validator merely to remove third-party dependencies quickly.
 
 The module path will be:
 
-`github.com/faustbrian/golib/pkg/json-schema`
+`github.com/faustbrian/go-json-schema`
 
 Releases MUST use directory-prefixed tags such as:
 
