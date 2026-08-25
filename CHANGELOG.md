@@ -19,6 +19,7 @@ Changelog structure and semantic versioning after v1.
   identical content.
 - Align the comparison module with the current standalone root archive
   checksum used by repository-local and CI verification.
+- Make CodeQL resolve the comparison module through that same root archive.
 
 - Harden standalone documentation validation with deterministic spelling and
   link checks, package-specific documentation gates, and repository-local
