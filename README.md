@@ -16,10 +16,9 @@ validator for Go. It supports Draft 3, Draft 4, Draft 6, Draft 7, Draft
 registries.
 
 The pinned official suite currently passes 8,505 cases across 354 mandatory
-and optional fixture files with zero skips and zero failures. This is
-executable compatibility evidence, not by itself a `v1.0.0` release claim.
-The stable v1 module remains subject to every gate in [Conformance](docs/conformance.md)
-and [Releasing](RELEASING.md) is satisfied.
+and optional fixture files with zero skips and zero failures. See
+[conformance](docs/conformance.md) for the supported surface and evidence
+policy.
 
 The minimum supported toolchain is Go 1.26.6.
 
@@ -65,29 +64,11 @@ Draft 2019-09 and Draft 2020-12 content processing never changes the enclosing
 schema result. Remote references require an explicit `ResourceLoader`; the
 core never performs network I/O.
 
-## Contracts
+## Documentation
 
-- [API guide](docs/api.md)
-- [Standalone quick start](docs/quickstart.md)
-- [Architecture and evaluator lifecycle](docs/architecture.md)
-- [Dialect and keyword matrices](docs/matrices.md)
-- [Conformance evidence](docs/conformance.md)
-- [Specification decisions](docs/specification-decisions.md)
-- [Dialect selection and migration](docs/dialects.md)
-- [Resolvers and secure loading](docs/resolvers.md)
-- [Custom vocabularies, keywords, and formats](docs/extensions.md)
-- [Validation output](docs/output.md)
-- [Resource limits](docs/limits.md)
-- [Security and threat model](docs/security.md)
-- [Dependencies and license review](docs/dependencies.md)
-- [Performance methodology](docs/performance.md)
-- [Adoption and end-to-end examples](docs/adoption.md)
-- [Cookbook](docs/cookbook.md)
-- [FAQ](docs/faq.md)
-- [Troubleshooting](docs/troubleshooting.md)
-- [Compatibility and versioning](docs/versioning.md)
-- [Hardening report and release verdict](docs/hardening-report.md)
-- [Bowtie interoperability](bowtie/README.md)
+Start with the [documentation index](docs/README.md). It links the quickstart,
+API guide, dialect support, conformance contract, secure resolver guidance,
+examples, operations, and maintainer references.
 
 ## Development
 
@@ -100,7 +81,9 @@ available. `go test -race ./...` is the concurrency gate. See
 
 MIT. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
-## Ecosystem
+## Related packages
 
-Use the [Golib documentation portal](https://github.com/faustbrian/golib/blob/main/docs/index.md)
-to choose companion packages, supported stacks, recipes, and operations guidance.
+- [OpenAPI](https://github.com/faustbrian/go-openapi) uses this package for
+  OpenAPI 3.1 and 3.2 Schema Objects.
+- [OpenRPC](https://github.com/faustbrian/go-openrpc) provides OpenRPC document
+  modeling and validation.

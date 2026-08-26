@@ -128,9 +128,9 @@ func (state *harness) handle(
 			"implementation": map[string]any{
 				"language": "go",
 				"name":     "json-schema",
-				"homepage": "https://github.com/faustbrian/golib",
-				"issues":   "https://github.com/faustbrian/golib/issues",
-				"source":   "https://github.com/faustbrian/golib/tree/main/json-schema",
+				"homepage": "https://github.com/faustbrian/go-json-schema",
+				"issues":   "https://github.com/faustbrian/go-json-schema/issues",
+				"source":   "https://github.com/faustbrian/go-json-schema",
 				"dialects": dialects,
 			},
 		}, false, nil
