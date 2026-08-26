@@ -7,6 +7,9 @@ Changelog structure and semantic versioning after v1.
 
 ### Documentation
 
+- Align maintained documentation with the stable v1 release contract and
+  remove obsolete candidate or verdict wording.
+
 - Replace archived monorepo links and completed planning artifacts with a
   standalone documentation index and current repository references.
 - Document standalone repository tags instead of the obsolete monorepo tag

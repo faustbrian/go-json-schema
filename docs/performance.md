@@ -37,7 +37,7 @@ Comparisons with other maintained Go validators must use equivalent dialect,
 format, resolver, exact-number, and output policy. A faster result obtained by
 skipping meta-validation, annotations, formats, or limits is not equivalent.
 Regression budgets will be set only after stable multi-run baselines exist;
-the pre-v1 repository does not invent percentage thresholds without evidence.
+the initial baseline does not invent percentage thresholds without evidence.
 
 `uniqueItems` uses direct comparisons for small arrays and canonical SHA-256
 buckets for larger arrays. Hash matches are always confirmed with exact JSON
