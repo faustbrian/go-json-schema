@@ -9,6 +9,8 @@ Changelog structure and semantic versioning after v1.
 
 - Replace archived monorepo links and completed planning artifacts with a
   standalone documentation index and current repository references.
+- Document standalone repository tags instead of the obsolete monorepo tag
+  convention.
 
 ## 1.0.0 - 2026-08-25
 
