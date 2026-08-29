@@ -7,6 +7,8 @@ Changelog structure and semantic versioning after v1.
 
 ### Documentation
 
+- Link the root README to the normative specification decision register.
+
 - Align maintained documentation with the stable v1 release contract and
   remove obsolete candidate or verdict wording.
 

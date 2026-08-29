@@ -103,6 +103,9 @@ func TestIDNAProfilesMustRoundTripLabelsAndPreserveBoundaries(t *testing.T) {
 	if validIDNHostnameLabels("one.two", "single") {
 		t.Fatal("IDNA conversion changed the label boundaries")
 	}
+	if validIDNHostnameLabels("bad!", "bad!") {
+		t.Fatal("invalid ASCII IDN label was accepted")
+	}
 }
 
 func TestFormatBoundariesAreExact(t *testing.T) {

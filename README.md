@@ -68,7 +68,8 @@ core never performs network I/O.
 
 Start with the [documentation index](docs/README.md). It links the quickstart,
 API guide, dialect support, conformance contract, secure resolver guidance,
-examples, operations, and maintainer references.
+examples, operations, and maintainer references. Normative behavior decisions
+are recorded in the [specification decision register](docs/specification-decisions.md).
 
 ## Development
 

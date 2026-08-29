@@ -1,4 +1,3 @@
-PACKAGE github.com/faustbrian/go-json-schema
 package jsonschema // import "github.com/faustbrian/go-json-schema"
 
 Package jsonschema compiles and evaluates JSON Schemas without implicit network
@@ -357,7 +356,5 @@ const (
 	// ObjectKind identifies a JSON object.
 	ObjectKind
 )
-PACKAGE github.com/faustbrian/go-json-schema/cmd/bowtie-json-schema
 Command bowtie-json-schema implements the Bowtie harness protocol.
-PACKAGE github.com/faustbrian/go-json-schema/internal/cmd/conformance-manifest
 Command conformance-manifest generates pinned official-suite evidence.
