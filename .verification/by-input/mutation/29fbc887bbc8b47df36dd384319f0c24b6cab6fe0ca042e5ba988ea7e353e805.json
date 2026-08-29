@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "repository": "github.com/faustbrian/go-json-schema",
+  "module": ".",
+  "package": "cmd/bowtie-json-schema",
+  "gate": "mutation",
+  "input_digest": "sha256:29fbc887bbc8b47df36dd384319f0c24b6cab6fe0ca042e5ba988ea7e353e805",
+  "verifier_digest": "sha256:9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+  "result": "passed",
+  "report_digest": "sha256:38ed8c9235192a06e4cafe44073e1549e02919c44fc57759c0ea230de577c799",
+  "environment": {
+    "CGO_ENABLED": "1",
+    "GOARCH": "arm64",
+    "GOOS": "darwin",
+    "GOVERSION": "go1.26.6",
+    "evidence_origin": "approved_legacy_checkpoint"
+  },
+  "completed_at": "2026-08-29T07:33:13.975334Z"
+}

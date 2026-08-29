@@ -26,5 +26,5 @@ either normalize its registry or index the normalized identifier passed to
 `Load`. Two `MapLoader` keys that previously coexisted but normalize to one URI
 now fail construction with `ErrResourceUnavailable`.
 
-Module releases use monorepo-prefixed tags such as
-`json-schema/v1.0.0`. The release process is in [RELEASING.md](../RELEASING.md).
+Module releases use repository tags such as `v1.0.0`. The release process is
+in [RELEASING.md](../RELEASING.md).

@@ -5,7 +5,7 @@ required=(
 	README.md CHANGELOG.md CONTRIBUTING.md RELEASING.md LICENSE NOTICE
 	docs/adoption.md docs/api.md docs/architecture.md docs/conformance.md
 	docs/cookbook.md docs/dependencies.md docs/dialects.md docs/extensions.md
-	docs/faq.md docs/hardening-report.md docs/limits.md docs/matrices.md docs/output.md
+	docs/faq.md docs/limits.md docs/matrices.md docs/output.md
 	docs/performance.md docs/quickstart.md docs/resolvers.md docs/security.md
 	docs/specification-decisions.md docs/troubleshooting.md docs/versioning.md
 	bowtie/README.md

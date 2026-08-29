@@ -5,6 +5,18 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+### Documentation
+
+- Link the root README to the normative specification decision register.
+
+- Align maintained documentation with the stable v1 release contract and
+  remove obsolete candidate or verdict wording.
+
+- Replace archived monorepo links and completed planning artifacts with a
+  standalone documentation index and current repository references.
+- Document standalone repository tags instead of the obsolete monorepo tag
+  convention.
+
 ## 1.0.0 - 2026-08-25
 
 ### Changed
@@ -39,8 +51,6 @@ Changelog structure and semantic versioning after v1.
 - Publish the module from its standalone `github.com/faustbrian/go-json-schema` identity while preserving its documented API and behavior.
 
 ### Documentation
-
-- Link the package README to the repository-wide Golib documentation portal.
 
 - Add a machine-validated provenance manifest that binds the official test
   suite, published meta-schemas, and Bowtie interoperability reports to their

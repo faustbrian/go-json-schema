@@ -126,6 +126,22 @@ func TestExactJSONParserRejectsUnexpectedDecoderTokens(t *testing.T) {
 				return err
 			},
 		},
+		{
+			name: "object closing delimiter",
+			parse: func(parser *jsonParser) error {
+				parser.decoder = &stubTokenDecoder{}
+				_, err := parser.object(1)
+				return err
+			},
+		},
+		{
+			name: "array closing delimiter",
+			parse: func(parser *jsonParser) error {
+				parser.decoder = &stubTokenDecoder{}
+				_, err := parser.array(1)
+				return err
+			},
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			parser := &jsonParser{ctx: context.Background(), limits: DefaultLimits()}
