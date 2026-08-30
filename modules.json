@@ -73,7 +73,11 @@
       "test_tags": [],
       "interoperability_tools": [],
       "specifications": [
-        "JSON Schema drafts 4, 6, 7, 2019-09, and 2020-12",
+        "JSON Schema Draft 3 through Draft 2020-12",
+        "JSON Schema Draft 2019-09 and Draft 2020-12 Output",
+        "RFC 8259 JSON",
+        "RFC 3986 URI",
+        "ECMA-262 regular expressions",
         "JSON-Schema-Test-Suite"
       ],
       "conformance_corpora": [
@@ -123,10 +127,7 @@
       "build_tags": [],
       "test_tags": [],
       "interoperability_tools": [],
-      "specifications": [
-        "JSON Schema drafts 4, 6, 7, 2019-09, and 2020-12",
-        "JSON-Schema-Test-Suite"
-      ],
+      "specifications": [],
       "conformance_corpora": [
         "JSON-Schema-Test-Suite",
         "Bowtie"

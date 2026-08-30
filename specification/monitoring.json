@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-08-30",
+  "review_interval_days": 90,
+  "authorities": [
+    {
+      "id": "json-schema-draft3-source",
+      "kind": "specification",
+      "version": "draft-zyp-json-schema-03",
+      "url": "https://www.ietf.org/archive/id/draft-zyp-json-schema-03.txt",
+      "sha256": "fa861cfe79130da7cd19e98417ab1c7f025b5e32518467e73ca0621a009f5271",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-draft4-core-source",
+      "kind": "specification",
+      "version": "draft-zyp-json-schema-04",
+      "url": "https://www.ietf.org/archive/id/draft-zyp-json-schema-04.txt",
+      "sha256": "416d309dbb8254b7d0b374925991be5bc2082ff7195598418f56be2b99eeee25",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-draft4-validation-source",
+      "kind": "specification",
+      "version": "draft-fge-json-schema-validation-00",
+      "url": "https://www.ietf.org/archive/id/draft-fge-json-schema-validation-00.txt",
+      "sha256": "d87e72f3df3249843322cded0800b4729cb64e6280d8eb1ac10a8aeeb140cbf1",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-draft6-core-source",
+      "kind": "specification",
+      "version": "draft-wright-json-schema-01",
+      "url": "https://www.ietf.org/archive/id/draft-wright-json-schema-01.txt",
+      "sha256": "28dd59ee3f75e6a42e3f3982d70fd80942db6b5487cee290958e9c6279db1375",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-draft6-validation-source",
+      "kind": "specification",
+      "version": "draft-wright-json-schema-validation-01",
+      "url": "https://www.ietf.org/archive/id/draft-wright-json-schema-validation-01.txt",
+      "sha256": "51c411ef2da6f98a0169ff0c578ec21811429ddf064c6c6be7656639cb3dcb66",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-draft7-core-source",
+      "kind": "specification",
+      "version": "draft-handrews-json-schema-01",
+      "url": "https://www.ietf.org/archive/id/draft-handrews-json-schema-01.txt",
+      "sha256": "bff8b135bff912f41beeac807cf9d9fd5d8e6ca7435b9168d9eb3f4c3eae3ad8",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-draft7-validation-source",
+      "kind": "specification",
+      "version": "draft-handrews-json-schema-validation-01",
+      "url": "https://www.ietf.org/archive/id/draft-handrews-json-schema-validation-01.txt",
+      "sha256": "e9fc6c7fe25cd39b475b8f9bc3aa43d6b84771dcedd448d1b4aa95683fda45ea",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-draft2019-core-source",
+      "kind": "specification",
+      "version": "draft-handrews-json-schema-02",
+      "url": "https://www.ietf.org/archive/id/draft-handrews-json-schema-02.txt",
+      "sha256": "46d0b12b0cc5dc371d5c19c65449051bdd658b68077eed09537dc8b4bf702fac",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-draft2019-validation-source",
+      "kind": "specification",
+      "version": "draft-handrews-json-schema-validation-02",
+      "url": "https://www.ietf.org/archive/id/draft-handrews-json-schema-validation-02.txt",
+      "sha256": "a9067592d3244a3021f046f45afc62770cb9e58d388579c0de5cef148f7f450a",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-drafts-source",
+      "kind": "specification",
+      "version": "Draft 3 through Draft 2020-12",
+      "url": "https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt",
+      "sha256": "03834e2a60caff313476df9913dac2ccf9a34aad569df570f8ab80db7bd6d24a",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-draft2020-validation-source",
+      "kind": "specification",
+      "version": "draft-bhutton-json-schema-validation-01",
+      "url": "https://www.ietf.org/archive/id/draft-bhutton-json-schema-validation-01.txt",
+      "sha256": "1f8832490b4b8a5876b9f571afce4051a5ccbae2811220d70f8e86c3c08da414",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12"
+      ]
+    },
+    {
+      "id": "json-schema-output-2019-source",
+      "kind": "specification",
+      "version": "Draft 2019-09 output schema",
+      "url": "https://json-schema.org/draft/2019-09/output/schema",
+      "sha256": "a621c59e4cc5e7e658fd9641a687ee9cf9706a9bf906013fed66dfbf0c4008b1",
+      "specifications": [
+        "JSON Schema Draft 2019-09 and Draft 2020-12 Output"
+      ]
+    },
+    {
+      "id": "json-schema-output-source",
+      "kind": "specification",
+      "version": "Draft 2019-09 and Draft 2020-12",
+      "url": "https://json-schema.org/draft/2020-12/output/schema",
+      "sha256": "50d74de4f87de12e14d0ce45ad39343896bd2ebb6199047ef82c09ca11499249",
+      "specifications": [
+        "JSON Schema Draft 2019-09 and Draft 2020-12 Output"
+      ]
+    },
+    {
+      "id": "json-schema-specification-releases",
+      "kind": "releases",
+      "version": "",
+      "url": "https://api.github.com/repos/json-schema-org/json-schema-spec/tags?per_page=100",
+      "sha256": "04cb39062583c7a26de5e0b70a20ba2e8fa90bcbda723849bb6135f40d248ded",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12",
+        "JSON Schema Draft 2019-09 and Draft 2020-12 Output"
+      ]
+    },
+    {
+      "id": "json-schema-specification-updates",
+      "kind": "errata",
+      "version": "",
+      "url": "https://api.github.com/repos/json-schema-org/json-schema-spec/commits/main",
+      "sha256": "80e8c33fd71535edbef502b9c7e49da5734a6bb6645c44e6f81aa7089a47a462",
+      "specifications": [
+        "JSON Schema Draft 3 through Draft 2020-12",
+        "JSON Schema Draft 2019-09 and Draft 2020-12 Output"
+      ]
+    },
+    {
+      "id": "rfc8259-source",
+      "kind": "specification",
+      "version": "RFC 8259",
+      "url": "https://www.rfc-editor.org/rfc/rfc8259.txt",
+      "sha256": "61a5378f4255c720beb2a4b4a63b29540147c140f36988bf086291989b4cd2d7",
+      "specifications": [
+        "RFC 8259 JSON"
+      ]
+    },
+    {
+      "id": "rfc8259-errata",
+      "kind": "errata",
+      "version": "",
+      "url": "https://errata.rfc-editor.org/search/?rfc_number=8259&presentation=records",
+      "sha256": "5819db2e0233addf17ed540db88cf92cbefda5a60c38877e0d4cbf6b876b7cf4",
+      "specifications": [
+        "RFC 8259 JSON"
+      ]
+    },
+    {
+      "id": "rfc3986-source",
+      "kind": "specification",
+      "version": "RFC 3986",
+      "url": "https://www.rfc-editor.org/rfc/rfc3986.txt",
+      "sha256": "3102dae4b68cebe40337730312fcb612297b8928547267e8b3d1ee6002b2d683",
+      "specifications": [
+        "RFC 3986 URI"
+      ]
+    },
+    {
+      "id": "rfc3986-errata",
+      "kind": "errata",
+      "version": "",
+      "url": "https://errata.rfc-editor.org/search/?rfc_number=3986&presentation=records",
+      "sha256": "14c0668758374a5cc14cf248292c31f694e6d420f43e135e0fe02427f145b06a",
+      "specifications": [
+        "RFC 3986 URI"
+      ]
+    },
+    {
+      "id": "ecma262-source",
+      "kind": "specification",
+      "version": "ECMA-262 16th edition",
+      "url": "https://262.ecma-international.org/16.0/",
+      "sha256": "6a28f9423133ed7b7c59a40baf620c2740f12f0bc9c251042f2a85b9cc5ed713",
+      "specifications": [
+        "ECMA-262 regular expressions"
+      ]
+    },
+    {
+      "id": "ecma262-releases",
+      "kind": "releases",
+      "version": "",
+      "url": "https://ecma-international.org/publications-and-standards/standards/ecma-262/",
+      "sha256": "0500fd090fab30ed4d0b439a4d9d2a7d29aed2a09203e001bb7b010d21f2c573",
+      "specifications": [
+        "ECMA-262 regular expressions"
+      ]
+    },
+    {
+      "id": "json-schema-test-suite-source",
+      "kind": "specification",
+      "version": "commit c0b038ad7244712cf73650f44e90d0bc5704e8c7",
+      "url": "https://raw.githubusercontent.com/json-schema-org/JSON-Schema-Test-Suite/c0b038ad7244712cf73650f44e90d0bc5704e8c7/README.md",
+      "sha256": "9dcb633deac582919c3b267265c8f1c3f20778f394624db671beda0cefb077b0",
+      "specifications": [
+        "JSON-Schema-Test-Suite"
+      ]
+    },
+    {
+      "id": "json-schema-test-suite-releases",
+      "kind": "releases",
+      "version": "",
+      "url": "https://api.github.com/repos/json-schema-org/JSON-Schema-Test-Suite/commits/main",
+      "sha256": "e27c0b30da6cd5fa121d17b19a8da525562652a6bb7a9469e8d33cd9e6eaf485",
+      "specifications": [
+        "JSON-Schema-Test-Suite"
+      ]
+    }
+  ]
+}

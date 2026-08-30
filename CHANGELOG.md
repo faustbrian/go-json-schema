@@ -7,6 +7,29 @@ Changelog structure and semantic versioning after v1.
 
 ### Documentation
 
+- Make all 15 entries in the
+  [specification decision register](docs/specification-decisions.md)
+  machine-auditable with exact authority,
+  conformance, fuzz, change-control, and source-monitoring bindings. The
+  maintained-peer differential lanes remain explicitly unassessed pending
+  reproducible comparison evidence.
+
+  - JSONSCHEMA-DEC-001 sha256:3e9e40252e260cdcd6c32bc0ef11093ccd82d4e80106421d6f9f5b4455ceb974
+  - JSONSCHEMA-DEC-002 sha256:6210f50357e06748fc6e5b93572ea3ffe0709a0ee47294e3d2f2cbf230d4e0b6
+  - JSONSCHEMA-DEC-003 sha256:b55d88fdcaae555feef51f852602384722cd573f251d8ea1b206cb7876daa95f
+  - JSONSCHEMA-DEC-004 sha256:029aeea98e782a554e1e3f8c569794a42be1d0f38fb9fede70181df30d437d6d
+  - JSONSCHEMA-DEC-005 sha256:1f7d44b92192d7178e257f241deb8913a2b635f6c3f7b37b093a9fdd7be20870
+  - JSONSCHEMA-DEC-006 sha256:2c9a0efa21e005b47b0c5127c79b7b5ba0ad93928e967f9a28887916e5d61503
+  - JSONSCHEMA-DEC-007 sha256:4e19e022adfe6601d62913e585c55eee3da9a13bda5d09eb0dec02677271cdbb
+  - JSONSCHEMA-DEC-008 sha256:3a1485ac1d7c2aa1588a727af61938c8fa40fa81fb09f2f34c4105f863a5f8b9
+  - JSONSCHEMA-DEC-009 sha256:636bc3f905f18a98cfb1be1fd3ab3c519697d948ea87c3dbdab2c33f37fa2381
+  - JSONSCHEMA-DEC-010 sha256:a199c275c546249c16b5f589e4fd8f83cefcf0fc5bbe31e50f1ea2e92dc78abf
+  - JSONSCHEMA-DEC-011 sha256:8f07ac65de3439f16eea9e36c837544706d6e2fe7fad82c68658a8b2ff375111
+  - JSONSCHEMA-DEC-012 sha256:968e55e377d7c6894a75b8f9ffdfb9d83f620f0cc2cea70385e2531e09b9fd9b
+  - JSONSCHEMA-DEC-013 sha256:043803367f42b081e6818ceabbcb0da1384736b739fc478af417164612612ea1
+  - JSONSCHEMA-DEC-014 sha256:0532c816848d9effab3dac3d59f20bb49042cccf5015b237d7af574106f03d93
+  - JSONSCHEMA-DEC-015 sha256:1d253317c7fab90f94846398ab2eed103bec0361e3f5832b72800942e4edbb39
+
 - Link the root README to the normative specification decision register.
 
 - Align maintained documentation with the stable v1 release contract and
