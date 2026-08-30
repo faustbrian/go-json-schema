@@ -25,7 +25,7 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Classification | Normative dialect interpretation and package default policy |
 | Issue | Schema semantics depend on the selected dialect and, for modern drafts, declared vocabularies. A schema without `$schema`, a compound document with embedded dialects, and an unknown vocabulary each require an explicit policy. |
 | Credible interpretations | Require `$schema` everywhere; infer a dialect from keywords; use one caller-selected dialect for the complete compound document; or use the caller-selected dialect only as the root fallback and honor recognized embedded `$schema` declarations. |
-| Known peer behavior | The Bowtie protocol supports explicit and implementation-default dialect runs. Peer defaults differ and are not interoperability evidence, so the package does not infer semantics from majority behavior. |
+| Known peer behavior | At pinned versions, kaptinlin/jsonschema v0.9.3 accepts the minimized Draft 3 shared-keyword case, while santhosh-tekuri/jsonschema/v6 v6.0.2 rejects its dialect identifier; this does not establish complete Draft 3 semantics for kaptinlin. |
 | Selected behavior | `WithDialect` selects the root dialect and Draft 2020-12 is the documented constructor default. A recognized embedded `$schema` starts a resource with its declared semantics. Required unknown modern vocabularies fail; optional unknown vocabularies remain inactive. Unsupported dialect identifiers fail instead of falling back. |
 | Security and resource consequences | Explicit dialect boundaries prevent attacker-controlled keywords from acquiring unintended semantics. Vocabulary and resource counts remain subject to compiler limits. |
 | Compatibility and wire consequences | The same schema bytes can validate differently under different dialects. Changing the default is a compatibility event; released dialect semantics are never retrofitted from a newer draft. |
@@ -40,7 +40,7 @@ review, executable evidence, compatibility review, and a changelog entry.
 
 Classification: `ambiguity`; decision scope: `application-policy`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
 
-Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: `specification/differential/maintained-peers.json`.
 
 </details>
 
@@ -249,7 +249,7 @@ Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `Fu
 | Classification | Defensive interoperability policy |
 | Issue | RFC 8259 says object member names SHOULD be unique and documents unpredictable peer behavior when they are not. Last-wins parsing can hide schema constraints or instance data before validation. |
 | Credible interpretations | Preserve the first value; preserve the last value; retain duplicates in an extended data model; or reject the document as ambiguous. |
-| Known peer behavior | RFC 8259 explicitly records that libraries differ: some keep the last member, some report an error, and some expose all members. |
+| Known peer behavior | At pinned versions, kaptinlin/jsonschema v0.9.3 matches package rejection of duplicate schema and instance members, while santhosh-tekuri/jsonschema/v6 v6.0.2 accepts the parser-selected member and validates that value. |
 | Selected behavior | Raw schemas and instances with any duplicate object member are rejected as `ErrInvalidJSON`. `ValidateValue` operates on already-decoded Go values and therefore cannot recover duplicates discarded by an upstream decoder. |
 | Security and resource consequences | Rejection prevents parser differentials, hidden constraints, signature confusion, and last-wins authorization mistakes. Duplicate detection is bounded by object and input limits. |
 | Compatibility and wire consequences | Ambiguous JSON accepted by permissive decoders is rejected. Callers that need this guarantee must pass raw JSON rather than a pre-decoded map. |
@@ -264,7 +264,7 @@ Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `Fu
 
 Classification: `interoperability policy`; decision scope: `defensive`; specification: `RFC 8259 JSON`; version: `RFC 8259`; source authority: `rfc8259-source`; requirement strength: `SHOULD`; authority URL: https://www.rfc-editor.org/rfc/rfc8259.txt.
 
-Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: `specification/differential/maintained-peers.json`.
 
 </details>
 
@@ -305,7 +305,7 @@ Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `Fu
 | Classification | Normative interoperability interpretation and defensive resource policy |
 | Issue | Go's standard regular-expression engine intentionally omits ECMAScript lookaround and backreferences, while backtracking ECMAScript engines can consume unbounded time. Unicode expectations also changed across drafts. |
 | Credible interpretations | Use Go regexp as an approximation; reject unsupported valid patterns; use an ECMAScript-compatible engine without limits; or provide bounded ECMAScript semantics. |
-| Known peer behavior | The official optional regex and `ecmascript-regex` fixtures capture common engine differences. Peer engines also vary in Unicode and timeout behavior. |
+| Known peer behavior | At pinned versions, kaptinlin/jsonschema v0.9.3 and santhosh-tekuri/jsonschema/v6 v6.0.2 reject the minimized ECMA-262 lookahead during schema compilation, while the package compiles it and validates the matching instance. |
 | Selected behavior | Schema patterns and asserted `regex` formats use ECMAScript-compatible semantics, including lookaround and backreferences, without implicit anchoring. Compilation bytes, match input, backtracking duration, operations, and cancellation are bounded. Invalid active patterns fail schema compilation. |
 | Security and resource consequences | Explicit byte and time limits contain catastrophic backtracking and oversized expressions. Deadline exhaustion is a typed limit error, not an invalid-instance result. |
 | Compatibility and wire consequences | Valid ECMAScript patterns unsupported by Go regexp remain usable. Tightening a default regex budget is an operational compatibility change. |
@@ -320,7 +320,7 @@ Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `Fu
 
 Classification: `interoperability policy`; decision scope: `defensive`; specification: `ECMA-262 regular expressions`; version: `ECMA-262 16th edition`; source authority: `ecma262-source`; requirement strength: `not specified`; authority URL: https://262.ecma-international.org/16.0/.
 
-Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: `specification/differential/maintained-peers.json`.
 
 </details>
 

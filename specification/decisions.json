@@ -25,7 +25,7 @@
       "interpretations": [
         "Require `$schema` everywhere; infer a dialect from keywords; use one caller-selected dialect for the complete compound document; or use the caller-selected dialect only as the root fallback and honor recognized embedded `$schema` declarations."
       ],
-      "peer_behavior": "The Bowtie protocol supports explicit and implementation-default dialect runs. Peer defaults differ and are not interoperability evidence, so the package does not infer semantics from majority behavior.",
+      "peer_behavior": "At pinned versions, kaptinlin/jsonschema v0.9.3 accepts the minimized Draft 3 shared-keyword case, while santhosh-tekuri/jsonschema/v6 v6.0.2 rejects its dialect identifier; this does not establish complete Draft 3 semantics for kaptinlin.",
       "selected_behavior": "`WithDialect` selects the root dialect and Draft 2020-12 is the documented constructor default. A recognized embedded `$schema` starts a resource with its declared semantics. Required unknown modern vocabularies fail; optional unknown vocabularies remain inactive. Unsupported dialect identifiers fail instead of falling back.",
       "rationale": "`WithDialect` selects the root dialect and Draft 2020-12 is the documented constructor default. A recognized embedded `$schema` starts a resource with its declared semantics. Required unknown modern vocabularies fail; optional unknown vocabularies remain inactive. Unsupported dialect identifiers fail instead of falling back.",
       "security_consequences": "Explicit dialect boundaries prevent attacker-controlled keywords from acquiring unintended semantics. Vocabulary and resource counts remain subject to compiler limits.",
@@ -46,7 +46,9 @@
       "fuzz_evidence": [
         "FuzzCompileAndValidate"
       ],
-      "interoperability_evidence": [],
+      "interoperability_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
       "public_apis": [
         "`NewCompiler`, `WithDialect`, `WithVocabulary`, and `Dialect` constants"
       ],
@@ -388,7 +390,7 @@
       "interpretations": [
         "Preserve the first value; preserve the last value; retain duplicates in an extended data model; or reject the document as ambiguous."
       ],
-      "peer_behavior": "RFC 8259 explicitly records that libraries differ: some keep the last member, some report an error, and some expose all members.",
+      "peer_behavior": "At pinned versions, kaptinlin/jsonschema v0.9.3 matches package rejection of duplicate schema and instance members, while santhosh-tekuri/jsonschema/v6 v6.0.2 accepts the parser-selected member and validates that value.",
       "selected_behavior": "Raw schemas and instances with any duplicate object member are rejected as `ErrInvalidJSON`. `ValidateValue` operates on already-decoded Go values and therefore cannot recover duplicates discarded by an upstream decoder.",
       "rationale": "Raw schemas and instances with any duplicate object member are rejected as `ErrInvalidJSON`. `ValidateValue` operates on already-decoded Go values and therefore cannot recover duplicates discarded by an upstream decoder.",
       "security_consequences": "Rejection prevents parser differentials, hidden constraints, signature confusion, and last-wins authorization mistakes. Duplicate detection is bounded by object and input limits.",
@@ -404,7 +406,9 @@
       "fuzz_evidence": [
         "FuzzCompileAndValidate"
       ],
-      "interoperability_evidence": [],
+      "interoperability_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
       "public_apis": [
         "`Compile`, `Validate`, `ValidateOutput`, `CollectAnnotations`, and raw JSON parsing errors"
       ],
@@ -475,7 +479,7 @@
       "interpretations": [
         "Use Go regexp as an approximation; reject unsupported valid patterns; use an ECMAScript-compatible engine without limits; or provide bounded ECMAScript semantics."
       ],
-      "peer_behavior": "The official optional regex and `ecmascript-regex` fixtures capture common engine differences. Peer engines also vary in Unicode and timeout behavior.",
+      "peer_behavior": "At pinned versions, kaptinlin/jsonschema v0.9.3 and santhosh-tekuri/jsonschema/v6 v6.0.2 reject the minimized ECMA-262 lookahead during schema compilation, while the package compiles it and validates the matching instance.",
       "selected_behavior": "Schema patterns and asserted `regex` formats use ECMAScript-compatible semantics, including lookaround and backreferences, without implicit anchoring. Compilation bytes, match input, backtracking duration, operations, and cancellation are bounded. Invalid active patterns fail schema compilation.",
       "rationale": "Schema patterns and asserted `regex` formats use ECMAScript-compatible semantics, including lookaround and backreferences, without implicit anchoring. Compilation bytes, match input, backtracking duration, operations, and cancellation are bounded. Invalid active patterns fail schema compilation.",
       "security_consequences": "Explicit byte and time limits contain catastrophic backtracking and oversized expressions. Deadline exhaustion is a typed limit error, not an invalid-instance result.",
@@ -495,7 +499,9 @@
       "fuzz_evidence": [
         "FuzzCompileAndValidate"
       ],
-      "interoperability_evidence": [],
+      "interoperability_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
       "public_apis": [
         "Pattern-bearing keywords, asserted `regex` format, and `Limits`"
       ],

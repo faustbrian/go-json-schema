@@ -126,7 +126,10 @@
       "required_services": [],
       "build_tags": [],
       "test_tags": [],
-      "interoperability_tools": [],
+      "interoperability_tools": [
+        "kaptinlin/jsonschema v0.9.3",
+        "santhosh-tekuri/jsonschema/v6 v6.0.2"
+      ],
       "specifications": [],
       "conformance_corpora": [
         "JSON-Schema-Test-Suite",

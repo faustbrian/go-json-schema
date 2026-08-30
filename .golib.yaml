@@ -50,3 +50,12 @@ operations:
         makefile: verification/package.mk
         target: benchmark
         timeout: 20m
+  - module: benchmarks/comparison
+    gate: interoperability
+    steps:
+      - type: go-test
+        packages:
+          - .
+        run: '^TestMaintainedPeerDecisionOutcomes$'
+        count: 1
+        timeout: 20m

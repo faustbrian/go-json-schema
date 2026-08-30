@@ -20,8 +20,10 @@
       "fuzz": [
         "FuzzCompileAndValidate"
       ],
-      "differential_evidence": [],
-      "differential_classification": "not assessed",
+      "differential_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
+      "differential_classification": "deliberate policy difference",
       "public_behavior": [
         "`NewCompiler`, `WithDialect`, `WithVocabulary`, and `Dialect` constants"
       ]
@@ -202,8 +204,10 @@
       "fuzz": [
         "FuzzCompileAndValidate"
       ],
-      "differential_evidence": [],
-      "differential_classification": "not assessed",
+      "differential_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
+      "differential_classification": "deliberate policy difference",
       "public_behavior": [
         "`Compile`, `Validate`, `ValidateOutput`, `CollectAnnotations`, and raw JSON parsing errors"
       ]
@@ -249,8 +253,10 @@
       "fuzz": [
         "FuzzCompileAndValidate"
       ],
-      "differential_evidence": [],
-      "differential_classification": "not assessed",
+      "differential_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
+      "differential_classification": "deliberate policy difference",
       "public_behavior": [
         "Pattern-bearing keywords, asserted `regex` format, and `Limits`"
       ]
