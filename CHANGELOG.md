@@ -5,6 +5,12 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+### Changed
+
+- Adopt the versioned shared `golib` repository contract for local and hosted
+  verification while retaining schema conformance, interoperability, and
+  mutation evidence in this repository.
+
 ### Documentation
 
 - Link the root README to the normative specification decision register.
