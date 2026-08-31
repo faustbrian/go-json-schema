@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-08-30",
+  "reviewed_at": "2026-08-31",
   "review_interval_days": 90,
   "authorities": [
     {
@@ -209,8 +209,8 @@
       "id": "ecma262-releases",
       "kind": "releases",
       "version": "",
-      "url": "https://ecma-international.org/publications-and-standards/standards/ecma-262/",
-      "sha256": "0500fd090fab30ed4d0b439a4d9d2a7d29aed2a09203e001bb7b010d21f2c573",
+      "url": "https://github.com/tc39/ecma262/releases.atom",
+      "sha256": "cca891d81caa6fb910aa83c82f1e5abbec92197a1d783faf96ca4a5e61ca1ec7",
       "specifications": [
         "ECMA-262 regular expressions"
       ]

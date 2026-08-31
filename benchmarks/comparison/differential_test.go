@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
-	"runtime/debug"
 	"testing"
 
 	owned "github.com/faustbrian/go-json-schema"
@@ -96,13 +98,24 @@ func loadDifferentialReport(t *testing.T) differentialReport {
 
 func assertPeerVersions(t *testing.T, implementations map[string]implementation) {
 	t.Helper()
-	info, ok := debug.ReadBuildInfo()
-	if !ok {
-		t.Fatal("Go build information is unavailable")
+	command := exec.CommandContext(t.Context(), "go", "list", "-m", "-json", "all")
+	output, err := command.Output()
+	if err != nil {
+		t.Fatalf("list selected modules: %v", err)
 	}
-	versions := make(map[string]string, len(info.Deps))
-	for _, dependency := range info.Deps {
-		versions[dependency.Path] = dependency.Version
+	versions := make(map[string]string)
+	decoder := json.NewDecoder(bytes.NewReader(output))
+	for {
+		var module struct {
+			Path    string
+			Version string
+		}
+		if err := decoder.Decode(&module); errors.Is(err, io.EOF) {
+			break
+		} else if err != nil {
+			t.Fatalf("decode selected modules: %v", err)
+		}
+		versions[module.Path] = module.Version
 	}
 	for _, name := range []string{"kaptinlin", "santhosh-tekuri"} {
 		identity := implementations[name]
