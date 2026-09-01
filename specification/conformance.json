@@ -1,0 +1,361 @@
+{
+  "schema_version": 1,
+  "decisions": [
+    {
+      "id": "JSONSCHEMA-DEC-001",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestOfficialMetaSchemasCompileAgainstTheirDialect",
+        "TestOfficialVocabularyFixtures",
+        "TestCompoundResourcesUseTheirOwnVocabulary",
+        "TestCompileRejectsUnknownRequiredVocabulary",
+        "TestVocabularyPolicyHandlesOptionalAndPartialDeclarations",
+        "TestDialectFeaturePoliciesAreExact"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzCompileAndValidate"
+      ],
+      "differential_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
+      "differential_classification": "deliberate policy difference",
+      "public_behavior": [
+        "`NewCompiler`, `WithDialect`, `WithVocabulary`, and `Dialect` constants"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-002",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestOfficialOptionalCoreFixtures",
+        "TestRegisteredVocabularyCompilesAndEvaluatesCustomKeyword",
+        "TestOfficialAnnotationFixtures"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzCompileAndValidate"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "`WithVocabulary`, `CollectAnnotations`, and validation output methods"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-003",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestFormatAssertionIsExplicitAndCompilerOwned",
+        "TestOfficialFormatAnnotationFixtures",
+        "TestOfficialOptionalCoreFormatFixtures",
+        "TestOfficialFormatAssertionVocabularyFixtures",
+        "TestStandardFormatsDoNotLeakAcrossDialects"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzCompileAndValidate"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "`WithFormatAssertion`, `WithFormat`, `FormatChecker`, validation, and output APIs"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-004",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestContentKeywordsAreAnnotationsByDefault",
+        "TestContentAssertionIsLimitedToDraft7",
+        "TestOfficialDraft7ContentAssertionFixtures",
+        "TestContentValidationCoversPermissiveAndStrictBranches",
+        "TestContentValidationSeparatesSyntaxAndResourceFailures"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzCompileAndValidate"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "`WithContentAssertion`, validation methods, `CollectAnnotations`, and output methods"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-005",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestOfficialAnnotationFixtures",
+        "TestOfficialArrayAnnotationFixtures",
+        "TestOfficialAnnotationKeywordFixtures",
+        "TestAnnotationAndOutputTraversalSkipUnappliedSchemas",
+        "TestApplicableAnnotationsContinueAfterInapplicableKeywords"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzValidationOutput"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "`CollectAnnotations`, `Annotation`, `ValidateOutput`, and `OutputUnit`"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-006",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestOfficialUnevaluatedPropertiesFixtures",
+        "TestUnevaluatedAndPatternKeywordsPropagateTrackingFailures",
+        "TestUnevaluatedOutputContinuesAfterEvaluatedEntries"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzValidationOutput"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "Validation, annotation, and output APIs for Draft 2019-09 and Draft 2020-12 schemas"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-007",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestOfficialDynamicReferenceFixtures",
+        "TestBasicOutputPreservesDynamicReferenceEvaluationPath",
+        "TestDynamicAnchorCompilationContinuesToMatchingAnchor",
+        "TestReferenceDepthIsRestoredOnSuccessAndFailure",
+        "TestAnchorKeywordsDoNotLeakIntoEarlierDialects"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzReferenceResolution"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "Compiler reference resolution and all validation/output methods"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-008",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestReplacingReferenceIgnoresSiblingIdentifier",
+        "TestOfficialReferenceAndDefinitionFixtures",
+        "TestVerboseReferenceTraversalContinuesWithSiblingKeywords"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzReferenceResolution"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "`WithDialect`, compilation, validation, annotations, and output"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-009",
+      "authoritative_sources": [
+        "rfc8259-source"
+      ],
+      "executable_evidence": [
+        "TestCompileRejectsInvalidAndAmbiguousJSON"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzCompileAndValidate"
+      ],
+      "differential_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
+      "differential_classification": "deliberate policy difference",
+      "public_behavior": [
+        "`Compile`, `Validate`, `ValidateOutput`, `CollectAnnotations`, and raw JSON parsing errors"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-010",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestValidateUsesExactNumberSemantics",
+        "TestExactNumberComparisonSignEdges",
+        "TestOfficialNumericFixtures",
+        "TestOfficialOptionalCoreFixtures"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzRawAndValueValidationAgree"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "`Compile`, `Validate`, `ValidateValue`, `Value`, equality-dependent keywords, and output annotations"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-011",
+      "authoritative_sources": [
+        "ecma262-source"
+      ],
+      "executable_evidence": [
+        "TestPatternUsesECMAScriptLookaroundAndBackreferences",
+        "TestPatternBacktrackingIsBounded",
+        "TestOfficialPatternFixtures",
+        "TestOfficialOptionalRegexFixtures",
+        "TestRegexFormatCompilationUsesConfiguredByteLimit"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzCompileAndValidate"
+      ],
+      "differential_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
+      "differential_classification": "deliberate policy difference",
+      "public_behavior": [
+        "Pattern-bearing keywords, asserted `regex` format, and `Limits`"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-012",
+      "authoritative_sources": [
+        "rfc3986-source"
+      ],
+      "executable_evidence": [
+        "TestNormalizeURLAppliesRFCIdentityRules",
+        "TestCompileRejectsEquivalentDuplicateResourceIdentifiers",
+        "TestMapLoaderUsesNormalizedResourceIdentity",
+        "TestRemoveDotSegmentsPreservesURIPathStructure"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzReferenceResolution"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "`$id`, references, `NewMapLoader`, `NewFSLoader`, and `ResourceLoader`"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-013",
+      "authoritative_sources": [
+        "json-schema-drafts-source"
+      ],
+      "executable_evidence": [
+        "TestOfficialRemoteReferenceFixtures",
+        "TestLoaderPanicsAreContainedAndRedacted",
+        "TestLoaderErrorsAreRedactedAndPreserved",
+        "TestFSLoaderConfinesResourcesToItsBase",
+        "TestCompositeLoaderFallsThroughOnlyForMissingResources",
+        "TestResolutionErrorsRedactURISecrets"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzReferenceResolution"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "`WithResourceLoader`, `ResourceLoader`, `NewMapLoader`, `NewFSLoader`, and `NewCompositeLoader`"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-014",
+      "authoritative_sources": [
+        "json-schema-output-source"
+      ],
+      "executable_evidence": [
+        "TestOfficialBasicOutputFixtures",
+        "TestBasicOutputPreservesReferenceEvaluationPath",
+        "TestVerboseOutputIncludesEveryEvaluatedKeyword",
+        "TestVerboseOutputRetainsAnnotationResults",
+        "TestOutputBoundaryHelpersAreExact"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzValidationOutput"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "`OutputFormat`, `OutputUnit`, `ValidateOutput`, and `ValidateValueOutput`"
+      ]
+    },
+    {
+      "id": "JSONSCHEMA-DEC-015",
+      "authoritative_sources": [
+        "json-schema-test-suite-source"
+      ],
+      "executable_evidence": [
+        "TestOfficialMandatoryFixtures",
+        "TestOfficialOptionalFixtures",
+        "TestOfficialOptionalCoreFixtures",
+        "TestOfficialOptionalCoreFormatFixtures",
+        "TestOfficialOptionalRegexFixtures"
+      ],
+      "fixtures": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz": [
+        "FuzzCompileAndValidate"
+      ],
+      "differential_evidence": [],
+      "differential_classification": "not assessed",
+      "public_behavior": [
+        "Conformance claims, release gates, documented format/content options, and Bowtie harness metadata"
+      ]
+    }
+  ]
+}

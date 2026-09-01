@@ -25,7 +25,7 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Classification | Normative dialect interpretation and package default policy |
 | Issue | Schema semantics depend on the selected dialect and, for modern drafts, declared vocabularies. A schema without `$schema`, a compound document with embedded dialects, and an unknown vocabulary each require an explicit policy. |
 | Credible interpretations | Require `$schema` everywhere; infer a dialect from keywords; use one caller-selected dialect for the complete compound document; or use the caller-selected dialect only as the root fallback and honor recognized embedded `$schema` declarations. |
-| Known peer behavior | The Bowtie protocol supports explicit and implementation-default dialect runs. Peer defaults differ and are not interoperability evidence, so the package does not infer semantics from majority behavior. |
+| Known peer behavior | At pinned versions, kaptinlin/jsonschema v0.9.3 accepts the minimized Draft 3 shared-keyword case, while santhosh-tekuri/jsonschema/v6 v6.0.2 rejects its dialect identifier; this does not establish complete Draft 3 semantics for kaptinlin. |
 | Selected behavior | `WithDialect` selects the root dialect and Draft 2020-12 is the documented constructor default. A recognized embedded `$schema` starts a resource with its declared semantics. Required unknown modern vocabularies fail; optional unknown vocabularies remain inactive. Unsupported dialect identifiers fail instead of falling back. |
 | Security and resource consequences | Explicit dialect boundaries prevent attacker-controlled keywords from acquiring unintended semantics. Vocabulary and resource counts remain subject to compiler limits. |
 | Compatibility and wire consequences | The same schema bytes can validate differently under different dialects. Changing the default is a compatibility event; released dialect semantics are never retrofitted from a newer draft. |
@@ -33,6 +33,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Public surface | `NewCompiler`, `WithDialect`, `WithVocabulary`, and `Dialect` constants |
 | Upstream record | Published dialect and vocabulary meta-schemas are checksum-pinned in `specification/official-meta-schemas.sources.tsv`. |
 | Reconsider when | A new released dialect is deliberately added or an erratum changes vocabulary negotiation for a supported dialect. |
+
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `ambiguity`; decision scope: `application-policy`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: `specification/differential/maintained-peers.json`.
+
+</details>
 
 ## JSONSCHEMA-DEC-002: Unknown keywords
 
@@ -52,6 +62,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Upstream record | The official suite revision and every optional fixture are pinned in `specification/official-suite-results.tsv`. |
 | Reconsider when | A supported dialect changes unknown-keyword annotation rules or a new vocabulary activates a formerly unknown keyword. |
 
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `ambiguity`; decision scope: `normative`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
+
 ## JSONSCHEMA-DEC-003: Format assertion
 
 | Field | Decision |
@@ -69,6 +89,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Public surface | `WithFormatAssertion`, `WithFormat`, `FormatChecker`, validation, and output APIs |
 | Upstream record | Pinned optional format fixtures are included with zero skips in the official-suite manifest. |
 | Reconsider when | A supported dialect or erratum changes format vocabulary requirements or a built-in format's normative source. |
+
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `optional behavior`; decision scope: `application-policy`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
 
 ## JSONSCHEMA-DEC-004: Content keywords
 
@@ -88,6 +118,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Upstream record | The pinned corpus keeps modern annotation fixtures and the Draft 7 optional assertion fixture distinct. |
 | Reconsider when | A later released dialect standardizes automatic content processing or the package adds a separately owned decoded-content result API. |
 
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `optional behavior`; decision scope: `application-policy`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
+
 ## JSONSCHEMA-DEC-005: Annotation collection
 
 | Field | Decision |
@@ -105,6 +145,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Public surface | `CollectAnnotations`, `Annotation`, `ValidateOutput`, and `OutputUnit` |
 | Upstream record | Compatible official annotation cases run for all six supported dialects. |
 | Reconsider when | The output specification standardizes a retained-annotation API or a dialect changes annotation combination semantics. |
+
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `ambiguity`; decision scope: `application-policy`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzValidationOutput`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
 
 ## JSONSCHEMA-DEC-006: Unevaluated locations
 
@@ -124,6 +174,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Upstream record | Official fixtures and their checksums are pinned without exclusions. |
 | Reconsider when | An erratum changes evaluated-location propagation or a new dialect replaces these keywords. |
 
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `ambiguity`; decision scope: `normative`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzValidationOutput`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
+
 ## JSONSCHEMA-DEC-007: Dynamic and recursive references
 
 | Field | Decision |
@@ -141,6 +201,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Public surface | Compiler reference resolution and all validation/output methods |
 | Upstream record | Pinned `recursiveRef.json` and `dynamicRef.json` fixtures cover both released models. |
 | Reconsider when | Standards errata change dynamic-scope traversal or a new dialect introduces another reference model. |
+
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `ambiguity`; decision scope: `normative`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzReferenceResolution`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
 
 ## JSONSCHEMA-DEC-008: `$ref` siblings
 
@@ -160,6 +230,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Upstream record | The behavior change is represented separately in each pinned dialect lane. |
 | Reconsider when | A supported historical-draft erratum changes replacement semantics or a new dialect changes reference application again. |
 
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `ambiguity`; decision scope: `normative`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzReferenceResolution`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
+
 ## JSONSCHEMA-DEC-009: Duplicate JSON object members
 
 | Field | Decision |
@@ -169,7 +249,7 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Classification | Defensive interoperability policy |
 | Issue | RFC 8259 says object member names SHOULD be unique and documents unpredictable peer behavior when they are not. Last-wins parsing can hide schema constraints or instance data before validation. |
 | Credible interpretations | Preserve the first value; preserve the last value; retain duplicates in an extended data model; or reject the document as ambiguous. |
-| Known peer behavior | RFC 8259 explicitly records that libraries differ: some keep the last member, some report an error, and some expose all members. |
+| Known peer behavior | At pinned versions, kaptinlin/jsonschema v0.9.3 matches package rejection of duplicate schema and instance members, while santhosh-tekuri/jsonschema/v6 v6.0.2 accepts the parser-selected member and validates that value. |
 | Selected behavior | Raw schemas and instances with any duplicate object member are rejected as `ErrInvalidJSON`. `ValidateValue` operates on already-decoded Go values and therefore cannot recover duplicates discarded by an upstream decoder. |
 | Security and resource consequences | Rejection prevents parser differentials, hidden constraints, signature confusion, and last-wins authorization mistakes. Duplicate detection is bounded by object and input limits. |
 | Compatibility and wire consequences | Ambiguous JSON accepted by permissive decoders is rejected. Callers that need this guarantee must pass raw JSON rather than a pre-decoded map. |
@@ -177,6 +257,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Public surface | `Compile`, `Validate`, `ValidateOutput`, `CollectAnnotations`, and raw JSON parsing errors |
 | Upstream record | This is a deliberate fail-closed policy over RFC 8259's interoperability warning, not a claim that JSON Schema mandates rejection. |
 | Reconsider when | The underlying JSON standard mandates one duplicate-member behavior or a separate lossless duplicate-aware API is introduced. |
+
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `interoperability policy`; decision scope: `defensive`; specification: `RFC 8259 JSON`; version: `RFC 8259`; source authority: `rfc8259-source`; requirement strength: `SHOULD`; authority URL: https://www.rfc-editor.org/rfc/rfc8259.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: `specification/differential/maintained-peers.json`.
+
+</details>
 
 ## JSONSCHEMA-DEC-010: Numeric precision and equality
 
@@ -196,6 +286,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Upstream record | Numeric optional fixtures are pinned and counted rather than conditionally skipped by host range. |
 | Reconsider when | A supported dialect changes its numeric data model or Go exposes a new exact JSON numeric representation adopted by the public API. |
 
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `interoperability policy`; decision scope: `defensive`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzRawAndValueValidationAgree`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
+
 ## JSONSCHEMA-DEC-011: Regular-expression semantics
 
 | Field | Decision |
@@ -205,7 +305,7 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Classification | Normative interoperability interpretation and defensive resource policy |
 | Issue | Go's standard regular-expression engine intentionally omits ECMAScript lookaround and backreferences, while backtracking ECMAScript engines can consume unbounded time. Unicode expectations also changed across drafts. |
 | Credible interpretations | Use Go regexp as an approximation; reject unsupported valid patterns; use an ECMAScript-compatible engine without limits; or provide bounded ECMAScript semantics. |
-| Known peer behavior | The official optional regex and `ecmascript-regex` fixtures capture common engine differences. Peer engines also vary in Unicode and timeout behavior. |
+| Known peer behavior | At pinned versions, kaptinlin/jsonschema v0.9.3 and santhosh-tekuri/jsonschema/v6 v6.0.2 reject the minimized ECMA-262 lookahead during schema compilation, while the package compiles it and validates the matching instance. |
 | Selected behavior | Schema patterns and asserted `regex` formats use ECMAScript-compatible semantics, including lookaround and backreferences, without implicit anchoring. Compilation bytes, match input, backtracking duration, operations, and cancellation are bounded. Invalid active patterns fail schema compilation. |
 | Security and resource consequences | Explicit byte and time limits contain catastrophic backtracking and oversized expressions. Deadline exhaustion is a typed limit error, not an invalid-instance result. |
 | Compatibility and wire consequences | Valid ECMAScript patterns unsupported by Go regexp remain usable. Tightening a default regex budget is an operational compatibility change. |
@@ -213,6 +313,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Public surface | Pattern-bearing keywords, asserted `regex` format, and `Limits` |
 | Upstream record | Optional ECMAScript fixtures are pinned with no regex-file exclusions. |
 | Reconsider when | ECMA-262 semantics, a supported dialect's regex requirements, or the selected bounded engine materially change. |
+
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `interoperability policy`; decision scope: `defensive`; specification: `ECMA-262 regular expressions`; version: `ECMA-262 16th edition`; source authority: `ecma262-source`; requirement strength: `not specified`; authority URL: https://262.ecma-international.org/16.0/.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: `specification/differential/maintained-peers.json`.
+
+</details>
 
 ## JSONSCHEMA-DEC-012: URI identity normalization
 
@@ -232,6 +342,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Upstream record | The pre-v1 migration consequence is recorded in `docs/versioning.md`. |
 | Reconsider when | JSON Schema or RFC 3986 errata change identity equivalence or an explicit caller-selectable normalization policy is introduced. |
 
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `interoperability policy`; decision scope: `defensive`; specification: `RFC 3986 URI`; version: `RFC 3986`; source authority: `rfc3986-source`; requirement strength: `not specified`; authority URL: https://www.rfc-editor.org/rfc/rfc3986.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzReferenceResolution`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
+
 ## JSONSCHEMA-DEC-013: Remote resource loading
 
 | Field | Decision |
@@ -249,6 +369,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Public surface | `WithResourceLoader`, `ResourceLoader`, `NewMapLoader`, `NewFSLoader`, and `NewCompositeLoader` |
 | Upstream record | The official test registry and meta-schema bundle are imported by checksum-pinned tooling, never fetched implicitly during validation. |
 | Reconsider when | A separately versioned secure retrieval adapter defines a complete transport policy without changing the core default. |
+
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `omission`; decision scope: `defensive`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzReferenceResolution`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
 
 ## JSONSCHEMA-DEC-014: Output formats
 
@@ -268,6 +398,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Upstream record | Official output artifacts are pinned with the supported meta-schema bundle; package extensions are labeled in `docs/output.md`. |
 | Reconsider when | A released output specification changes field semantics or adds a format that cannot be represented compatibly. |
 
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `optional behavior`; decision scope: `extension-specific`; specification: `JSON Schema Draft 2019-09 and Draft 2020-12 Output`; version: `Draft 2019-09 and Draft 2020-12`; source authority: `json-schema-output-source`; requirement strength: `not specified`; authority URL: https://json-schema.org/draft/2020-12/output/schema.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzValidationOutput`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
+
 ## JSONSCHEMA-DEC-015: Optional official-suite behavior
 
 | Field | Decision |
@@ -285,6 +425,16 @@ review, executable evidence, compatibility review, and a changelog entry.
 | Public surface | Conformance claims, release gates, documented format/content options, and Bowtie harness metadata |
 | Upstream record | Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results are pinned under `specification/`. |
 | Reconsider when | The official suite changes its optional taxonomy, a new released dialect is added, or a fixture conflicts with normative text and is classified upstream. |
+
+
+<details>
+<summary>Machine-auditable bindings</summary>
+
+Classification: `optional behavior`; decision scope: `application-policy`; specification: `JSON-Schema-Test-Suite`; version: `commit c0b038ad7244712cf73650f44e90d0bc5704e8c7`; source authority: `json-schema-test-suite-source`; requirement strength: `not specified`; authority URL: https://raw.githubusercontent.com/json-schema-org/JSON-Schema-Test-Suite/c0b038ad7244712cf73650f44e90d0bc5704e8c7/README.md.
+
+Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+
+</details>
 
 ## Unresolved decisions
 

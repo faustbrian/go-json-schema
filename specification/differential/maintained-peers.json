@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-08-30",
+  "harness": "benchmarks/comparison:TestMaintainedPeerDecisionOutcomes",
+  "implementations": {
+    "faustbrian": {
+      "module": "github.com/faustbrian/go-json-schema",
+      "version": "workspace"
+    },
+    "kaptinlin": {
+      "module": "github.com/kaptinlin/jsonschema",
+      "version": "v0.9.3"
+    },
+    "santhosh-tekuri": {
+      "module": "github.com/santhosh-tekuri/jsonschema/v6",
+      "version": "v6.0.2"
+    }
+  },
+  "cases": [
+    {
+      "id": "duplicate-schema-member",
+      "decision": "JSONSCHEMA-DEC-009",
+      "schema": "{\"type\":\"string\",\"type\":\"number\"}",
+      "instance": "1",
+      "outcomes": {
+        "faustbrian": {
+          "schema": "rejected",
+          "instance": "not-run",
+          "validation": "not-run"
+        },
+        "kaptinlin": {
+          "schema": "rejected",
+          "instance": "not-run",
+          "validation": "not-run"
+        },
+        "santhosh-tekuri": {
+          "schema": "accepted",
+          "instance": "accepted",
+          "validation": "valid"
+        }
+      },
+      "classification": "deliberate policy difference",
+      "rationale": "The package rejects duplicate members before interpretation; peers may expose their parser policy instead."
+    },
+    {
+      "id": "duplicate-instance-member",
+      "decision": "JSONSCHEMA-DEC-009",
+      "schema": "{\"type\":\"object\",\"properties\":{\"value\":{\"const\":1}}}",
+      "instance": "{\"value\":1,\"value\":2}",
+      "outcomes": {
+        "faustbrian": {
+          "schema": "accepted",
+          "instance": "rejected",
+          "validation": "not-run"
+        },
+        "kaptinlin": {
+          "schema": "accepted",
+          "instance": "rejected",
+          "validation": "not-run"
+        },
+        "santhosh-tekuri": {
+          "schema": "accepted",
+          "instance": "accepted",
+          "validation": "invalid"
+        }
+      },
+      "classification": "deliberate policy difference",
+      "rationale": "The package rejects duplicate instance members; peers may validate a parser-selected value."
+    },
+    {
+      "id": "ecmascript-lookahead",
+      "decision": "JSONSCHEMA-DEC-011",
+      "schema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"pattern\":\"^(?=a)a$\"}",
+      "instance": "\"a\"",
+      "outcomes": {
+        "faustbrian": {
+          "schema": "accepted",
+          "instance": "accepted",
+          "validation": "valid"
+        },
+        "kaptinlin": {
+          "schema": "rejected",
+          "instance": "not-run",
+          "validation": "not-run"
+        },
+        "santhosh-tekuri": {
+          "schema": "rejected",
+          "instance": "not-run",
+          "validation": "not-run"
+        }
+      },
+      "classification": "deliberate policy difference",
+      "rationale": "The package implements the required ECMA-262 lookahead semantics while peers may use Go regular expressions."
+    },
+    {
+      "id": "draft3-dialect",
+      "decision": "JSONSCHEMA-DEC-001",
+      "schema": "{\"$schema\":\"http://json-schema.org/draft-03/schema#\",\"type\":\"string\"}",
+      "instance": "\"value\"",
+      "outcomes": {
+        "faustbrian": {
+          "schema": "accepted",
+          "instance": "accepted",
+          "validation": "valid"
+        },
+        "kaptinlin": {
+          "schema": "accepted",
+          "instance": "accepted",
+          "validation": "valid"
+        },
+        "santhosh-tekuri": {
+          "schema": "rejected",
+          "instance": "not-run",
+          "validation": "not-run"
+        }
+      },
+      "classification": "deliberate policy difference",
+      "rationale": "The package accepts its supported Draft 3 identifier; santhosh-tekuri rejects it, while kaptinlin accepts this minimized shared-keyword case without proving complete Draft 3 semantics."
+    }
+  ]
+}

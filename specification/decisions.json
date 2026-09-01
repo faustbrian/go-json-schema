@@ -1,0 +1,699 @@
+{
+  "schema_version": 1,
+  "change_control": {
+    "readme": "README.md",
+    "conformance": "docs/conformance.md",
+    "compatibility": "docs/versioning.md",
+    "contribution": "CONTRIBUTING.md",
+    "changelog": "CHANGELOG.md",
+    "pull_request_template": ".github/pull_request_template.md"
+  },
+  "decisions": [
+    {
+      "id": "JSONSCHEMA-DEC-001",
+      "title": "Dialect and vocabulary selection",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "ambiguity",
+      "decision_scope": "application-policy",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 2020-12 Core [sections 8.1.1 and 8.1.2](https://json-schema.org/draft/2020-12/json-schema-core.html#section-8.1), Draft 2019-09 Core [section 8.1](https://json-schema.org/draft/2019-09/json-schema-core.html#section-8.1), and the published Draft 3, 4, 6, and 7 meta-schema identifiers listed in [`dialects.md`](dialects.md)",
+      "requirement_strength": "not specified",
+      "issue": "Schema semantics depend on the selected dialect and, for modern drafts, declared vocabularies. A schema without `$schema`, a compound document with embedded dialects, and an unknown vocabulary each require an explicit policy.",
+      "interpretations": [
+        "Require `$schema` everywhere; infer a dialect from keywords; use one caller-selected dialect for the complete compound document; or use the caller-selected dialect only as the root fallback and honor recognized embedded `$schema` declarations."
+      ],
+      "peer_behavior": "At pinned versions, kaptinlin/jsonschema v0.9.3 accepts the minimized Draft 3 shared-keyword case, while santhosh-tekuri/jsonschema/v6 v6.0.2 rejects its dialect identifier; this does not establish complete Draft 3 semantics for kaptinlin.",
+      "selected_behavior": "`WithDialect` selects the root dialect and Draft 2020-12 is the documented constructor default. A recognized embedded `$schema` starts a resource with its declared semantics. Required unknown modern vocabularies fail; optional unknown vocabularies remain inactive. Unsupported dialect identifiers fail instead of falling back.",
+      "rationale": "`WithDialect` selects the root dialect and Draft 2020-12 is the documented constructor default. A recognized embedded `$schema` starts a resource with its declared semantics. Required unknown modern vocabularies fail; optional unknown vocabularies remain inactive. Unsupported dialect identifiers fail instead of falling back.",
+      "security_consequences": "Explicit dialect boundaries prevent attacker-controlled keywords from acquiring unintended semantics. Vocabulary and resource counts remain subject to compiler limits.",
+      "resource_consequences": "Explicit dialect boundaries prevent attacker-controlled keywords from acquiring unintended semantics. Vocabulary and resource counts remain subject to compiler limits.",
+      "compatibility_consequences": "The same schema bytes can validate differently under different dialects. Changing the default is a compatibility event; released dialect semantics are never retrofitted from a newer draft.",
+      "wire_consequences": "The same schema bytes can validate differently under different dialects. Changing the default is a compatibility event; released dialect semantics are never retrofitted from a newer draft.",
+      "executable_evidence": [
+        "TestOfficialMetaSchemasCompileAgainstTheirDialect",
+        "TestOfficialVocabularyFixtures",
+        "TestCompoundResourcesUseTheirOwnVocabulary",
+        "TestCompileRejectsUnknownRequiredVocabulary",
+        "TestVocabularyPolicyHandlesOptionalAndPartialDeclarations",
+        "TestDialectFeaturePoliciesAreExact"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzCompileAndValidate"
+      ],
+      "interoperability_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
+      "public_apis": [
+        "`NewCompiler`, `WithDialect`, `WithVocabulary`, and `Dialect` constants"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "Published dialect and vocabulary meta-schemas are checksum-pinned in `specification/official-meta-schemas.sources.tsv`.",
+      "reconsider_when": "A new released dialect is deliberately added or an erratum changes vocabulary negotiation for a supported dialect."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-002",
+      "title": "Unknown keywords",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "ambiguity",
+      "decision_scope": "normative",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 2020-12 Core [section 6.5](https://json-schema.org/draft/2020-12/json-schema-core.html#section-6.5), Draft 2019-09 Core [section 6.5](https://json-schema.org/draft/2019-09/json-schema-core.html#section-6.5), and each supported dialect's official `unknownKeyword` fixtures",
+      "requirement_strength": "not specified",
+      "issue": "Unknown keywords cannot act as assertions, but modern annotation behavior and custom vocabulary registration affect whether their values are retained or interpreted.",
+      "interpretations": [
+        "Reject every unknown keyword; silently ignore it for all purposes; retain it as an annotation where the dialect permits; or activate it only through an explicitly registered vocabulary."
+      ],
+      "peer_behavior": "The official suite contains cross-implementation unknown-keyword cases. Some validators expose annotations differently, so validation agreement does not imply output agreement.",
+      "selected_behavior": "Unknown keywords never affect validity. They may contribute annotations where the active dialect's annotation model applies. A keyword gains assertion or applicator semantics only through a registered, active vocabulary; unknown required vocabularies fail under JSONSCHEMA-DEC-001.",
+      "rationale": "Unknown keywords never affect validity. They may contribute annotations where the active dialect's annotation model applies. A keyword gains assertion or applicator semantics only through a registered, active vocabulary; unknown required vocabularies fail under JSONSCHEMA-DEC-001.",
+      "security_consequences": "Unknown values are still parsed and bounded but cannot execute callbacks or trigger retrieval. Annotation byte and output limits apply when values are retained.",
+      "resource_consequences": "Unknown values are still parsed and bounded but cannot execute callbacks or trigger retrieval. Annotation byte and output limits apply when values are retained.",
+      "compatibility_consequences": "Adding support for a formerly unknown keyword can change validation and output only when its vocabulary becomes active. Unknown-keyword validation remains forward compatible.",
+      "wire_consequences": "Adding support for a formerly unknown keyword can change validation and output only when its vocabulary becomes active. Unknown-keyword validation remains forward compatible.",
+      "executable_evidence": [
+        "TestOfficialOptionalCoreFixtures",
+        "TestRegisteredVocabularyCompilesAndEvaluatesCustomKeyword",
+        "TestOfficialAnnotationFixtures"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzCompileAndValidate"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "`WithVocabulary`, `CollectAnnotations`, and validation output methods"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "The official suite revision and every optional fixture are pinned in `specification/official-suite-results.tsv`.",
+      "reconsider_when": "A supported dialect changes unknown-keyword annotation rules or a new vocabulary activates a formerly unknown keyword."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-003",
+      "title": "Format assertion",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "optional behavior",
+      "decision_scope": "application-policy",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 2020-12 Validation [sections 7.2.1 and 7.2.2](https://json-schema.org/draft/2020-12/json-schema-validation.html#section-7.2), Draft 2019-09 Validation [section 7.2](https://json-schema.org/draft/2019-09/json-schema-validation.html#section-7.2), and historical dialect format definitions",
+      "requirement_strength": "not specified",
+      "issue": "Modern format annotation is disabled as an assertion by default, format assertion can be required by vocabulary, and historical implementations vary in how aggressively they validate formats.",
+      "interpretations": [
+        "Always assert recognized formats; never assert them; assert only when the schema declares the assertion vocabulary; or permit an explicit application option in addition to vocabulary activation."
+      ],
+      "peer_behavior": "The specification documents materially varying validator support. The official optional format corpus is the pinned comparison surface rather than one peer's default.",
+      "selected_behavior": "Recognized `format` values are annotations by default. `WithFormatAssertion` enables assertion explicitly, and the required 2020-12 format-assertion vocabulary activates it. Built-ins are dialect-scoped; unknown formats remain annotations unless a required assertion vocabulary makes support mandatory, in which case compilation fails. Custom formats are compiler-owned.",
+      "rationale": "Recognized `format` values are annotations by default. `WithFormatAssertion` enables assertion explicitly, and the required 2020-12 format-assertion vocabulary activates it. Built-ins are dialect-scoped; unknown formats remain annotations unless a required assertion vocabulary makes support mandatory, in which case compilation fails. Custom formats are compiler-owned.",
+      "security_consequences": "Format checks receive cancellation and dedicated operation, byte, and regular-expression budgets. Panics and sensitive callback errors are contained and redacted.",
+      "resource_consequences": "Format checks receive cancellation and dedicated operation, byte, and regular-expression budgets. Panics and sensitive callback errors are contained and redacted.",
+      "compatibility_consequences": "Enabling assertion can turn previously valid instances invalid. Annotation values remain available in output where annotation collection applies.",
+      "wire_consequences": "Enabling assertion can turn previously valid instances invalid. Annotation values remain available in output where annotation collection applies.",
+      "executable_evidence": [
+        "TestFormatAssertionIsExplicitAndCompilerOwned",
+        "TestOfficialFormatAnnotationFixtures",
+        "TestOfficialOptionalCoreFormatFixtures",
+        "TestOfficialFormatAssertionVocabularyFixtures",
+        "TestStandardFormatsDoNotLeakAcrossDialects"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzCompileAndValidate"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "`WithFormatAssertion`, `WithFormat`, `FormatChecker`, validation, and output APIs"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "Pinned optional format fixtures are included with zero skips in the official-suite manifest.",
+      "reconsider_when": "A supported dialect or erratum changes format vocabulary requirements or a built-in format's normative source."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-004",
+      "title": "Content keywords",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "optional behavior",
+      "decision_scope": "application-policy",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 2020-12 Validation [section 8](https://json-schema.org/draft/2020-12/json-schema-validation.html#section-8), Draft 2019-09 Validation [section 8](https://json-schema.org/draft/2019-09/json-schema-validation.html#section-8), and Draft 7 Validation [sections 8.3 and 8.4](https://json-schema.org/draft-07/json-schema-validation.html#rfc.section.8)",
+      "requirement_strength": "not specified",
+      "issue": "Modern content keywords are annotations and automatic decoding is prohibited by default. Draft 7 permits implementation-defined validation behavior, creating a compatibility choice for callers that want historical assertion.",
+      "interpretations": [
+        "Never decode content; always decode recognized encodings and media types; or preserve annotation defaults while exposing bounded explicit assertion for dialects where that policy is permitted."
+      ],
+      "peer_behavior": "Official modern fixtures require malformed encoded content to remain valid. The Draft 7 optional `content.json` corpus exercises the separate assertion lane.",
+      "selected_behavior": "Content keywords are annotations by default. `WithContentAssertion` enables bounded Draft 7-compatible assertion for RFC 4648 base64 and JSON or `+json` media types. Unknown encodings and media types remain annotations. Draft 2019-09 and Draft 2020-12 content processing never changes the enclosing validation result, even when the option is present.",
+      "rationale": "Content keywords are annotations by default. `WithContentAssertion` enables bounded Draft 7-compatible assertion for RFC 4648 base64 and JSON or `+json` media types. Unknown encodings and media types remain annotations. Draft 2019-09 and Draft 2020-12 content processing never changes the enclosing validation result, even when the option is present.",
+      "security_consequences": "No implicit decoder or parser runs by default. Opt-in decoding is bounded by input, decoded-content, operation, output, and cancellation limits.",
+      "resource_consequences": "No implicit decoder or parser runs by default. Opt-in decoding is bounded by input, decoded-content, operation, output, and cancellation limits.",
+      "compatibility_consequences": "Default validation follows modern annotation semantics. Opt-in assertion may reject malformed encoded strings and must be selected deliberately by the caller.",
+      "wire_consequences": "Default validation follows modern annotation semantics. Opt-in assertion may reject malformed encoded strings and must be selected deliberately by the caller.",
+      "executable_evidence": [
+        "TestContentKeywordsAreAnnotationsByDefault",
+        "TestContentAssertionIsLimitedToDraft7",
+        "TestOfficialDraft7ContentAssertionFixtures",
+        "TestContentValidationCoversPermissiveAndStrictBranches",
+        "TestContentValidationSeparatesSyntaxAndResourceFailures"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzCompileAndValidate"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "`WithContentAssertion`, validation methods, `CollectAnnotations`, and output methods"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "The pinned corpus keeps modern annotation fixtures and the Draft 7 optional assertion fixture distinct.",
+      "reconsider_when": "A later released dialect standardizes automatic content processing or the package adds a separately owned decoded-content result API."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-005",
+      "title": "Annotation collection",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "ambiguity",
+      "decision_scope": "application-policy",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 2020-12 Core [sections 7.7 and 9.2.1](https://json-schema.org/draft/2020-12/json-schema-core.html#section-7.7), Draft 2019-09 Core [section 7.7](https://json-schema.org/draft/2019-09/json-schema-core.html#section-7.7), and the official annotation corpus",
+      "requirement_strength": "not specified",
+      "issue": "Annotations may be produced on branches that are later discarded, combined across successful applicators, or needed internally by `unevaluated*` even when a caller does not request them.",
+      "interpretations": [
+        "Collect every visited annotation; retain only annotations from successful applicable branches; skip internal collection unless explicitly requested; or retain a tree identical to diagnostic output."
+      ],
+      "peer_behavior": "Annotation APIs and output shapes differ across validators. The official annotation fixtures define semantic expectations but not this package's flat API.",
+      "selected_behavior": "Evaluation computes annotations needed for correct semantics regardless of requested output. `CollectAnnotations` returns a detached deterministic flat list containing only retained annotations from successful applicable paths. Standard diagnostic output remains a distinct hierarchy and may include annotations describing evaluated branches.",
+      "rationale": "Evaluation computes annotations needed for correct semantics regardless of requested output. `CollectAnnotations` returns a detached deterministic flat list containing only retained annotations from successful applicable paths. Standard diagnostic output remains a distinct hierarchy and may include annotations describing evaluated branches.",
+      "security_consequences": "Annotation values are copied, byte-bounded, operation-bounded, and detached from caller and schema state. Failed or inapplicable branches cannot leak retained data.",
+      "resource_consequences": "Annotation values are copied, byte-bounded, operation-bounded, and detached from caller and schema state. Failed or inapplicable branches cannot leak retained data.",
+      "compatibility_consequences": "Ordering is deterministic but semantically secondary. The flat retained-annotation API is not interchangeable with Basic, Detailed, or Verbose output trees.",
+      "wire_consequences": "Ordering is deterministic but semantically secondary. The flat retained-annotation API is not interchangeable with Basic, Detailed, or Verbose output trees.",
+      "executable_evidence": [
+        "TestOfficialAnnotationFixtures",
+        "TestOfficialArrayAnnotationFixtures",
+        "TestOfficialAnnotationKeywordFixtures",
+        "TestAnnotationAndOutputTraversalSkipUnappliedSchemas",
+        "TestApplicableAnnotationsContinueAfterInapplicableKeywords"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzValidationOutput"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "`CollectAnnotations`, `Annotation`, `ValidateOutput`, and `OutputUnit`"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "Compatible official annotation cases run for all six supported dialects.",
+      "reconsider_when": "The output specification standardizes a retained-annotation API or a dialect changes annotation combination semantics."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-006",
+      "title": "Unevaluated locations",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "ambiguity",
+      "decision_scope": "normative",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 2020-12 Core [section 11](https://json-schema.org/draft/2020-12/json-schema-core.html#section-11), Draft 2019-09 Core [section 9.3.2](https://json-schema.org/draft/2019-09/json-schema-core.html#section-9.3.2), and the official unevaluated fixtures",
+      "requirement_strength": "not specified",
+      "issue": "`unevaluatedItems` and `unevaluatedProperties` depend on successful annotations across references, combinators, conditionals, contains, dependent schemas, and nested unevaluated applicators. Short-circuiting can produce the correct Boolean result while producing the wrong evaluated set.",
+      "interpretations": [
+        "Track only sibling keywords; merge every visited branch; merge only successful applicable branches; or rerun selected branches during unevaluated evaluation."
+      ],
+      "peer_behavior": "Unevaluated behavior is a frequent differential boundary. The complete official 2019-09 and 2020-12 fixture families are the pinned authority.",
+      "selected_behavior": "Track evaluated item and property locations through references and all applicable successful branches, preserving the dialect-specific ordering and dependency rules. Failed or inactive branches contribute nothing. Evaluation may continue beyond a decisive Boolean result when annotations are required.",
+      "rationale": "Track evaluated item and property locations through references and all applicable successful branches, preserving the dialect-specific ordering and dependency rules. Failed or inactive branches contribute nothing. Evaluation may continue beyond a decisive Boolean result when annotations are required.",
+      "security_consequences": "Tracking sets and repeated diagnostic work are bounded by instance, operation, depth, and output limits. Tracking failures propagate rather than silently weakening validation.",
+      "resource_consequences": "Tracking sets and repeated diagnostic work are bounded by instance, operation, depth, and output limits. Tracking failures propagate rather than silently weakening validation.",
+      "compatibility_consequences": "A tracking correction can change validity and output for schemas using `unevaluated*`; it therefore requires wire-compatibility review.",
+      "wire_consequences": "A tracking correction can change validity and output for schemas using `unevaluated*`; it therefore requires wire-compatibility review.",
+      "executable_evidence": [
+        "TestOfficialUnevaluatedPropertiesFixtures",
+        "TestUnevaluatedAndPatternKeywordsPropagateTrackingFailures",
+        "TestUnevaluatedOutputContinuesAfterEvaluatedEntries"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzValidationOutput"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "Validation, annotation, and output APIs for Draft 2019-09 and Draft 2020-12 schemas"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "Official fixtures and their checksums are pinned without exclusions.",
+      "reconsider_when": "An erratum changes evaluated-location propagation or a new dialect replaces these keywords."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-007",
+      "title": "Dynamic and recursive references",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "ambiguity",
+      "decision_scope": "normative",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 2020-12 Core [`$dynamicRef` and `$dynamicAnchor`](https://json-schema.org/draft/2020-12/json-schema-core.html#section-8.2.3.2), Draft 2019-09 Core [`$recursiveRef` and `$recursiveAnchor`](https://json-schema.org/draft/2019-09/json-schema-core.html#section-8.2.4), and the 2020-12 [release notes](https://json-schema.org/draft/2020-12/release-notes#dynamicref-and-dynamicanchor)",
+      "requirement_strength": "not specified",
+      "issue": "Dynamic scope crosses resource boundaries and differs between 2019-09 recursive references and 2020-12 named dynamic anchors. Treating them as ordinary references or leaking anchor semantics across dialects is observably wrong.",
+      "interpretations": [
+        "Resolve only the static target; search every enclosing resource; search only resources entered through reference application; or approximate both dialects with one recursive algorithm."
+      ],
+      "peer_behavior": "Bowtie and the official suite expose recursive and dynamic reference lanes because implementations historically disagree at scope boundaries.",
+      "selected_behavior": "Resolve the static reference first, then apply the active dialect's dynamic-scope rules over reference-entered resources. Draft 2019-09 supports its root recursive anchor model; Draft 2020-12 supports named dynamic anchors. Those keywords remain unknown outside their defining dialects. Cycles are bounded and valid recursive schemas remain usable.",
+      "rationale": "Resolve the static reference first, then apply the active dialect's dynamic-scope rules over reference-entered resources. Draft 2019-09 supports its root recursive anchor model; Draft 2020-12 supports named dynamic anchors. Those keywords remain unknown outside their defining dialects. Cycles are bounded and valid recursive schemas remain usable.",
+      "security_consequences": "Reference depth, resource count, operation count, and cancellation are enforced across static and dynamic resolution. Malformed or unresolved targets fail without unbounded recursion.",
+      "resource_consequences": "Reference depth, resource count, operation count, and cancellation are enforced across static and dynamic resolution. Malformed or unresolved targets fail without unbounded recursion.",
+      "compatibility_consequences": "Dynamic scope affects validity and absolute output locations. Dialect isolation prevents the same keyword spelling from silently changing older schemas.",
+      "wire_consequences": "Dynamic scope affects validity and absolute output locations. Dialect isolation prevents the same keyword spelling from silently changing older schemas.",
+      "executable_evidence": [
+        "TestOfficialDynamicReferenceFixtures",
+        "TestBasicOutputPreservesDynamicReferenceEvaluationPath",
+        "TestDynamicAnchorCompilationContinuesToMatchingAnchor",
+        "TestReferenceDepthIsRestoredOnSuccessAndFailure",
+        "TestAnchorKeywordsDoNotLeakIntoEarlierDialects"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzReferenceResolution"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "Compiler reference resolution and all validation/output methods"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "Pinned `recursiveRef.json` and `dynamicRef.json` fixtures cover both released models.",
+      "reconsider_when": "Standards errata change dynamic-scope traversal or a new dialect introduces another reference model."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-008",
+      "title": "`$ref` siblings",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "ambiguity",
+      "decision_scope": "normative",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 7 Core [`$ref`](https://json-schema.org/draft-07/json-schema-core.html#rfc.section.8.3), Draft 2019-09 Core [`$ref`](https://json-schema.org/draft/2019-09/json-schema-core.html#section-8.2.4.1), and Draft 2020-12 Core [`$ref`](https://json-schema.org/draft/2020-12/json-schema-core.html#section-8.2.3.1)",
+      "requirement_strength": "not specified",
+      "issue": "Drafts 3 through 7 define `$ref` as replacing the schema object, while Draft 2019-09 and later define it as an applicator whose siblings remain active. Applying one rule to every dialect silently changes validation.",
+      "interpretations": [
+        "Always ignore siblings; always evaluate siblings; or use the active dialect's reference model."
+      ],
+      "peer_behavior": "Validators that primarily target one dialect often expose one behavior globally. The official cross-draft reference fixtures are the pinned comparison surface.",
+      "selected_behavior": "Drafts 3, 4, 6, and 7 ignore all `$ref` siblings, including sibling identifiers. Draft 2019-09 and 2020-12 evaluate `$ref` and its applicable siblings, with annotations and output preserved from both.",
+      "rationale": "Drafts 3, 4, 6, and 7 ignore all `$ref` siblings, including sibling identifiers. Draft 2019-09 and 2020-12 evaluate `$ref` and its applicable siblings, with annotations and output preserved from both.",
+      "security_consequences": "Ignored historical siblings cannot trigger loaders, callbacks, or additional validation. Modern siblings remain subject to all normal limits.",
+      "resource_consequences": "Ignored historical siblings cannot trigger loaders, callbacks, or additional validation. Modern siblings remain subject to all normal limits.",
+      "compatibility_consequences": "Moving a schema between Draft 7 and Draft 2019-09 can activate sibling constraints and change output. This difference is explicitly documented in the dialect matrix.",
+      "wire_consequences": "Moving a schema between Draft 7 and Draft 2019-09 can activate sibling constraints and change output. This difference is explicitly documented in the dialect matrix.",
+      "executable_evidence": [
+        "TestReplacingReferenceIgnoresSiblingIdentifier",
+        "TestOfficialReferenceAndDefinitionFixtures",
+        "TestVerboseReferenceTraversalContinuesWithSiblingKeywords"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzReferenceResolution"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "`WithDialect`, compilation, validation, annotations, and output"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "The behavior change is represented separately in each pinned dialect lane.",
+      "reconsider_when": "A supported historical-draft erratum changes replacement semantics or a new dialect changes reference application again."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-009",
+      "title": "Duplicate JSON object members",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "interoperability policy",
+      "decision_scope": "defensive",
+      "specification": "RFC 8259 JSON",
+      "version": "RFC 8259",
+      "source_authority": "rfc8259-source",
+      "section": "[RFC 8259 section 4](https://www.rfc-editor.org/rfc/rfc8259.html#section-4) and JSON Schema Core's JSON data model requirements",
+      "requirement_strength": "SHOULD",
+      "issue": "RFC 8259 says object member names SHOULD be unique and documents unpredictable peer behavior when they are not. Last-wins parsing can hide schema constraints or instance data before validation.",
+      "interpretations": [
+        "Preserve the first value; preserve the last value; retain duplicates in an extended data model; or reject the document as ambiguous."
+      ],
+      "peer_behavior": "At pinned versions, kaptinlin/jsonschema v0.9.3 matches package rejection of duplicate schema and instance members, while santhosh-tekuri/jsonschema/v6 v6.0.2 accepts the parser-selected member and validates that value.",
+      "selected_behavior": "Raw schemas and instances with any duplicate object member are rejected as `ErrInvalidJSON`. `ValidateValue` operates on already-decoded Go values and therefore cannot recover duplicates discarded by an upstream decoder.",
+      "rationale": "Raw schemas and instances with any duplicate object member are rejected as `ErrInvalidJSON`. `ValidateValue` operates on already-decoded Go values and therefore cannot recover duplicates discarded by an upstream decoder.",
+      "security_consequences": "Rejection prevents parser differentials, hidden constraints, signature confusion, and last-wins authorization mistakes. Duplicate detection is bounded by object and input limits.",
+      "resource_consequences": "Rejection prevents parser differentials, hidden constraints, signature confusion, and last-wins authorization mistakes. Duplicate detection is bounded by object and input limits.",
+      "compatibility_consequences": "Ambiguous JSON accepted by permissive decoders is rejected. Callers that need this guarantee must pass raw JSON rather than a pre-decoded map.",
+      "wire_consequences": "Ambiguous JSON accepted by permissive decoders is rejected. Callers that need this guarantee must pass raw JSON rather than a pre-decoded map.",
+      "executable_evidence": [
+        "TestCompileRejectsInvalidAndAmbiguousJSON"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzCompileAndValidate"
+      ],
+      "interoperability_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
+      "public_apis": [
+        "`Compile`, `Validate`, `ValidateOutput`, `CollectAnnotations`, and raw JSON parsing errors"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "This is a deliberate fail-closed policy over RFC 8259's interoperability warning, not a claim that JSON Schema mandates rejection.",
+      "reconsider_when": "The underlying JSON standard mandates one duplicate-member behavior or a separate lossless duplicate-aware API is introduced."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-010",
+      "title": "Numeric precision and equality",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "interoperability policy",
+      "decision_scope": "defensive",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 2020-12 Validation [section 4.2](https://json-schema.org/draft/2020-12/json-schema-validation.html#section-4.2), Draft 2020-12 Core [section 4.2](https://json-schema.org/draft/2020-12/json-schema-core.html#section-4.2), and historical integer definitions",
+      "requirement_strength": "not specified",
+      "issue": "JSON allows arbitrary-precision numbers, Go `float64` does not, and integer interpretation changed from lexical-era behavior in Draft 3/4 to mathematical integer semantics in Draft 6 and later. Equality also affects `enum`, `const`, and `uniqueItems`.",
+      "interpretations": [
+        "Decode through binary floating point; impose implementation numeric bounds; preserve exact decimal text; or use exact rational comparison while retaining historical dialect integer rules."
+      ],
+      "peer_behavior": "The official optional `bignum`, `float-overflow`, and `zeroTerminatedFloats` fixtures exist because host-language numeric models differ.",
+      "selected_behavior": "Raw JSON numbers retain exact decimal and exponent semantics without binary floating-point conversion. Numeric constraints and equality use exact arithmetic. Draft 3/4 integer checks retain their historical lexical behavior; Draft 6 and later use mathematical integers. `ValidateValue` preserves `json.Number` text and rejects unsupported lossy or non-finite values.",
+      "rationale": "Raw JSON numbers retain exact decimal and exponent semantics without binary floating-point conversion. Numeric constraints and equality use exact arithmetic. Draft 3/4 integer checks retain their historical lexical behavior; Draft 6 and later use mathematical integers. `ValidateValue` preserves `json.Number` text and rejects unsupported lossy or non-finite values.",
+      "security_consequences": "Number text length and arithmetic work are bounded before allocation and comparison. Huge exponents cannot force unbounded memory.",
+      "resource_consequences": "Number text length and arithmetic work are bounded before allocation and comparison. Huge exponents cannot force unbounded memory.",
+      "compatibility_consequences": "Numerically equal spellings compare equal where the dialect defines mathematical equality. Historical integer differences remain dialect-specific rather than normalized away.",
+      "wire_consequences": "Numerically equal spellings compare equal where the dialect defines mathematical equality. Historical integer differences remain dialect-specific rather than normalized away.",
+      "executable_evidence": [
+        "TestValidateUsesExactNumberSemantics",
+        "TestExactNumberComparisonSignEdges",
+        "TestOfficialNumericFixtures",
+        "TestOfficialOptionalCoreFixtures"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzRawAndValueValidationAgree"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "`Compile`, `Validate`, `ValidateValue`, `Value`, equality-dependent keywords, and output annotations"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "Numeric optional fixtures are pinned and counted rather than conditionally skipped by host range.",
+      "reconsider_when": "A supported dialect changes its numeric data model or Go exposes a new exact JSON numeric representation adopted by the public API."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-011",
+      "title": "Regular-expression semantics",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "interoperability policy",
+      "decision_scope": "defensive",
+      "specification": "ECMA-262 regular expressions",
+      "version": "ECMA-262 16th edition",
+      "source_authority": "ecma262-source",
+      "section": "Draft 2020-12 Core [section 6.4](https://json-schema.org/draft/2020-12/json-schema-core.html#section-6.4), Draft 2020-12 Validation [`pattern`](https://json-schema.org/draft/2020-12/json-schema-validation.html#section-6.3.3), and [ECMA-262 regular expressions](https://tc39.es/ecma262/multipage/text-processing.html#sec-regexp-regular-expression-objects)",
+      "requirement_strength": "not specified",
+      "issue": "Go's standard regular-expression engine intentionally omits ECMAScript lookaround and backreferences, while backtracking ECMAScript engines can consume unbounded time. Unicode expectations also changed across drafts.",
+      "interpretations": [
+        "Use Go regexp as an approximation; reject unsupported valid patterns; use an ECMAScript-compatible engine without limits; or provide bounded ECMAScript semantics."
+      ],
+      "peer_behavior": "At pinned versions, kaptinlin/jsonschema v0.9.3 and santhosh-tekuri/jsonschema/v6 v6.0.2 reject the minimized ECMA-262 lookahead during schema compilation, while the package compiles it and validates the matching instance.",
+      "selected_behavior": "Schema patterns and asserted `regex` formats use ECMAScript-compatible semantics, including lookaround and backreferences, without implicit anchoring. Compilation bytes, match input, backtracking duration, operations, and cancellation are bounded. Invalid active patterns fail schema compilation.",
+      "rationale": "Schema patterns and asserted `regex` formats use ECMAScript-compatible semantics, including lookaround and backreferences, without implicit anchoring. Compilation bytes, match input, backtracking duration, operations, and cancellation are bounded. Invalid active patterns fail schema compilation.",
+      "security_consequences": "Explicit byte and time limits contain catastrophic backtracking and oversized expressions. Deadline exhaustion is a typed limit error, not an invalid-instance result.",
+      "resource_consequences": "Explicit byte and time limits contain catastrophic backtracking and oversized expressions. Deadline exhaustion is a typed limit error, not an invalid-instance result.",
+      "compatibility_consequences": "Valid ECMAScript patterns unsupported by Go regexp remain usable. Tightening a default regex budget is an operational compatibility change.",
+      "wire_consequences": "Valid ECMAScript patterns unsupported by Go regexp remain usable. Tightening a default regex budget is an operational compatibility change.",
+      "executable_evidence": [
+        "TestPatternUsesECMAScriptLookaroundAndBackreferences",
+        "TestPatternBacktrackingIsBounded",
+        "TestOfficialPatternFixtures",
+        "TestOfficialOptionalRegexFixtures",
+        "TestRegexFormatCompilationUsesConfiguredByteLimit"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzCompileAndValidate"
+      ],
+      "interoperability_evidence": [
+        "specification/differential/maintained-peers.json"
+      ],
+      "public_apis": [
+        "Pattern-bearing keywords, asserted `regex` format, and `Limits`"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "Optional ECMAScript fixtures are pinned with no regex-file exclusions.",
+      "reconsider_when": "ECMA-262 semantics, a supported dialect's regex requirements, or the selected bounded engine materially change."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-012",
+      "title": "URI identity normalization",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "interoperability policy",
+      "decision_scope": "defensive",
+      "specification": "RFC 3986 URI",
+      "version": "RFC 3986",
+      "source_authority": "rfc3986-source",
+      "section": "Draft 2020-12 Core [sections 8.2 and 9](https://json-schema.org/draft/2020-12/json-schema-core.html#section-8.2), [RFC 3986 section 6.2.2](https://www.rfc-editor.org/rfc/rfc3986.html#section-6.2.2), and [RFC 3986 section 5](https://www.rfc-editor.org/rfc/rfc3986.html#section-5)",
+      "requirement_strength": "not specified",
+      "issue": "Equivalent URI spellings can otherwise create multiple resource, cache, or loader identities. Over-normalization can also change non-equivalent paths or escaped data.",
+      "interpretations": [
+        "Compare identifiers byte-for-byte; apply all syntax-based RFC normalization; normalize only scheme and host; or delegate identity entirely to loaders."
+      ],
+      "peer_behavior": "URI libraries and schema validators vary in normalization. Official reference fixtures cover resolution but do not exhaust equivalent identifier aliases.",
+      "selected_behavior": "Resolve references per RFC 3986 and normalize identity through scheme and host case, default ports, dot segments, and percent-encoded unreserved characters. Preserve reserved escapes and other distinctions. Reject duplicate resources or loader keys that normalize to one identity. Custom loaders receive the normalized identifier.",
+      "rationale": "Resolve references per RFC 3986 and normalize identity through scheme and host case, default ports, dot segments, and percent-encoded unreserved characters. Preserve reserved escapes and other distinctions. Reject duplicate resources or loader keys that normalize to one identity. Custom loaders receive the normalized identifier.",
+      "security_consequences": "Canonical identity prevents alias cache bypass and ambiguous resource replacement. URI, resource, and reference-depth limits apply before indexing or loading.",
+      "resource_consequences": "Canonical identity prevents alias cache bypass and ambiguous resource replacement. URI, resource, and reference-depth limits apply before indexing or loading.",
+      "compatibility_consequences": "A custom loader keyed by non-normalized spelling must index the normalized identifier. Equivalent duplicate `MapLoader` keys now fail instead of selecting by map order.",
+      "wire_consequences": "A custom loader keyed by non-normalized spelling must index the normalized identifier. Equivalent duplicate `MapLoader` keys now fail instead of selecting by map order.",
+      "executable_evidence": [
+        "TestNormalizeURLAppliesRFCIdentityRules",
+        "TestCompileRejectsEquivalentDuplicateResourceIdentifiers",
+        "TestMapLoaderUsesNormalizedResourceIdentity",
+        "TestRemoveDotSegmentsPreservesURIPathStructure"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzReferenceResolution"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "`$id`, references, `NewMapLoader`, `NewFSLoader`, and `ResourceLoader`"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "The pre-v1 migration consequence is recorded in `docs/versioning.md`.",
+      "reconsider_when": "JSON Schema or RFC 3986 errata change identity equivalence or an explicit caller-selectable normalization policy is introduced."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-013",
+      "title": "Remote resource loading",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "omission",
+      "decision_scope": "defensive",
+      "specification": "JSON Schema Draft 3 through Draft 2020-12",
+      "version": "Draft 3 through Draft 2020-12",
+      "source_authority": "json-schema-drafts-source",
+      "section": "Draft 2020-12 Core [section 9.4](https://json-schema.org/draft/2020-12/json-schema-core.html#section-9.4), Core security considerations, and the official remote-reference corpus",
+      "requirement_strength": "not specified",
+      "issue": "References identify resources but do not require a validator to perform unrestricted network retrieval. Implicit HTTP creates SSRF, credential, redirect, cache, availability, and reproducibility risks.",
+      "interpretations": [
+        "Fetch every HTTP(S) URI automatically; reject all non-local references; bundle a configurable HTTP client; or require an explicit caller-owned loader."
+      ],
+      "peer_behavior": "Validators differ between implicit HTTP, caller registries, and disabled remote loading. Bowtie supplies an explicit per-case registry, avoiding dependence on a peer's network policy.",
+      "selected_behavior": "The core performs no implicit network, filesystem, or environment access. Only pinned official meta-schemas resolve internally. Every other unavailable resource returns `ErrResourceUnavailable` unless the caller supplies `WithResourceLoader`. Built-in map, filesystem, and composite loaders remain explicit and bounded; no generic HTTP loader is included.",
+      "rationale": "The core performs no implicit network, filesystem, or environment access. Only pinned official meta-schemas resolve internally. Every other unavailable resource returns `ErrResourceUnavailable` unless the caller supplies `WithResourceLoader`. Built-in map, filesystem, and composite loaders remain explicit and bounded; no generic HTTP loader is included.",
+      "security_consequences": "Applications own allowlists, DNS, proxies, redirects, TLS, credentials, timeouts, caching, and response limits. Package errors redact URI credentials, query, fragment, callback panic values, and callback error text.",
+      "resource_consequences": "Applications own allowlists, DNS, proxies, redirects, TLS, credentials, timeouts, caching, and response limits. Package errors redact URI credentials, query, fragment, callback panic values, and callback error text.",
+      "compatibility_consequences": "Schemas relying on ambient network access do not compile without an adapter. Loader errors remain inspectable through `errors.Is` and `errors.As` while diagnostics stay redacted.",
+      "wire_consequences": "Schemas relying on ambient network access do not compile without an adapter. Loader errors remain inspectable through `errors.Is` and `errors.As` while diagnostics stay redacted.",
+      "executable_evidence": [
+        "TestOfficialRemoteReferenceFixtures",
+        "TestLoaderPanicsAreContainedAndRedacted",
+        "TestLoaderErrorsAreRedactedAndPreserved",
+        "TestFSLoaderConfinesResourcesToItsBase",
+        "TestCompositeLoaderFallsThroughOnlyForMissingResources",
+        "TestResolutionErrorsRedactURISecrets"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzReferenceResolution"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "`WithResourceLoader`, `ResourceLoader`, `NewMapLoader`, `NewFSLoader`, and `NewCompositeLoader`"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "The official test registry and meta-schema bundle are imported by checksum-pinned tooling, never fetched implicitly during validation.",
+      "reconsider_when": "A separately versioned secure retrieval adapter defines a complete transport policy without changing the core default."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-014",
+      "title": "Output formats",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "optional behavior",
+      "decision_scope": "extension-specific",
+      "specification": "JSON Schema Draft 2019-09 and Draft 2020-12 Output",
+      "version": "Draft 2019-09 and Draft 2020-12",
+      "source_authority": "json-schema-output-source",
+      "section": "Draft 2020-12 Core [section 12](https://json-schema.org/draft/2020-12/json-schema-core.html#section-12), Draft 2019-09 Core [section 10](https://json-schema.org/draft/2019-09/json-schema-core.html#section-10), and the published output schemas and examples",
+      "requirement_strength": "not specified",
+      "issue": "Modern drafts define Flag, Basic, Detailed, and Verbose output guidance, while historical dialects do not. Output ordering, condensation, absolute locations, repeated evaluation, and retained annotations require stable package choices.",
+      "interpretations": [
+        "Expose output only for modern dialects; return one implementation-specific error tree; map every dialect into the modern location model; or expose only Boolean validity."
+      ],
+      "peer_behavior": "Validator diagnostics differ substantially. Official Basic output fixtures constrain modern output but do not define every historical-dialect diagnostic or deterministic ordering choice.",
+      "selected_behavior": "Expose Flag, Basic, Detailed, and Verbose for every supported dialect using the modern location model. Flag contains only validity; Basic is flat; Detailed is condensed hierarchical output; Verbose is uncondensed. Locations use JSON Pointers and canonical absolute resource identifiers. Ordering is deterministic. Output generation may repeat bounded pure callback evaluation.",
+      "rationale": "Expose Flag, Basic, Detailed, and Verbose for every supported dialect using the modern location model. Flag contains only validity; Basic is flat; Detailed is condensed hierarchical output; Verbose is uncondensed. Locations use JSON Pointers and canonical absolute resource identifiers. Ordering is deterministic. Output generation may repeat bounded pure callback evaluation.",
+      "security_consequences": "Output units, annotation bytes, repeated operations, depth, callback work, and cancellation are bounded. Limit exhaustion is an error rather than a truncated success.",
+      "resource_consequences": "Output units, annotation bytes, repeated operations, depth, callback work, and cancellation are bounded. Limit exhaustion is an error rather than a truncated success.",
+      "compatibility_consequences": "Output structure and deterministic ordering are public contracts, including for historical dialects as an explicit package extension. `CollectAnnotations` is not a standard output format.",
+      "wire_consequences": "Output structure and deterministic ordering are public contracts, including for historical dialects as an explicit package extension. `CollectAnnotations` is not a standard output format.",
+      "executable_evidence": [
+        "TestOfficialBasicOutputFixtures",
+        "TestBasicOutputPreservesReferenceEvaluationPath",
+        "TestVerboseOutputIncludesEveryEvaluatedKeyword",
+        "TestVerboseOutputRetainsAnnotationResults",
+        "TestOutputBoundaryHelpersAreExact"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzValidationOutput"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "`OutputFormat`, `OutputUnit`, `ValidateOutput`, and `ValidateValueOutput`"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "Official output artifacts are pinned with the supported meta-schema bundle; package extensions are labeled in `docs/output.md`.",
+      "reconsider_when": "A released output specification changes field semantics or adds a format that cannot be represented compatibly."
+    },
+    {
+      "id": "JSONSCHEMA-DEC-015",
+      "title": "Optional official-suite behavior",
+      "status": "resolved",
+      "owner": "`json-schema` maintainers",
+      "classification": "optional behavior",
+      "decision_scope": "application-policy",
+      "specification": "JSON-Schema-Test-Suite",
+      "version": "commit c0b038ad7244712cf73650f44e90d0bc5704e8c7",
+      "source_authority": "json-schema-test-suite-source",
+      "section": "The pinned [JSON Schema Test Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite/tree/c0b038ad7244712cf73650f44e90d0bc5704e8c7), its README and per-dialect `optional` trees, plus the normative sources named by each fixture family",
+      "requirement_strength": "not specified",
+      "issue": "The upstream suite labels implementation-dependent, format, content, regex, big-number, cross-draft, and other cases optional. Silently skipping unsupported optional files can conceal material interoperability gaps while passing the mandatory suite.",
+      "interpretations": [
+        "Exclude all optional fixtures; select only convenient files; run them under one global policy; or inventory every released-dialect optional file and apply explicit dialect-appropriate options."
+      ],
+      "peer_behavior": "Optional support intentionally differs across implementations. Bowtie can compare portable validation outcomes, while package-specific options and outputs require local evidence.",
+      "selected_behavior": "Discover and execute every mandatory and optional fixture for all six released dialects with no skip allowlist. Activate format or content assertion only in the explicit lanes that test those policies. Record every file, group, case, checksum, pass, skip, and failure in a generated manifest. Optional does not mean unverified.",
+      "rationale": "Discover and execute every mandatory and optional fixture for all six released dialects with no skip allowlist. Activate format or content assertion only in the explicit lanes that test those policies. Record every file, group, case, checksum, pass, skip, and failure in a generated manifest. Optional does not mean unverified.",
+      "security_consequences": "Fixture provenance and checksums prevent silent corpus reduction or replacement. Remote fixtures use an allowlisted local registry and pinned meta-schema bundle.",
+      "resource_consequences": "Fixture provenance and checksums prevent silent corpus reduction or replacement. Remote fixtures use an allowlisted local registry and pinned meta-schema bundle.",
+      "compatibility_consequences": "A newly added or changed optional fixture can reveal a compatibility issue but cannot silently change behavior; the pin update requires review and a changelog entry when observable behavior changes.",
+      "wire_consequences": "A newly added or changed optional fixture can reveal a compatibility issue but cannot silently change behavior; the pin update requires review and a changelog entry when observable behavior changes.",
+      "executable_evidence": [
+        "TestOfficialMandatoryFixtures",
+        "TestOfficialOptionalFixtures",
+        "TestOfficialOptionalCoreFixtures",
+        "TestOfficialOptionalCoreFormatFixtures",
+        "TestOfficialOptionalRegexFixtures"
+      ],
+      "fixture_evidence": [
+        "specification/official-suite-results.tsv"
+      ],
+      "fuzz_evidence": [
+        "FuzzCompileAndValidate"
+      ],
+      "interoperability_evidence": [],
+      "public_apis": [
+        "Conformance claims, release gates, documented format/content options, and Bowtie harness metadata"
+      ],
+      "documentation": [
+        "docs/specification-decisions.md"
+      ],
+      "upstream_status": "Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results are pinned under `specification/`.",
+      "reconsider_when": "The official suite changes its optional taxonomy, a new released dialect is added, or a fixture conflicts with normative text and is classified upstream."
+    }
+  ]
+}
