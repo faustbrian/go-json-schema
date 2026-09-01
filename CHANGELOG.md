@@ -5,6 +5,12 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+### Changed
+
+- Adopt the released `go-library-tools` v1.2.0 CLI and immutable merged
+  workflow at `1f9629e5f27418600460b55a50a5b2fc81697fab` so local and
+  hosted verification enforce the same specification-governance contract.
+
 ### Documentation
 
 - Make all 15 entries in the
