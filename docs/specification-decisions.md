@@ -85,9 +85,9 @@ Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `Fu
 | Selected behavior | Recognized `format` values are annotations by default. `WithFormatAssertion` enables assertion explicitly, and the required 2020-12 format-assertion vocabulary activates it. Built-ins are dialect-scoped; unknown formats remain annotations unless a required assertion vocabulary makes support mandatory, in which case compilation fails. Custom formats are compiler-owned. |
 | Security and resource consequences | Format checks receive cancellation and dedicated operation, byte, and regular-expression budgets. Panics and sensitive callback errors are contained and redacted. |
 | Compatibility and wire consequences | Enabling assertion can turn previously valid instances invalid. Annotation values remain available in output where annotation collection applies. |
-| Executable evidence | `TestFormatAssertionIsExplicitAndCompilerOwned`, `TestOfficialFormatAnnotationFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialFormatAssertionVocabularyFixtures`, `TestStandardFormatsDoNotLeakAcrossDialects`, and format fuzz and limit tests |
+| Executable evidence | `TestFormatAssertionIsExplicitAndCompilerOwned`, `TestOfficialFormatAnnotationFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialFormatAssertionVocabularyFixtures`, `TestStandardFormatsDoNotLeakAcrossDialects`, `TestReviewedOfficialFormatVectors`, and format fuzz and limit tests |
 | Public surface | `WithFormatAssertion`, `WithFormat`, `FormatChecker`, validation, and output APIs |
-| Upstream record | Pinned optional format fixtures are included with zero skips in the official-suite manifest. |
+| Upstream record | Pinned optional format fixtures are included with zero skips in the official-suite manifest. The reviewed upstream range `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` adds eight format vectors; all pass under explicit assertion in every applicable released dialect. |
 | Reconsider when | A supported dialect or erratum changes format vocabulary requirements or a built-in format's normative source. |
 
 
@@ -96,7 +96,7 @@ Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `Fu
 
 Classification: `optional behavior`; decision scope: `application-policy`; specification: `JSON Schema Draft 3 through Draft 2020-12`; version: `Draft 3 through Draft 2020-12`; source authority: `json-schema-drafts-source`; requirement strength: `not specified`; authority URL: https://www.ietf.org/archive/id/draft-bhutton-json-schema-01.txt.
 
-Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+Fixture evidence: `specification/official-suite-results.tsv`, `testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
 
 </details>
 
@@ -421,9 +421,9 @@ Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `Fu
 | Selected behavior | Discover and execute every mandatory and optional fixture for all six released dialects with no skip allowlist. Activate format or content assertion only in the explicit lanes that test those policies. Record every file, group, case, checksum, pass, skip, and failure in a generated manifest. Optional does not mean unverified. |
 | Security and resource consequences | Fixture provenance and checksums prevent silent corpus reduction or replacement. Remote fixtures use an allowlisted local registry and pinned meta-schema bundle. |
 | Compatibility and wire consequences | A newly added or changed optional fixture can reveal a compatibility issue but cannot silently change behavior; the pin update requires review and a changelog entry when observable behavior changes. |
-| Executable evidence | `TestOfficialMandatoryFixtures`, `TestOfficialOptionalFixtures`, `TestOfficialOptionalCoreFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialOptionalRegexFixtures`, `scripts/check-conformance-manifest.sh`, and `make provenance` |
+| Executable evidence | `TestOfficialMandatoryFixtures`, `TestOfficialOptionalFixtures`, `TestOfficialOptionalCoreFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialOptionalRegexFixtures`, `TestReviewedOfficialFormatVectors`, `scripts/check-conformance-manifest.sh`, and `make provenance` |
 | Public surface | Conformance claims, release gates, documented format/content options, and Bowtie harness metadata |
-| Upstream record | Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results are pinned under `specification/`. |
+| Upstream record | Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results are pinned under `specification/`. The later reviewed range `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` is separately pinned as an eight-vector regression without claiming a complete corpus repin. |
 | Reconsider when | The official suite changes its optional taxonomy, a new released dialect is added, or a fixture conflicts with normative text and is classified upstream. |
 
 
@@ -432,7 +432,7 @@ Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `Fu
 
 Classification: `optional behavior`; decision scope: `application-policy`; specification: `JSON-Schema-Test-Suite`; version: `commit c0b038ad7244712cf73650f44e90d0bc5704e8c7`; source authority: `json-schema-test-suite-source`; requirement strength: `not specified`; authority URL: https://raw.githubusercontent.com/json-schema-org/JSON-Schema-Test-Suite/c0b038ad7244712cf73650f44e90d0bc5704e8c7/README.md.
 
-Fixture evidence: `specification/official-suite-results.tsv`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
+Fixture evidence: `specification/official-suite-results.tsv`, `testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json`; fuzz evidence: `FuzzCompileAndValidate`; documentation: `docs/specification-decisions.md`; differential evidence: not assessed.
 
 </details>
 

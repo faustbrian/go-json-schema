@@ -7,6 +7,29 @@ Changelog structure and semantic versioning after v1.
 
 ### Changed
 
+- Adopt the checksum-verified `go-library-tools` v1.4.0 CLI and immutable
+  reusable workflow so published modules resolve from the public proxy before
+  bootstrap fallback, preventing false checksum conflicts in comparison gates.
+
+- Verify the eight newly reviewed official-suite format vectors across their
+  applicable released dialects, pin the exact upstream range and changed-file
+  identities, and record that the review does not repin the complete corpus.
+  Updated decisions:
+  - JSONSCHEMA-DEC-003 sha256:d34404aa2d58558e1da69c87a0a0aeb1129289e15c4c7b1eb1ef31e8bd8b4060
+  - JSONSCHEMA-DEC-015 sha256:87457420272991078cd2e6455e586dcffd861789e54e2949a115eddcd4c54a87
+
+- Record the reviewed JSON Schema specification `main` range through
+  `0932747f3f3128758f3166e0d3e23e0b8d1025ee` as behavior-neutral for the
+  immutable Draft 3 through Draft 2020-12 contracts.
+
+- Publish complete schema-v2 cohesion metadata for the public JSON Schema
+  module, plus engineering classification and versioned ecosystem navigation
+  for its comparison harness.
+
+- Adopt the checksum-verified `go-library-tools` v1.3.0 CLI, add the local
+  `make cohesion` validation entry point, and pin reusable-workflow cohesion
+  enforcement to its final immutable revision.
+
 - Adopt the released `go-library-tools` v1.2.0 CLI and immutable merged
   workflow at `1f9629e5f27418600460b55a50a5b2fc81697fab` so local and
   hosted verification enforce the same specification-governance contract.

@@ -130,10 +130,12 @@
         "TestOfficialFormatAnnotationFixtures",
         "TestOfficialOptionalCoreFormatFixtures",
         "TestOfficialFormatAssertionVocabularyFixtures",
-        "TestStandardFormatsDoNotLeakAcrossDialects"
+        "TestStandardFormatsDoNotLeakAcrossDialects",
+        "TestReviewedOfficialFormatVectors"
       ],
       "fixture_evidence": [
-        "specification/official-suite-results.tsv"
+        "specification/official-suite-results.tsv",
+        "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json"
       ],
       "fuzz_evidence": [
         "FuzzCompileAndValidate"
@@ -145,7 +147,7 @@
       "documentation": [
         "docs/specification-decisions.md"
       ],
-      "upstream_status": "Pinned optional format fixtures are included with zero skips in the official-suite manifest.",
+      "upstream_status": "Pinned optional format fixtures are included with zero skips in the official-suite manifest. The reviewed upstream range `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` adds eight format vectors; all pass under explicit assertion in every applicable released dialect.",
       "reconsider_when": "A supported dialect or erratum changes format vocabulary requirements or a built-in format's normative source."
     },
     {
@@ -677,10 +679,12 @@
         "TestOfficialOptionalFixtures",
         "TestOfficialOptionalCoreFixtures",
         "TestOfficialOptionalCoreFormatFixtures",
-        "TestOfficialOptionalRegexFixtures"
+        "TestOfficialOptionalRegexFixtures",
+        "TestReviewedOfficialFormatVectors"
       ],
       "fixture_evidence": [
-        "specification/official-suite-results.tsv"
+        "specification/official-suite-results.tsv",
+        "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json"
       ],
       "fuzz_evidence": [
         "FuzzCompileAndValidate"
@@ -692,7 +696,7 @@
       "documentation": [
         "docs/specification-decisions.md"
       ],
-      "upstream_status": "Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results are pinned under `specification/`.",
+      "upstream_status": "Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results are pinned under `specification/`. The later reviewed range `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` is separately pinned as an eight-vector regression without claiming a complete corpus repin.",
       "reconsider_when": "The official suite changes its optional taxonomy, a new released dialect is added, or a fixture conflicts with normative text and is classified upstream."
     }
   ]

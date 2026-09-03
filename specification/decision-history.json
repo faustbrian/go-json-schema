@@ -17,7 +17,8 @@
     {
       "id": "JSONSCHEMA-DEC-003",
       "digests": [
-        "b55d88fdcaae555feef51f852602384722cd573f251d8ea1b206cb7876daa95f"
+        "b55d88fdcaae555feef51f852602384722cd573f251d8ea1b206cb7876daa95f",
+        "d34404aa2d58558e1da69c87a0a0aeb1129289e15c4c7b1eb1ef31e8bd8b4060"
       ]
     },
     {
@@ -91,7 +92,8 @@
     {
       "id": "JSONSCHEMA-DEC-015",
       "digests": [
-        "1d253317c7fab90f94846398ab2eed103bec0361e3f5832b72800942e4edbb39"
+        "1d253317c7fab90f94846398ab2eed103bec0361e3f5832b72800942e4edbb39",
+        "87457420272991078cd2e6455e586dcffd861789e54e2949a115eddcd4c54a87"
       ]
     }
   ]
