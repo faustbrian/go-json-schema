@@ -7,6 +7,10 @@ Changelog structure and semantic versioning after v1.
 
 ### Changed
 
+- Adopt the checksum-verified `go-library-tools` v1.4.0 CLI and immutable
+  reusable workflow so published modules resolve from the public proxy before
+  bootstrap fallback, preventing false checksum conflicts in comparison gates.
+
 - Verify the eight newly reviewed official-suite format vectors across their
   applicable released dialects, pin the exact upstream range and changed-file
   identities, and record that the review does not repin the complete corpus.

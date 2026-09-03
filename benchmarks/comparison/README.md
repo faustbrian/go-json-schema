@@ -23,4 +23,4 @@ limits, and raw output. The checked-in baseline and interpretation guidance
 live in the parent module's
 [performance guide](../../docs/performance.md). Shared construction,
 ownership, lifecycle, and composition expectations are in the versioned
-[Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.3.0/docs/ecosystem/README.md).
+[Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md).
