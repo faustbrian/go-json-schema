@@ -1,0 +1,96 @@
+{
+  "source": "https://github.com/json-schema-org/JSON-Schema-Test-Suite",
+  "compare": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/compare/3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc",
+  "base_revision": "3c25e5f709192aadf67cf7f2eb19771a57131fec",
+  "head_revision": "55e23729473f4b629fd9266614280f355cd1b4fc",
+  "reviewed_at": "2026-09-03",
+  "source_files": [
+    {
+      "path": "tests/draft4/optional/format/email.json",
+      "sha256": "1af7cdb9b22cda7962758754fd95ce8d9561a227d3e53604eaad2c7909b7b519"
+    },
+    {
+      "path": "tests/draft6/optional/format/email.json",
+      "sha256": "1af7cdb9b22cda7962758754fd95ce8d9561a227d3e53604eaad2c7909b7b519"
+    },
+    {
+      "path": "tests/draft7/optional/format/email.json",
+      "sha256": "1af7cdb9b22cda7962758754fd95ce8d9561a227d3e53604eaad2c7909b7b519"
+    },
+    {
+      "path": "tests/draft2019-09/optional/format/email.json",
+      "sha256": "869fade6af20db71acbf9277b3b160c114f7b1310cd785cce8891f7b95238ab6"
+    },
+    {
+      "path": "tests/draft7/optional/format/idn-hostname.json",
+      "sha256": "91950c45cca5a8eec77ff4f97cdc1fbc41db6e83212b551201e0422128d4f494"
+    }
+  ],
+  "decisions": [
+    "JSONSCHEMA-DEC-003",
+    "JSONSCHEMA-DEC-015"
+  ],
+  "groups": [
+    {
+      "commit": "9bf087b8503d09addcf273e598ee268ef723120f",
+      "format": "email",
+      "dialects": [
+        "draft4",
+        "draft6",
+        "draft7",
+        "draft2019-09"
+      ],
+      "tests": [
+        {
+          "description": "a quoted string with a space in the local part is valid",
+          "data": "\"joe bloggs\"@example.com",
+          "valid": true
+        },
+        {
+          "description": "a quoted string with a double dot in the local part is valid",
+          "data": "\"joe..bloggs\"@example.com",
+          "valid": true
+        },
+        {
+          "description": "a quoted string with a @ in the local part is valid",
+          "data": "\"joe@bloggs\"@example.com",
+          "valid": true
+        },
+        {
+          "description": "an IPv4-address-literal after the @ is valid",
+          "data": "joe.bloggs@[127.0.0.1]",
+          "valid": true
+        },
+        {
+          "description": "an IPv6-address-literal after the @ is valid",
+          "data": "joe.bloggs@[IPv6:::1]",
+          "valid": true
+        },
+        {
+          "description": "an invalid domain",
+          "data": "joe.bloggs@invalid=domain.com",
+          "valid": false
+        },
+        {
+          "description": "an invalid IPv4-address-literal",
+          "data": "joe.bloggs@[127.0.0.300]",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "commit": "55e23729473f4b629fd9266614280f355cd1b4fc",
+      "format": "idn-hostname",
+      "dialects": [
+        "draft7"
+      ],
+      "tests": [
+        {
+          "description": "single label starting with digit",
+          "data": "1host",
+          "valid": true
+        }
+      ]
+    }
+  ]
+}

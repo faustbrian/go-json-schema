@@ -60,10 +60,12 @@
         "TestOfficialFormatAnnotationFixtures",
         "TestOfficialOptionalCoreFormatFixtures",
         "TestOfficialFormatAssertionVocabularyFixtures",
-        "TestStandardFormatsDoNotLeakAcrossDialects"
+        "TestStandardFormatsDoNotLeakAcrossDialects",
+        "TestReviewedOfficialFormatVectors"
       ],
       "fixtures": [
-        "specification/official-suite-results.tsv"
+        "specification/official-suite-results.tsv",
+        "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json"
       ],
       "fuzz": [
         "FuzzCompileAndValidate"
@@ -343,10 +345,12 @@
         "TestOfficialOptionalFixtures",
         "TestOfficialOptionalCoreFixtures",
         "TestOfficialOptionalCoreFormatFixtures",
-        "TestOfficialOptionalRegexFixtures"
+        "TestOfficialOptionalRegexFixtures",
+        "TestReviewedOfficialFormatVectors"
       ],
       "fixtures": [
-        "specification/official-suite-results.tsv"
+        "specification/official-suite-results.tsv",
+        "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json"
       ],
       "fuzz": [
         "FuzzCompileAndValidate"

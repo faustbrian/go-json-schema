@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"testing"
+	"time"
 )
 
 func TestOutputTraversalPropagatesNestedEvaluatorFailures(t *testing.T) {
@@ -1361,8 +1362,6 @@ func TestVerboseReferenceSelectionRequiresKeywordAndTarget(t *testing.T) {
 }
 
 func TestDetailedErrorNestingStopsAtSiblingBoundaries(t *testing.T) {
-	t.Parallel()
-
 	flat := []OutputUnit{
 		{KeywordLocation: "/allOf/0", Error: "branch"},
 		{
@@ -1375,7 +1374,23 @@ func TestDetailedErrorNestingStopsAtSiblingBoundaries(t *testing.T) {
 		},
 		{KeywordLocation: "/required", Error: "required"},
 	}
-	result, consumed := nestOutputErrors(flat, "")
+	type nestingResult struct {
+		units    []OutputUnit
+		consumed int
+	}
+	done := make(chan nestingResult, 1)
+	go func() {
+		units, consumed := nestOutputErrors(flat, "")
+		done <- nestingResult{units: units, consumed: consumed}
+	}()
+
+	var nested nestingResult
+	select {
+	case nested = <-done:
+	case <-time.After(5 * time.Second):
+		t.Fatal("detailed error nesting did not terminate")
+	}
+	result, consumed := nested.units, nested.consumed
 	if consumed != len(flat) || len(result) != 2 || len(result[0].Errors) != 1 ||
 		result[1].KeywordLocation != "/required" {
 		t.Fatalf("consumed=%d result=%#v", consumed, result)

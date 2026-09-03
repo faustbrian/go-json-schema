@@ -5,13 +5,29 @@ official suite, published meta-schemas, and Bowtie evidence. Its source pins
 and referenced local digests are checked by
 `TestSpecificationManifestPinsEveryConformanceSource`.
 
+## Upstream review history
+
+### 2026-09-03
+
+- JSON Schema specification `main` from
+  `499eba5749b0a22940e15660dafe50b74df05cb9` through
+  `0932747f3f3128758f3166e0d3e23e0b8d1025ee` changes future v1 meta-test
+  infrastructure and removes an illustrative trailing comma. The immutable
+  Draft 3 through Draft 2020-12 sources are unchanged, so the review is
+  behavior-neutral for every decision bound to those sources.
+- JSON Schema Test Suite
+  `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc`
+  adds the eight format vectors pinned under `testdata/regressions`. Their
+  successful explicit-assertion result binds the format-assertion and
+  optional-suite decisions without changing the complete-corpus pin.
+
 ## Decision conformance matrix
 
 | Decision | Authority | Executable evidence | Differential status |
 | --- | --- | --- | --- |
 | JSONSCHEMA-DEC-001 | `json-schema-drafts-source` | `TestOfficialMetaSchemasCompileAgainstTheirDialect`, `TestOfficialVocabularyFixtures`, `TestCompoundResourcesUseTheirOwnVocabulary`, `TestCompileRejectsUnknownRequiredVocabulary`, `TestVocabularyPolicyHandlesOptionalAndPartialDeclarations`, `TestDialectFeaturePoliciesAreExact` | [Assessed](differential/maintained-peers.json); the minimized Draft 3 dialect disagreement is a deliberate policy difference. |
 | JSONSCHEMA-DEC-002 | `json-schema-drafts-source` | `TestOfficialOptionalCoreFixtures`, `TestRegisteredVocabularyCompilesAndEvaluatesCustomKeyword`, `TestOfficialAnnotationFixtures` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
-| JSONSCHEMA-DEC-003 | `json-schema-drafts-source` | `TestFormatAssertionIsExplicitAndCompilerOwned`, `TestOfficialFormatAnnotationFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialFormatAssertionVocabularyFixtures`, `TestStandardFormatsDoNotLeakAcrossDialects` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
+| JSONSCHEMA-DEC-003 | `json-schema-drafts-source` | `TestFormatAssertionIsExplicitAndCompilerOwned`, `TestOfficialFormatAnnotationFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialFormatAssertionVocabularyFixtures`, `TestStandardFormatsDoNotLeakAcrossDialects`, `TestReviewedOfficialFormatVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-004 | `json-schema-drafts-source` | `TestContentKeywordsAreAnnotationsByDefault`, `TestContentAssertionIsLimitedToDraft7`, `TestOfficialDraft7ContentAssertionFixtures`, `TestContentValidationCoversPermissiveAndStrictBranches`, `TestContentValidationSeparatesSyntaxAndResourceFailures` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-005 | `json-schema-drafts-source` | `TestOfficialAnnotationFixtures`, `TestOfficialArrayAnnotationFixtures`, `TestOfficialAnnotationKeywordFixtures`, `TestAnnotationAndOutputTraversalSkipUnappliedSchemas`, `TestApplicableAnnotationsContinueAfterInapplicableKeywords` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-006 | `json-schema-drafts-source` | `TestOfficialUnevaluatedPropertiesFixtures`, `TestUnevaluatedAndPatternKeywordsPropagateTrackingFailures`, `TestUnevaluatedOutputContinuesAfterEvaluatedEntries` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
@@ -23,7 +39,7 @@ and referenced local digests are checked by
 | JSONSCHEMA-DEC-012 | `rfc3986-source` | `TestNormalizeURLAppliesRFCIdentityRules`, `TestCompileRejectsEquivalentDuplicateResourceIdentifiers`, `TestMapLoaderUsesNormalizedResourceIdentity`, `TestRemoveDotSegmentsPreservesURIPathStructure` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-013 | `json-schema-drafts-source` | `TestOfficialRemoteReferenceFixtures`, `TestLoaderPanicsAreContainedAndRedacted`, `TestLoaderErrorsAreRedactedAndPreserved`, `TestFSLoaderConfinesResourcesToItsBase`, `TestCompositeLoaderFallsThroughOnlyForMissingResources`, `TestResolutionErrorsRedactURISecrets` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-014 | `json-schema-output-source` | `TestOfficialBasicOutputFixtures`, `TestBasicOutputPreservesReferenceEvaluationPath`, `TestVerboseOutputIncludesEveryEvaluatedKeyword`, `TestVerboseOutputRetainsAnnotationResults`, `TestOutputBoundaryHelpersAreExact` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
-| JSONSCHEMA-DEC-015 | `json-schema-test-suite-source` | `TestOfficialMandatoryFixtures`, `TestOfficialOptionalFixtures`, `TestOfficialOptionalCoreFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialOptionalRegexFixtures` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
+| JSONSCHEMA-DEC-015 | `json-schema-test-suite-source` | `TestOfficialMandatoryFixtures`, `TestOfficialOptionalFixtures`, `TestOfficialOptionalCoreFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialOptionalRegexFixtures`, `TestReviewedOfficialFormatVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 
 
 The official JSON Schema Test Suite is pinned to commit
@@ -41,6 +57,14 @@ added, or changed files.
 There are no local deviations from the pinned suite. Project regression
 fixtures MUST be stored under `testdata/regressions`, never in
 `testdata/official`.
+
+Reviewed upstream changes that do not justify repinning the complete corpus
+remain isolated under `testdata/regressions`. The fixture
+`json-schema-test-suite-3c25e5f-to-55e2372.json` pins the exact two-commit
+upstream range, changed-source digests, decision bindings, and eight new format
+vectors reviewed on 2026-09-03. `TestReviewedOfficialFormatVectors` executes
+the seven RFC 5321 mailbox cases for Drafts 4, 6, 7, and 2019-09 and the valid
+Draft 7 IDN-hostname case with explicit format assertion.
 
 `official-suite-results.tsv` inventories every released-dialect mandatory and
 optional fixture. Each row records its group and case count, checksum, and the
