@@ -70,6 +70,8 @@ Start with the [documentation index](docs/README.md). It links the quickstart,
 API guide, dialect support, conformance contract, secure resolver guidance,
 examples, operations, and maintainer references. Normative behavior decisions
 are recorded in the [specification decision register](docs/specification-decisions.md).
+Shared construction, ownership, lifecycle, and composition expectations are in
+the versioned [Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.3.0/docs/ecosystem/README.md).
 
 ## Development
 

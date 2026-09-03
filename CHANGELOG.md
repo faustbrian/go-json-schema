@@ -7,6 +7,14 @@ Changelog structure and semantic versioning after v1.
 
 ### Changed
 
+- Publish complete schema-v2 cohesion metadata for the public JSON Schema
+  module, plus engineering classification and versioned ecosystem navigation
+  for its comparison harness.
+
+- Adopt the checksum-verified `go-library-tools` v1.3.0 CLI, add the local
+  `make cohesion` validation entry point, and pin reusable-workflow cohesion
+  enforcement to its final immutable revision.
+
 - Adopt the released `go-library-tools` v1.2.0 CLI and immutable merged
   workflow at `1f9629e5f27418600460b55a50a5b2fc81697fab` so local and
   hosted verification enforce the same specification-governance contract.
