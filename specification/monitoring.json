@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-09-03",
+  "reviewed_at": "2026-09-06",
   "review_interval_days": 90,
   "authorities": [
     {
@@ -149,7 +149,7 @@
       "kind": "errata",
       "version": "",
       "url": "https://api.github.com/repos/json-schema-org/json-schema-spec/commits/main",
-      "sha256": "1794837693caf73f5377e05c664ecd2a3d21199d07f2a58f815b3ea767e1ca9d",
+      "sha256": "126e8850b99b755226548e453f20f62d3077b3472ee147ce4d9e4b669825e235",
       "specifications": [
         "JSON Schema Draft 3 through Draft 2020-12",
         "JSON Schema Draft 2019-09 and Draft 2020-12 Output"
@@ -230,7 +230,7 @@
       "kind": "releases",
       "version": "",
       "url": "https://api.github.com/repos/json-schema-org/JSON-Schema-Test-Suite/commits/main",
-      "sha256": "e715d3e869ddd9ebcabc48db3d7aba41ff296bbb388abc927a94ebc9004e331a",
+      "sha256": "6cd8f3ff24665dc20c4032c9ffe3265f87035846348b8f9d99e3bcca55f34195",
       "specifications": [
         "JSON-Schema-Test-Suite"
       ]

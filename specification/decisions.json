@@ -131,11 +131,13 @@
         "TestOfficialOptionalCoreFormatFixtures",
         "TestOfficialFormatAssertionVocabularyFixtures",
         "TestStandardFormatsDoNotLeakAcrossDialects",
-        "TestReviewedOfficialFormatVectors"
+        "TestReviewedOfficialFormatVectors",
+        "TestReviewedOfficialConformanceVectors"
       ],
       "fixture_evidence": [
         "specification/official-suite-results.tsv",
-        "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json"
+        "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json",
+        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json"
       ],
       "fuzz_evidence": [
         "FuzzCompileAndValidate"
@@ -147,7 +149,7 @@
       "documentation": [
         "docs/specification-decisions.md"
       ],
-      "upstream_status": "Pinned optional format fixtures are included with zero skips in the official-suite manifest. The reviewed upstream range `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` adds eight format vectors; all pass under explicit assertion in every applicable released dialect.",
+      "upstream_status": "Pinned optional format fixtures are included with zero skips in the official-suite manifest. The reviewed ranges `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` and `55e23729473f4b629fd9266614280f355cd1b4fc...c9510e3bf8a896c3cba4e08509cf752b4f30dff8` add behavior-neutral format evidence that passes under explicit assertion in every applicable released dialect; future v1 copies are provenance-only because v1 is unsupported.",
       "reconsider_when": "A supported dialect or erratum changes format vocabulary requirements or a built-in format's normative source."
     },
     {
@@ -680,11 +682,13 @@
         "TestOfficialOptionalCoreFixtures",
         "TestOfficialOptionalCoreFormatFixtures",
         "TestOfficialOptionalRegexFixtures",
-        "TestReviewedOfficialFormatVectors"
+        "TestReviewedOfficialFormatVectors",
+        "TestReviewedOfficialConformanceVectors"
       ],
       "fixture_evidence": [
         "specification/official-suite-results.tsv",
-        "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json"
+        "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json",
+        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json"
       ],
       "fuzz_evidence": [
         "FuzzCompileAndValidate"
@@ -696,7 +700,7 @@
       "documentation": [
         "docs/specification-decisions.md"
       ],
-      "upstream_status": "Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results are pinned under `specification/`. The later reviewed range `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` is separately pinned as an eight-vector regression without claiming a complete corpus repin.",
+      "upstream_status": "Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results remain the complete-corpus pin. The separately pinned reviewed ranges `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` and `55e23729473f4b629fd9266614280f355cd1b4fc...c9510e3bf8a896c3cba4e08509cf752b4f30dff8` add behavior-neutral regression evidence across supported released dialects; future v1 copies are recorded but not executed.",
       "reconsider_when": "The official suite changes its optional taxonomy, a new released dialect is added, or a fixture conflicts with normative text and is classified upstream."
     }
   ]
