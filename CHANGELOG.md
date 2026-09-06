@@ -38,6 +38,10 @@ Changelog structure and semantic versioning after v1.
 
 ### Documentation
 
+- Add canonical installation and stable-v1 status to the README, and publish
+  package-selection metadata for the JSON Schema entry point and its ecosystem
+  boundaries.
+
 - Make all 15 entries in the
   [specification decision register](docs/specification-decisions.md)
   machine-auditable with exact authority,

@@ -69,7 +69,9 @@
         "primary_entry_packages": [
           "github.com/faustbrian/go-json-schema"
         ],
-        "package_selection": {},
+        "package_selection": {
+          "github.com/faustbrian/go-json-schema": "Use jsonschema to compile and validate exact-number JSON Schema documents across Draft 3 through Draft 2020-12; use validation for application value and rule validation, and OpenAPI for complete OpenAPI documents."
+        },
         "lifecycle_status": "active",
         "maturity": "stable",
         "construction_styles": [
