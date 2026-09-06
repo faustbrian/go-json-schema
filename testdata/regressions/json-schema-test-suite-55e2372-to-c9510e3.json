@@ -1,0 +1,239 @@
+{
+  "source": "https://github.com/json-schema-org/JSON-Schema-Test-Suite",
+  "compare": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/compare/55e23729473f4b629fd9266614280f355cd1b4fc...c9510e3bf8a896c3cba4e08509cf752b4f30dff8",
+  "base_revision": "55e23729473f4b629fd9266614280f355cd1b4fc",
+  "head_revision": "c9510e3bf8a896c3cba4e08509cf752b4f30dff8",
+  "reviewed_at": "2026-09-06",
+  "classification": "conformance-significant behavior-neutral",
+  "commits": [
+    "24012d0a2e3f974b53b9393b144ef8244fea9613",
+    "5cef06b740b9c7b1ebb309afc24bf460dd397141",
+    "c983956adb82dec1e3477f11322ff90647480970",
+    "eebf50e89c02d7bd4976dc289fc6c629f5c6c6b0",
+    "1872afdb1199cc9661157e3ef90b2d436a01e173",
+    "bdfa72478b91f3e10270ed95187e448bb07620f7",
+    "c9510e3bf8a896c3cba4e08509cf752b4f30dff8"
+  ],
+  "source_files": [
+    {
+      "path": "tests/draft2019-09/enum.json",
+      "sha256": "d0a6df37fa174f37ea0540a9445f73c42de8a3c4138da4e8459b102f766e9cd9"
+    },
+    {
+      "path": "tests/draft2019-09/optional/format/iri.json",
+      "sha256": "5289aa6b0931504491bdb5823fd5050050c2f671e7a986843f55e7e2ed193af4"
+    },
+    {
+      "path": "tests/draft2019-09/optional/format/uri.json",
+      "sha256": "070492478e04ca141033c9b8fa5ebd4cab17d8c3caff67932969cda4327190d8"
+    },
+    {
+      "path": "tests/draft2019-09/optional/format/uuid.json",
+      "sha256": "7ab7d126a08d1f190297fcd62ca3bf5bd20fc2d526074bee8b003e4a579e5b79"
+    },
+    {
+      "path": "tests/draft2020-12/enum.json",
+      "sha256": "1abe7eb883bde4a78c62f08e484e16f32b72ca5c1be725aa54d85cc4546b5031"
+    },
+    {
+      "path": "tests/draft2020-12/optional/format/iri.json",
+      "sha256": "f9522240705714cd53cc56217d04f5ecaabd12b3135a9e808ff02bb5089f4092"
+    },
+    {
+      "path": "tests/draft2020-12/optional/format/uri.json",
+      "sha256": "47954ee6aef87c20a045ad2182fecd9c7eec53b6c8151ee88cba50381b2850a4"
+    },
+    {
+      "path": "tests/draft2020-12/optional/format/uuid.json",
+      "sha256": "d62b676e83a346a6fe4ad1812a4e8da1e7b99a15c5cfb9e9faa3168c37b9365e"
+    },
+    {
+      "path": "tests/draft3/enum.json",
+      "sha256": "96b218e653402e1e399ea7b0f80d6fddc41810a22f8898e3e8aa0062f53334d9"
+    },
+    {
+      "path": "tests/draft4/optional/format/hostname.json",
+      "sha256": "271cd981abb58d28834e76a82f5f8435d2c00f0be17d66d2f4ec28a2200b661a"
+    },
+    {
+      "path": "tests/draft4/optional/format/uri.json",
+      "sha256": "b35144c96aa5042d1464b14cabfdff5cf7d761bb34b84eb9b07ec54a68ffe1f9"
+    },
+    {
+      "path": "tests/draft6/enum.json",
+      "sha256": "069890108f4f83e62c9be9f42af63b5de911555e6644d83cd89c08ff644a43bb"
+    },
+    {
+      "path": "tests/draft6/optional/format/hostname.json",
+      "sha256": "271cd981abb58d28834e76a82f5f8435d2c00f0be17d66d2f4ec28a2200b661a"
+    },
+    {
+      "path": "tests/draft6/optional/format/uri.json",
+      "sha256": "b35144c96aa5042d1464b14cabfdff5cf7d761bb34b84eb9b07ec54a68ffe1f9"
+    },
+    {
+      "path": "tests/draft7/enum.json",
+      "sha256": "069890108f4f83e62c9be9f42af63b5de911555e6644d83cd89c08ff644a43bb"
+    },
+    {
+      "path": "tests/draft7/optional/format/iri.json",
+      "sha256": "a814f74881cab8f91a9d38517869475b1ca292268c9853f4f4d8c04a85c01293"
+    },
+    {
+      "path": "tests/draft7/optional/format/uri.json",
+      "sha256": "b35144c96aa5042d1464b14cabfdff5cf7d761bb34b84eb9b07ec54a68ffe1f9"
+    },
+    {
+      "path": "tests/v1/enum.json",
+      "sha256": "87d930b8863ddecdf71840886b367b8a141f0b2f88db8d719be2da280b660fa8"
+    },
+    {
+      "path": "tests/v1/format/iri.json",
+      "sha256": "8804ccf1a7100adf90c4fa2eb58dc4bc48a0c49fb2810310aaba2ae484ccbaa8"
+    },
+    {
+      "path": "tests/v1/format/uri.json",
+      "sha256": "02b400d8cc578ae6e96910a37d08257056203b2e97b7f5b5c3964144670bca2c"
+    },
+    {
+      "path": "tests/v1/format/uuid.json",
+      "sha256": "dfd532e255bc749a0a84a438e493f51135c4a190e20afd266d1e52fdc741a46e"
+    }
+  ],
+  "supported_dialects": [
+    "draft3",
+    "draft4",
+    "draft6",
+    "draft7",
+    "draft2019-09",
+    "draft2020-12"
+  ],
+  "unsupported_dialects": [
+    "v1"
+  ],
+  "decisions": [
+    "JSONSCHEMA-DEC-003",
+    "JSONSCHEMA-DEC-015"
+  ],
+  "groups": [
+    {
+      "commit": "24012d0a2e3f974b53b9393b144ef8244fea9613",
+      "behavior": "hostname overall length",
+      "schema": {
+        "format": "hostname"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft4",
+        "draft6"
+      ],
+      "tests": [
+        {
+          "description": "exceeds maximum overall length (256)",
+          "data": "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk.com",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "commit": "5cef06b740b9c7b1ebb309afc24bf460dd397141",
+      "behavior": "URI trailing newline",
+      "schema": {
+        "format": "uri"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft4",
+        "draft6",
+        "draft7",
+        "draft2019-09",
+        "draft2020-12"
+      ],
+      "tests": [
+        {
+          "description": "a trailing newline after a valid URI is invalid",
+          "data": "http://foo.bar/\n",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "commit": "1872afdb1199cc9661157e3ef90b2d436a01e173",
+      "behavior": "enum codepoint equality",
+      "schema": {
+        "enum": [
+          "ä"
+        ]
+      },
+      "format_assertion": false,
+      "dialects": [
+        "draft3",
+        "draft6",
+        "draft7",
+        "draft2019-09",
+        "draft2020-12"
+      ],
+      "tests": [
+        {
+          "description": "character uses the same codepoint",
+          "data": "ä",
+          "valid": true
+        },
+        {
+          "description": "character looks the same but uses combining marks",
+          "data": "ä",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "commit": "eebf50e89c02d7bd4976dc289fc6c629f5c6c6b0",
+      "behavior": "UUID braces",
+      "schema": {
+        "format": "uuid"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft2019-09",
+        "draft2020-12"
+      ],
+      "tests": [
+        {
+          "description": "a UUID wrapped in curly braces is invalid",
+          "data": "{2eb8aa08-aa98-11ea-b4aa-73b441d16380}",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "commit": "c9510e3bf8a896c3cba4e08509cf752b4f30dff8",
+      "behavior": "IRI percent encoding",
+      "schema": {
+        "format": "iri"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft7",
+        "draft2019-09",
+        "draft2020-12"
+      ],
+      "tests": [
+        {
+          "description": "invalid percent-encoding with non-hex digits",
+          "data": "http://ƒøø.ßår/%6G",
+          "valid": false
+        },
+        {
+          "description": "incomplete percent-encoding triplet",
+          "data": "http://ƒøø.ßår/%A",
+          "valid": false
+        },
+        {
+          "description": "lone percent sign is invalid",
+          "data": "http://ƒøø.ßår/%",
+          "valid": false
+        }
+      ]
+    }
+  ]
+}

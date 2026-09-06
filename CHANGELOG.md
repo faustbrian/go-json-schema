@@ -20,9 +20,20 @@ Changelog structure and semantic versioning after v1.
   - JSONSCHEMA-DEC-003 sha256:d34404aa2d58558e1da69c87a0a0aeb1129289e15c4c7b1eb1ef31e8bd8b4060
   - JSONSCHEMA-DEC-015 sha256:87457420272991078cd2e6455e586dcffd861789e54e2949a115eddcd4c54a87
 
+- Pin the next seven-commit official-suite range and all 21 changed-file
+  identities, and execute its eight unique behaviors across applicable
+  supported released dialects. Existing behavior conforms; future v1 copies
+  remain provenance-only, and the complete suite stays pinned at `c0b038ad`.
+  Updated decisions:
+  - JSONSCHEMA-DEC-003 sha256:bcc1334fbc2e22bbca534f5d0a4f751eb0db23132ffccc0e11570d733e52aeb7
+  - JSONSCHEMA-DEC-015 sha256:8e924b89b94907e85f3e31f9bd56465930ad463f8dfd2ca61f840f64a8bdb604
+
 - Record the reviewed JSON Schema specification `main` range through
-  `0932747f3f3128758f3166e0d3e23e0b8d1025ee` as behavior-neutral for the
-  immutable Draft 3 through Draft 2020-12 contracts.
+  `4f56a9900674b27804f0ec32e3b7fdfa4efad695` as behavior-neutral for the
+  immutable Draft 3 through Draft 2020-12 contracts. The new range contains
+  only wording, code-fence, and future-draft example corrections; it changes
+  no governed decision, released-dialect source, meta-schema, or output
+  contract.
 
 - Publish complete schema-v2 cohesion metadata for the public JSON Schema
   module, plus engineering classification and versioned ecosystem navigation
@@ -37,6 +48,10 @@ Changelog structure and semantic versioning after v1.
   hosted verification enforce the same specification-governance contract.
 
 ### Documentation
+
+- Add canonical installation and stable-v1 status to the README, and publish
+  package-selection metadata for the JSON Schema entry point and its ecosystem
+  boundaries.
 
 - Make all 15 entries in the
   [specification decision register](docs/specification-decisions.md)

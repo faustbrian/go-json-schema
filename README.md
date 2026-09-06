@@ -20,7 +20,14 @@ and optional fixture files with zero skips and zero failures. See
 [conformance](docs/conformance.md) for the supported surface and evidence
 policy.
 
-The minimum supported toolchain is Go 1.26.6.
+The module is active and has a stable v1 API. The minimum supported and tested
+toolchain is Go 1.26.6.
+
+## Installation
+
+```sh
+go get github.com/faustbrian/go-json-schema
+```
 
 ## Quick start
 
