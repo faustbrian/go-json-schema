@@ -1,6 +1,11 @@
 # Releasing
 
-Do not create `json-schema/v1.0.0` until all of these are true:
+The root module is released from a verified commit with a `v<version>` tag.
+Only an independently releasable nested module uses a
+`<module-directory>/v<version>` tag. The internal `benchmarks/comparison`
+module is not released independently.
+
+Before creating a release, require all of these to be true:
 
 - every mandatory and optional released-dialect official case passes with
   zero failures and zero unexplained skips;
@@ -20,6 +25,6 @@ Do not create `json-schema/v1.0.0` until all of these are true:
 For a release candidate, run every local gate from a clean checkout, compare
 the generated conformance manifest, review dependencies and licenses, build
 the Bowtie image, inspect the full diff from the prior tag, and obtain review.
-Tag from the verified commit with the directory-prefixed semantic version.
+Tag the verified root commit with the root semantic version.
 Release notes must distinguish normative behavior, implementation policy,
 optional capabilities, convenience APIs, and any remaining non-v1 limitation.

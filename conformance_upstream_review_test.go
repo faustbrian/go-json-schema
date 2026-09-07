@@ -340,3 +340,131 @@ func TestReviewedOfficialConformanceVectors(t *testing.T) {
 		t.Fatalf("reviewed group count = %d, want %d", len(seenGroups), len(wantGroups))
 	}
 }
+
+func TestReviewedOfficialURITemplatePercentEncodingVectors(t *testing.T) {
+	path := filepath.Join(
+		"testdata",
+		"regressions",
+		"json-schema-test-suite-c9510e3-to-f6fd52a.json",
+	)
+	// #nosec G304 -- path is fixed to the reviewed upstream fixture range.
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var review upstreamConformanceReview
+	if err := json.Unmarshal(raw, &review); err != nil {
+		t.Fatal(err)
+	}
+	if review.BaseRevision != "c9510e3bf8a896c3cba4e08509cf752b4f30dff8" ||
+		review.HeadRevision != "f6fd52a0a95472e079cbfc6ef7f089702b80e045" {
+		t.Fatalf("reviewed range = %s...%s", review.BaseRevision, review.HeadRevision)
+	}
+	if review.ReviewedAt != "2026-09-07" ||
+		review.Classification != "conformance-significant behavior-changing" {
+		t.Fatalf("review metadata = %q, %q", review.ReviewedAt, review.Classification)
+	}
+	wantSource := "https://github.com/json-schema-org/JSON-Schema-Test-Suite"
+	wantCompare := wantSource + "/compare/" + review.BaseRevision + "..." + review.HeadRevision
+	if review.Source != wantSource || review.Compare != wantCompare {
+		t.Fatalf("review source = %q, compare = %q", review.Source, review.Compare)
+	}
+	if !slices.Equal(review.Commits, []string{"f6fd52a0a95472e079cbfc6ef7f089702b80e045"}) {
+		t.Fatalf("reviewed commits = %v", review.Commits)
+	}
+	if !slices.Equal(review.Decisions, []string{"JSONSCHEMA-DEC-003", "JSONSCHEMA-DEC-015"}) {
+		t.Fatalf("review decisions = %v", review.Decisions)
+	}
+	wantFiles := map[string]string{
+		"tests/draft2019-09/optional/format/uri-template.json": "12ef3e09f6ce0cc54ae43d98407eedd35d68299ea38a44aa2f572243064d9e77",
+		"tests/draft2020-12/optional/format/uri-template.json": "8af3285cc0ff20fc79d9884c2e5e26e20c053ec6fc4081ca02995f8f70568b38",
+		"tests/draft6/optional/format/uri-template.json":       "57f3209f2cf6ef0e2edad057a708850f74552c6599f3437f3a7e9578e6580f62",
+		"tests/draft7/optional/format/uri-template.json":       "57f3209f2cf6ef0e2edad057a708850f74552c6599f3437f3a7e9578e6580f62",
+		"tests/v1/format/uri-template.json":                    "d5c21031a6df543696fe6abf09f55a53ccf6ec0fd7d3b5c6f64eb16c31bfc7ba",
+	}
+	if len(review.SourceFiles) != len(wantFiles) {
+		t.Fatalf("reviewed source-file count = %d, want %d", len(review.SourceFiles), len(wantFiles))
+	}
+	seenFiles := make(map[string]struct{}, len(wantFiles))
+	for _, source := range review.SourceFiles {
+		if _, exists := seenFiles[source.Path]; exists {
+			t.Fatalf("duplicate reviewed source path %q", source.Path)
+		}
+		seenFiles[source.Path] = struct{}{}
+		if want, exists := wantFiles[source.Path]; !exists || source.SHA256 != want {
+			t.Fatalf("reviewed source %q has SHA-256 %q, want %q", source.Path, source.SHA256, want)
+		}
+	}
+	wantDialects := []string{"draft6", "draft7", "draft2019-09", "draft2020-12"}
+	if !slices.Equal(review.SupportedDialects, wantDialects) ||
+		!slices.Equal(review.UnsupportedDialects, []string{"v1"}) {
+		t.Fatalf("reviewed dialects = %v, unsupported = %v", review.SupportedDialects, review.UnsupportedDialects)
+	}
+	if len(review.Groups) != 1 {
+		t.Fatalf("reviewed group count = %d, want 1", len(review.Groups))
+	}
+	group := review.Groups[0]
+	if group.Commit != review.HeadRevision || group.Behavior != "URI-template percent encoding" ||
+		!group.FormatAssertion || !slices.Equal(group.Dialects, wantDialects) || len(group.Tests) != 6 {
+		t.Fatalf("reviewed group has unexpected provenance or applicability")
+	}
+	var reviewedSchema map[string]any
+	if err := json.Unmarshal(group.Schema, &reviewedSchema); err != nil {
+		t.Fatal(err)
+	}
+	if len(reviewedSchema) != 1 || reviewedSchema["format"] != "uri-template" {
+		t.Fatalf("reviewed schema = %s", group.Schema)
+	}
+	wantVectors := map[string]string{
+		"a literal with a lone percent sign is invalid":                         `"a%"`,
+		"a literal with an incomplete percent-encoded triplet is invalid":       `"a%4"`,
+		"a literal with non-hex percent encoding is invalid":                    `"a%GG"`,
+		"a variable name with a lone percent sign is invalid":                   `"{%}"`,
+		"a variable name with an incomplete percent-encoded triplet is invalid": `"{%4}"`,
+		"a variable name with non-hex percent encoding is invalid":              `"{%GG}"`,
+	}
+	seenVectors := make(map[string]struct{}, len(wantVectors))
+	for _, test := range group.Tests {
+		want, exists := wantVectors[test.Description]
+		if _, duplicate := seenVectors[test.Description]; duplicate {
+			t.Fatalf("duplicate reviewed vector %q", test.Description)
+		}
+		seenVectors[test.Description] = struct{}{}
+		if !exists || string(test.Data) != want || test.Valid {
+			t.Fatalf("reviewed vector %q has data %s and valid=%t", test.Description, test.Data, test.Valid)
+		}
+	}
+
+	dialects := map[string]jsonschema.Dialect{
+		"draft6":       jsonschema.Draft6,
+		"draft7":       jsonschema.Draft7,
+		"draft2019-09": jsonschema.Draft201909,
+		"draft2020-12": jsonschema.Draft202012,
+	}
+	for _, dialectName := range group.Dialects {
+		dialectName := dialectName
+		t.Run(dialectName, func(t *testing.T) {
+			compiler, err := jsonschema.NewCompiler(
+				jsonschema.WithDialect(dialects[dialectName]),
+				jsonschema.WithFormatAssertion(),
+			)
+			if err != nil {
+				t.Fatal(err)
+			}
+			schema, err := compiler.Compile(context.Background(), group.Schema)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, test := range group.Tests {
+				result, err := schema.Validate(context.Background(), test.Data)
+				if err != nil {
+					t.Fatalf("%s: validate: %v", test.Description, err)
+				}
+				if result.Valid != test.Valid {
+					t.Errorf("%s: got valid=%t, want %t", test.Description, result.Valid, test.Valid)
+				}
+			}
+		})
+	}
+}

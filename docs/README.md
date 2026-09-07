@@ -4,6 +4,18 @@
 through Draft 2020-12. Start with the quickstart, then use the sections below
 for the contract you need.
 
+The public `jsonschema` package is the application entry point. The
+`cmd/bowtie-json-schema` command is the interoperability adapter,
+`internal/cmd/conformance-manifest` is a maintainer-only evidence generator,
+and `benchmarks/comparison` is an internal, unreleased nested module. The
+caller owns configuration and resource loading; compiled schemas are immutable
+and require no shutdown.
+
+There is no dedicated testing-helper package. Application tests can compose
+deterministic seams with `MapLoader`, `ResourceLoaderFunc`, `FormatFunc`, and
+explicit `KeywordCompiler` callbacks registered through `WithVocabulary`; the
+[API guide](api.md#extension-points) documents their ownership.
+
 ## Getting started
 
 - [Quickstart](quickstart.md)
@@ -37,3 +49,8 @@ for the contract you need.
 - [Bowtie interoperability](../bowtie/README.md)
 - [Contributing](../CONTRIBUTING.md)
 - [Releasing](../RELEASING.md)
+- [Compatibility](../COMPATIBILITY.md)
+- [Support](../SUPPORT.md)
+- [Security reporting](../SECURITY.md)
+- [Changelog](../CHANGELOG.md)
+- [License](../LICENSE)

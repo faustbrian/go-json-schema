@@ -7,6 +7,14 @@ and referenced local digests are checked by
 
 ## Upstream review history
 
+### 2026-09-07
+
+- JSON Schema Test Suite
+  `c9510e3bf8a896c3cba4e08509cf752b4f30dff8...f6fd52a0a95472e079cbfc6ef7f089702b80e045`
+  adds six malformed percent-encoding cases for the `uri-template` format in
+  Drafts 6, 7, 2019-09, and 2020-12 plus future v1. The released-dialect cases
+  exposed and now guard a validation defect; the v1 copy is provenance-only.
+
 ### 2026-09-06
 
 - JSON Schema specification `main`
@@ -39,7 +47,7 @@ and referenced local digests are checked by
 | --- | --- | --- | --- |
 | JSONSCHEMA-DEC-001 | `json-schema-drafts-source` | `TestOfficialMetaSchemasCompileAgainstTheirDialect`, `TestOfficialVocabularyFixtures`, `TestCompoundResourcesUseTheirOwnVocabulary`, `TestCompileRejectsUnknownRequiredVocabulary`, `TestVocabularyPolicyHandlesOptionalAndPartialDeclarations`, `TestDialectFeaturePoliciesAreExact` | [Assessed](differential/maintained-peers.json); the minimized Draft 3 dialect disagreement is a deliberate policy difference. |
 | JSONSCHEMA-DEC-002 | `json-schema-drafts-source` | `TestOfficialOptionalCoreFixtures`, `TestRegisteredVocabularyCompilesAndEvaluatesCustomKeyword`, `TestOfficialAnnotationFixtures` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
-| JSONSCHEMA-DEC-003 | `json-schema-drafts-source` | `TestFormatAssertionIsExplicitAndCompilerOwned`, `TestOfficialFormatAnnotationFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialFormatAssertionVocabularyFixtures`, `TestStandardFormatsDoNotLeakAcrossDialects`, `TestReviewedOfficialFormatVectors`, `TestReviewedOfficialConformanceVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
+| JSONSCHEMA-DEC-003 | `json-schema-drafts-source` | `TestFormatAssertionIsExplicitAndCompilerOwned`, `TestOfficialFormatAnnotationFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialFormatAssertionVocabularyFixtures`, `TestStandardFormatsDoNotLeakAcrossDialects`, `TestReviewedOfficialFormatVectors`, `TestReviewedOfficialConformanceVectors`, `TestReviewedOfficialURITemplatePercentEncodingVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-004 | `json-schema-drafts-source` | `TestContentKeywordsAreAnnotationsByDefault`, `TestContentAssertionIsLimitedToDraft7`, `TestOfficialDraft7ContentAssertionFixtures`, `TestContentValidationCoversPermissiveAndStrictBranches`, `TestContentValidationSeparatesSyntaxAndResourceFailures` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-005 | `json-schema-drafts-source` | `TestOfficialAnnotationFixtures`, `TestOfficialArrayAnnotationFixtures`, `TestOfficialAnnotationKeywordFixtures`, `TestAnnotationAndOutputTraversalSkipUnappliedSchemas`, `TestApplicableAnnotationsContinueAfterInapplicableKeywords` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-006 | `json-schema-drafts-source` | `TestOfficialUnevaluatedPropertiesFixtures`, `TestUnevaluatedAndPatternKeywordsPropagateTrackingFailures`, `TestUnevaluatedOutputContinuesAfterEvaluatedEntries` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
@@ -51,7 +59,7 @@ and referenced local digests are checked by
 | JSONSCHEMA-DEC-012 | `rfc3986-source` | `TestNormalizeURLAppliesRFCIdentityRules`, `TestCompileRejectsEquivalentDuplicateResourceIdentifiers`, `TestMapLoaderUsesNormalizedResourceIdentity`, `TestRemoveDotSegmentsPreservesURIPathStructure` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-013 | `json-schema-drafts-source` | `TestOfficialRemoteReferenceFixtures`, `TestLoaderPanicsAreContainedAndRedacted`, `TestLoaderErrorsAreRedactedAndPreserved`, `TestFSLoaderConfinesResourcesToItsBase`, `TestCompositeLoaderFallsThroughOnlyForMissingResources`, `TestResolutionErrorsRedactURISecrets` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-014 | `json-schema-output-source` | `TestOfficialBasicOutputFixtures`, `TestBasicOutputPreservesReferenceEvaluationPath`, `TestVerboseOutputIncludesEveryEvaluatedKeyword`, `TestVerboseOutputRetainsAnnotationResults`, `TestOutputBoundaryHelpersAreExact` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
-| JSONSCHEMA-DEC-015 | `json-schema-test-suite-source` | `TestOfficialMandatoryFixtures`, `TestOfficialOptionalFixtures`, `TestOfficialOptionalCoreFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialOptionalRegexFixtures`, `TestReviewedOfficialFormatVectors`, `TestReviewedOfficialConformanceVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
+| JSONSCHEMA-DEC-015 | `json-schema-test-suite-source` | `TestOfficialMandatoryFixtures`, `TestOfficialOptionalFixtures`, `TestOfficialOptionalCoreFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialOptionalRegexFixtures`, `TestReviewedOfficialFormatVectors`, `TestReviewedOfficialConformanceVectors`, `TestReviewedOfficialURITemplatePercentEncodingVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 
 
 The official JSON Schema Test Suite is pinned to commit
@@ -85,6 +93,12 @@ braces, and malformed IRI percent encoding across their applicable supported
 released dialects. `TestReviewedOfficialConformanceVectors` executes those
 cases through the public compiler. The recorded future v1 copies remain
 unexecuted because this package does not support that draft.
+
+`json-schema-test-suite-c9510e3-to-f6fd52a.json` pins the following one-commit
+range and final hashes for its five changed `uri-template` fixture files. Its
+six malformed percent-encoding cases execute with explicit format assertion
+across Drafts 6, 7, 2019-09, and 2020-12. The future v1 copy remains unexecuted
+because this package does not support that draft.
 
 `official-suite-results.tsv` inventories every released-dialect mandatory and
 optional fixture. Each row records its group and case count, checksum, and the

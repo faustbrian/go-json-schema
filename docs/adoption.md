@@ -20,6 +20,9 @@ compiler, err := jsonschema.NewCompiler(
     jsonschema.WithLimits(limits),
     jsonschema.WithResourceLoader(loader),
 )
+if err != nil {
+    return err
+}
 ```
 
 Use `ValidateValue` when the application already has a Go data model. Use

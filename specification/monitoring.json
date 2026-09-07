@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-09-06",
+  "reviewed_at": "2026-09-07",
   "review_interval_days": 90,
   "authorities": [
     {
@@ -230,7 +230,7 @@
       "kind": "releases",
       "version": "",
       "url": "https://api.github.com/repos/json-schema-org/JSON-Schema-Test-Suite/commits/main",
-      "sha256": "6cd8f3ff24665dc20c4032c9ffe3265f87035846348b8f9d99e3bcca55f34195",
+      "sha256": "a51b75ea276427deb43fb216f5736eb54ec0800a5573ad58b212b4b087f7237d",
       "specifications": [
         "JSON-Schema-Test-Suite"
       ]

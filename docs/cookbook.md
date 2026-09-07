@@ -7,6 +7,9 @@ compiler, err := jsonschema.NewCompiler(
     jsonschema.WithDialect(jsonschema.Draft202012),
     jsonschema.WithFormatAssertion(),
 )
+if err != nil {
+    return err
+}
 ```
 
 Without the option, `format` is collected as an annotation unless a recognized
@@ -18,6 +21,9 @@ format-assertion vocabulary activates it.
 loader, err := jsonschema.NewMapLoader(map[string][]byte{
     "https://schemas.example.test/address": addressSchema,
 })
+if err != nil {
+    return err
+}
 ```
 
 Map resources and returned byte slices are copied.
@@ -35,6 +41,9 @@ loader, err := jsonschema.NewFSLoader(
     "https://schemas.example.test/",
     root.FS(),
 )
+if err != nil {
+    return err
+}
 ```
 
 ## Classify failures
@@ -42,12 +51,16 @@ loader, err := jsonschema.NewFSLoader(
 ```go
 schema, err := compiler.Compile(ctx, rawSchema)
 switch {
+case err == nil:
+	// Compilation succeeded; schema is ready for validation.
 case errors.Is(err, jsonschema.ErrInvalidSchema):
     // The schema is invalid for the selected dialect.
 case errors.Is(err, jsonschema.ErrResourceUnavailable):
     // An explicitly referenced resource could not be retrieved.
 case errors.Is(err, jsonschema.ErrLimitExceeded):
     // Policy rejected bounded work.
+default:
+	return err
 }
 ```
 
@@ -57,7 +70,13 @@ An invalid instance is `Result{Valid:false}` and not an error.
 
 ```go
 output, err := schema.ValidateOutput(ctx, instance, jsonschema.OutputBasic)
+if err != nil {
+    return err
+}
 encoded, err := json.Marshal(output)
+if err != nil {
+    return err
+}
 ```
 
 Use Flag for minimal responses, Basic for flat API diagnostics, and Verbose

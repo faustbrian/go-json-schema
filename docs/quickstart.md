@@ -4,10 +4,12 @@ Install the module using the version selected by your application's dependency
 policy:
 
 ```sh
-go get github.com/faustbrian/go-json-schema
+go get github.com/faustbrian/go-json-schema@v1
 ```
 
-Compile once and validate many times:
+Compile once and validate many times. This exact program is compiled and run
+by the documentation gate. The package-level [`Example`](../example_test.go)
+exercises the same workflow through Go's executable-example contract:
 
 ```go
 package main
@@ -15,7 +17,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 
 	jsonschema "github.com/faustbrian/go-json-schema"
 )
@@ -25,7 +26,7 @@ func main() {
 		jsonschema.WithDialect(jsonschema.Draft202012),
 	)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	schema, err := compiler.Compile(context.Background(), []byte(`{
@@ -34,7 +35,7 @@ func main() {
 		"properties": {"name": {"type": "string"}}
 	}`))
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	result, err := schema.Validate(
@@ -42,10 +43,12 @@ func main() {
 		[]byte(`{"name":"Ada"}`),
 	)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	fmt.Println(result.Valid)
 }
+
+// Output: true
 ```
 
 Schema mismatch is reported as `Valid == false`. A non-nil error means input,
