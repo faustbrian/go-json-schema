@@ -49,6 +49,12 @@ Changelog structure and semantic versioning after v1.
 
 ### Documentation
 
+- Complete the stable-v1 package documentation contract with canonical
+  installation, package and harness selection, ownership and lifecycle
+  guidance, compiled examples with explicit error handling, actionable support
+  and security routes, and root-module release instructions. Bind those
+  promises to documentation and API-compatibility checks.
+
 - Add canonical installation and stable-v1 status to the README, and publish
   package-selection metadata for the JSON Schema entry point and its ecosystem
   boundaries.
@@ -88,7 +94,7 @@ Changelog structure and semantic versioning after v1.
 - Document standalone repository tags instead of the obsolete monorepo tag
   convention.
 
-## 1.0.0 - 2026-08-25
+## 1.0.0 - 2026-08-26
 
 ### Changed
 

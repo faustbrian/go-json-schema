@@ -2,9 +2,10 @@
 
 ## Reporting
 
-Report suspected vulnerabilities privately through the GitHub security
-advisory for `faustbrian/go-json-schema`. Do not open a public issue containing exploit
-details, credentials, private fixtures, or affected deployment information.
+Report suspected vulnerabilities through the repository's
+[private security advisory form](https://github.com/faustbrian/go-json-schema/security/advisories/new).
+Do not open a public issue containing exploit details, credentials, private
+fixtures, or affected deployment information.
 
 Include the affected module and version, impact, reproduction, preconditions,
 and any suggested mitigation. Reports are acknowledged as soon as practical;

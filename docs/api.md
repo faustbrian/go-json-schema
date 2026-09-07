@@ -71,8 +71,10 @@ share the compiler's work budgets. See [extensions](extensions.md).
 
 ## Concurrency and ownership
 
-A compiled `Schema`, `MapLoader`, `FSLoader`, or `CompositeLoader` may be
-shared by concurrent validators. Callers must make their own loader and
+A compiled `Schema` and `MapLoader` may be shared by concurrent validators. An
+`FSLoader` may be shared only when its caller-provided `fs.FS` supports
+concurrent reads. A `CompositeLoader` may be shared only when every component
+loader supports concurrent calls. Callers must make their own loader and
 extension implementations concurrency-safe. Returned results and output units
 are caller-owned values.
 

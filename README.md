@@ -26,36 +26,54 @@ toolchain is Go 1.26.6.
 ## Installation
 
 ```sh
-go get github.com/faustbrian/go-json-schema
+go get github.com/faustbrian/go-json-schema@v1
 ```
 
 ## Quick start
 
 ```go
-compiler, err := jsonschema.NewCompiler(
-    jsonschema.WithDialect(jsonschema.Draft202012),
+package main
+
+import (
+	"context"
+	"fmt"
+
+	jsonschema "github.com/faustbrian/go-json-schema"
 )
-if err != nil {
-    return err
+
+func main() {
+	compiler, err := jsonschema.NewCompiler(
+		jsonschema.WithDialect(jsonschema.Draft202012),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	schema, err := compiler.Compile(context.Background(), []byte(`{
+		"type": "object",
+		"required": ["name"],
+		"properties": {"name": {"type": "string"}}
+	}`))
+	if err != nil {
+		panic(err)
+	}
+
+	result, err := schema.Validate(
+		context.Background(),
+		[]byte(`{"name":"Ada"}`),
+	)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(result.Valid)
 }
 
-schema, err := compiler.Compile(
-    context.Background(),
-    []byte(`{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}`),
-)
-if err != nil {
-    return err
-}
-
-result, err := schema.Validate(
-    context.Background(),
-    []byte(`{"name":"Ada"}`),
-)
-if err != nil {
-    return err
-}
-fmt.Println(result.Valid) // true
+// Output: true
 ```
+
+This exact program is compiled and run by the documentation gate. The
+package-level [`Example`](example_test.go) exercises the same workflow through
+Go's executable-example contract.
 
 Compilation validates the schema against the embedded official meta-schema.
 Compiled schemas are immutable and reusable concurrently. `Validate` accepts
@@ -71,12 +89,41 @@ Draft 2019-09 and Draft 2020-12 content processing never changes the enclosing
 schema result. Remote references require an explicit `ResourceLoader`; the
 core never performs network I/O.
 
+## When to use this package
+
+Use `jsonschema` when an application must compile and validate exact-number
+JSON Schema documents across Draft 3 through Draft 2020-12. Use application
+validation for business values and rules, and use
+[go-openapi](https://github.com/faustbrian/go-openapi) when the input is a
+complete OpenAPI document.
+
+The caller owns compiler configuration, input bytes, and any configured
+resource loader. A compiled `Schema` is immutable, safe for concurrent reuse,
+starts no background work, and requires no shutdown.
+
+The module has no dedicated testing-helper package. Tests can use `MapLoader`
+for deterministic in-memory resources, `ResourceLoaderFunc` for controlled
+resource outcomes, and `FormatFunc` or `KeywordCompiler` callbacks registered
+through `WithVocabulary` for explicit extension seams. The
+[API guide](docs/api.md#extension-points) documents their ownership.
+
+## Packages and commands
+
+| Path | Kind | Use |
+| --- | --- | --- |
+| `github.com/faustbrian/go-json-schema` | Public package | Compile and validate JSON Schema documents. |
+| `cmd/bowtie-json-schema` | Command | Run the repository's Bowtie interoperability harness. |
+| `internal/cmd/conformance-manifest` | Internal harness | Regenerate repository-owned conformance evidence for maintainers. |
+| `benchmarks/comparison` | Internal nested module | Compare maintained peer implementations; it is not released independently. |
+
 ## Documentation
 
 Start with the [documentation index](docs/README.md). It links the quickstart,
 API guide, dialect support, conformance contract, secure resolver guidance,
 examples, operations, and maintainer references. Normative behavior decisions
 are recorded in the [specification decision register](docs/specification-decisions.md).
+Support requests belong in [SUPPORT.md](SUPPORT.md), and suspected
+vulnerabilities follow [SECURITY.md](SECURITY.md).
 Shared construction, ownership, lifecycle, and composition expectations are in
 the versioned [Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md)
 and its [Protocols and descriptions family](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/design-language.md#package-families-and-selection).

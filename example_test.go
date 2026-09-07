@@ -8,64 +8,76 @@ import (
 	jsonschema "github.com/faustbrian/go-json-schema"
 )
 
-func Example() {
-	compiler, _ := jsonschema.NewCompiler(
-		jsonschema.WithDialect(jsonschema.Draft202012),
-	)
-	schema, _ := compiler.Compile(
-		context.Background(),
-		[]byte(`{"type":"integer","minimum":1}`),
-	)
+func must[T any](value T, err error) T {
+	if err != nil {
+		panic(err)
+	}
 
-	result, _ := schema.Validate(context.Background(), []byte(`2`))
+	return value
+}
+
+func Example() {
+	compiler := must(jsonschema.NewCompiler(
+		jsonschema.WithDialect(jsonschema.Draft202012),
+	))
+	schema := must(compiler.Compile(
+		context.Background(),
+		[]byte(`{
+			"type": "object",
+			"required": ["name"],
+			"properties": {"name": {"type": "string"}}
+		}`),
+	))
+
+	result := must(schema.Validate(context.Background(), []byte(`{"name":"Ada"}`)))
 	fmt.Println(result.Valid)
 
 	// Output: true
 }
 
 func ExampleSchema_ValidateValue() {
-	compiler, _ := jsonschema.NewCompiler()
-	schema, _ := compiler.Compile(
+	compiler := must(jsonschema.NewCompiler())
+	schema := must(compiler.Compile(
 		context.Background(),
 		[]byte(`{"type":"number","multipleOf":0.1}`),
-	)
+	))
 
-	result, _ := schema.ValidateValue(context.Background(), json.Number("0.3"))
+	result := must(schema.ValidateValue(context.Background(), json.Number("0.3")))
 	fmt.Println(result.Valid)
 
 	// Output: true
 }
 
 func ExampleMapLoader() {
-	loader, _ := jsonschema.NewMapLoader(map[string][]byte{
+	loader := must(jsonschema.NewMapLoader(map[string][]byte{
 		"https://schemas.example.test/name": []byte(`{
 			"$id":"https://schemas.example.test/name",
 			"type":"string",
 			"minLength":1
 		}`),
-	})
-	compiler, _ := jsonschema.NewCompiler(jsonschema.WithResourceLoader(loader))
-	schema, _ := compiler.Compile(
+	}))
+	compiler := must(jsonschema.NewCompiler(jsonschema.WithResourceLoader(loader)))
+	schema := must(compiler.Compile(
 		context.Background(),
 		[]byte(`{"$ref":"https://schemas.example.test/name"}`),
-	)
+	))
 
-	result, _ := schema.Validate(context.Background(), []byte(`"Ada"`))
+	result := must(schema.Validate(context.Background(), []byte(`"Ada"`)))
 	fmt.Println(result.Valid)
 
 	// Output: true
 }
 
 func ExampleSchema_ValidateOutput() {
-	compiler, _ := jsonschema.NewCompiler()
-	schema, _ := compiler.Compile(context.Background(), []byte(`{"type":"string"}`))
+	compiler := must(jsonschema.NewCompiler())
+	schema := must(compiler.Compile(context.Background(), []byte(`{"type":"string"}`)))
 
-	output, _ := schema.ValidateOutput(
+	output := must(schema.ValidateOutput(
 		context.Background(),
 		[]byte(`42`),
 		jsonschema.OutputFlag,
-	)
-	encoded, _ := json.Marshal(output)
+	))
+	encoded := must(json.Marshal(output))
 	fmt.Println(string(encoded))
 
 	// Output: {"valid":false}
