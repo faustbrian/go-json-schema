@@ -28,6 +28,14 @@ Changelog structure and semantic versioning after v1.
   - JSONSCHEMA-DEC-003 sha256:bcc1334fbc2e22bbca534f5d0a4f751eb0db23132ffccc0e11570d733e52aeb7
   - JSONSCHEMA-DEC-015 sha256:8e924b89b94907e85f3e31f9bd56465930ad463f8dfd2ca61f840f64a8bdb604
 
+- Reject malformed percent encoding in URI templates, pin the upstream
+  one-commit range and all five changed-file identities, and execute its six
+  new cases across Drafts 6, 7, 2019-09, and 2020-12. The future v1 copy
+  remains provenance-only, and the complete suite stays pinned at `c0b038ad`.
+  Updated decisions:
+  - JSONSCHEMA-DEC-003 sha256:91d281460355b59735a1ac6befeb10e0caff729534e5edee53f3fa243dff7f98
+  - JSONSCHEMA-DEC-015 sha256:9ccb65eb96fb643770aeb7f7ac58beaef9278bd86fd1e8edfbd3c2652aef28f1
+
 - Record the reviewed JSON Schema specification `main` range through
   `4f56a9900674b27804f0ec32e3b7fdfa4efad695` as behavior-neutral for the
   immutable Draft 3 through Draft 2020-12 contracts. The new range contains

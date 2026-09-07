@@ -62,12 +62,14 @@
         "TestOfficialFormatAssertionVocabularyFixtures",
         "TestStandardFormatsDoNotLeakAcrossDialects",
         "TestReviewedOfficialFormatVectors",
-        "TestReviewedOfficialConformanceVectors"
+        "TestReviewedOfficialConformanceVectors",
+        "TestReviewedOfficialURITemplatePercentEncodingVectors"
       ],
       "fixtures": [
         "specification/official-suite-results.tsv",
         "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json",
-        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json"
+        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json",
+        "testdata/regressions/json-schema-test-suite-c9510e3-to-f6fd52a.json"
       ],
       "fuzz": [
         "FuzzCompileAndValidate"
@@ -349,12 +351,14 @@
         "TestOfficialOptionalCoreFormatFixtures",
         "TestOfficialOptionalRegexFixtures",
         "TestReviewedOfficialFormatVectors",
-        "TestReviewedOfficialConformanceVectors"
+        "TestReviewedOfficialConformanceVectors",
+        "TestReviewedOfficialURITemplatePercentEncodingVectors"
       ],
       "fixtures": [
         "specification/official-suite-results.tsv",
         "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json",
-        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json"
+        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json",
+        "testdata/regressions/json-schema-test-suite-c9510e3-to-f6fd52a.json"
       ],
       "fuzz": [
         "FuzzCompileAndValidate"

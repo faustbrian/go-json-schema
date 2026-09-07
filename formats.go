@@ -689,6 +689,10 @@ func isASCII(value string) bool {
 }
 
 func validURITemplate(value string) bool {
+	if !validPercentEncoding(value) {
+		return false
+	}
+
 	depth := 0
 	for index := 0; index < len(value); index++ {
 		switch value[index] {

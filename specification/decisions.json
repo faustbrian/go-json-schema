@@ -132,12 +132,14 @@
         "TestOfficialFormatAssertionVocabularyFixtures",
         "TestStandardFormatsDoNotLeakAcrossDialects",
         "TestReviewedOfficialFormatVectors",
-        "TestReviewedOfficialConformanceVectors"
+        "TestReviewedOfficialConformanceVectors",
+        "TestReviewedOfficialURITemplatePercentEncodingVectors"
       ],
       "fixture_evidence": [
         "specification/official-suite-results.tsv",
         "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json",
-        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json"
+        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json",
+        "testdata/regressions/json-schema-test-suite-c9510e3-to-f6fd52a.json"
       ],
       "fuzz_evidence": [
         "FuzzCompileAndValidate"
@@ -149,7 +151,7 @@
       "documentation": [
         "docs/specification-decisions.md"
       ],
-      "upstream_status": "Pinned optional format fixtures are included with zero skips in the official-suite manifest. The reviewed ranges `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` and `55e23729473f4b629fd9266614280f355cd1b4fc...c9510e3bf8a896c3cba4e08509cf752b4f30dff8` add behavior-neutral format evidence that passes under explicit assertion in every applicable released dialect; future v1 copies are provenance-only because v1 is unsupported.",
+      "upstream_status": "Pinned optional format fixtures are included with zero skips in the official-suite manifest. The reviewed ranges through `c9510e3bf8a896c3cba4e08509cf752b4f30dff8` add behavior-neutral format evidence. The next range `c9510e3bf8a896c3cba4e08509cf752b4f30dff8...f6fd52a0a95472e079cbfc6ef7f089702b80e045` adds malformed URI-template percent-encoding cases and corrects validation across every applicable released dialect; future v1 copies are provenance-only because v1 is unsupported.",
       "reconsider_when": "A supported dialect or erratum changes format vocabulary requirements or a built-in format's normative source."
     },
     {
@@ -683,12 +685,14 @@
         "TestOfficialOptionalCoreFormatFixtures",
         "TestOfficialOptionalRegexFixtures",
         "TestReviewedOfficialFormatVectors",
-        "TestReviewedOfficialConformanceVectors"
+        "TestReviewedOfficialConformanceVectors",
+        "TestReviewedOfficialURITemplatePercentEncodingVectors"
       ],
       "fixture_evidence": [
         "specification/official-suite-results.tsv",
         "testdata/regressions/json-schema-test-suite-3c25e5f-to-55e2372.json",
-        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json"
+        "testdata/regressions/json-schema-test-suite-55e2372-to-c9510e3.json",
+        "testdata/regressions/json-schema-test-suite-c9510e3-to-f6fd52a.json"
       ],
       "fuzz_evidence": [
         "FuzzCompileAndValidate"
@@ -700,7 +704,7 @@
       "documentation": [
         "docs/specification-decisions.md"
       ],
-      "upstream_status": "Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results remain the complete-corpus pin. The separately pinned reviewed ranges `3c25e5f709192aadf67cf7f2eb19771a57131fec...55e23729473f4b629fd9266614280f355cd1b4fc` and `55e23729473f4b629fd9266614280f355cd1b4fc...c9510e3bf8a896c3cba4e08509cf752b4f30dff8` add behavior-neutral regression evidence across supported released dialects; future v1 copies are recorded but not executed.",
+      "upstream_status": "Suite revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`, archive digest, per-file checksums, and generated results remain the complete-corpus pin. Separately pinned reviewed ranges through `c9510e3bf8a896c3cba4e08509cf752b4f30dff8` add behavior-neutral regression evidence. The next range `c9510e3bf8a896c3cba4e08509cf752b4f30dff8...f6fd52a0a95472e079cbfc6ef7f089702b80e045` records and executes the behavior-changing URI-template percent-encoding cases across supported released dialects; future v1 copies are recorded but not executed.",
       "reconsider_when": "The official suite changes its optional taxonomy, a new released dialect is added, or a fixture conflicts with normative text and is classified upstream."
     }
   ]
