@@ -7,6 +7,9 @@ Changelog structure and semantic versioning after v1.
 
 ### Changed
 
+- Update ecosystem documentation links and module metadata to the released
+  `go-library-tools` v1.5.6 protocols-and-descriptions contract.
+
 - Adopt the checksum-verified `go-library-tools` v1.4.0 CLI and immutable
   reusable workflow so published modules resolve from the public proxy before
   bootstrap fallback, preventing false checksum conflicts in comparison gates.

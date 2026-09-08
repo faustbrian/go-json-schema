@@ -125,8 +125,8 @@ are recorded in the [specification decision register](docs/specification-decisio
 Support requests belong in [SUPPORT.md](SUPPORT.md), and suspected
 vulnerabilities follow [SECURITY.md](SECURITY.md).
 Shared construction, ownership, lifecycle, and composition expectations are in
-the versioned [Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md)
-and its [Protocols and descriptions family](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/design-language.md#package-families-and-selection).
+the versioned [Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.5.6/docs/ecosystem/README.md)
+and its [Protocols and descriptions family](https://github.com/faustbrian/go-library-tools/blob/v1.5.6/docs/ecosystem/design-language.md#package-families-and-selection).
 
 ## Development
 
