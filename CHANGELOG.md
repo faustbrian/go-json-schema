@@ -7,6 +7,7 @@ Changelog structure and semantic versioning after v1.
 
 ### Changed
 
+- Require Go 1.27.0 for development, builds, and downstream consumers.
 - Update ecosystem documentation links and module metadata to the released
   `go-library-tools` v1.5.6 protocols-and-descriptions contract.
 
