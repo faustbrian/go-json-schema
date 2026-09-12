@@ -168,7 +168,7 @@ def write_snippets(root: Path, output: Path, blocks: list[tuple[Path, str]]) -> 
 
     module = "github.com/faustbrian/go-json-schema"
     (output / "go.mod").write_text(
-        "module documentation-snippets\n\ngo 1.26.6\n\n"
+        "module documentation-snippets\n\ngo 1.27.0\n\n"
         f"require {module} v0.0.0\n\nreplace {module} => {root}\n",
         encoding="utf-8",
     )
