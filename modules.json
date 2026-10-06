@@ -208,7 +208,7 @@
       "build_tags": [],
       "test_tags": [],
       "interoperability_tools": [
-        "kaptinlin/jsonschema v0.9.3",
+        "kaptinlin/jsonschema v0.9.10",
         "santhosh-tekuri/jsonschema/v6 v6.0.3"
       ],
       "specifications": [],
