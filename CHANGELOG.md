@@ -7,6 +7,14 @@ Changelog structure and semantic versioning after v1.
 
 ### Changed
 
+- Refresh maintained-peer observations for the selected JSON Schema
+  comparator v6.0.3, retaining the same dialect, duplicate-member and
+  regular-expression policy outcomes. Preserve historical benchmark data.
+  Updated peer-observation records:
+  - JSONSCHEMA-DEC-001 sha256:7fec3c78ed9e8fae3382120a1bf7273f48c13f74120436bad839e203cd39099b
+  - JSONSCHEMA-DEC-009 sha256:98fb54946b2540b4aad0b0df07a60966945a08aead278fb2d376120b1d8ef751
+  - JSONSCHEMA-DEC-011 sha256:49cf946e63b08a880307165f676ede018b5013c4ad896e557e45eedf067bc677
+
 - Require Go 1.27.0 for development, builds, and downstream consumers.
 - Update ecosystem documentation links and module metadata to the released
   `go-library-tools` v1.5.6 protocols-and-descriptions contract.

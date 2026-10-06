@@ -5,7 +5,7 @@ go 1.27.0
 require (
 	github.com/faustbrian/go-json-schema v1.0.0
 	github.com/kaptinlin/jsonschema v0.9.3
-	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
+	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
 )
 
 require (

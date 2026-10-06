@@ -209,7 +209,7 @@
       "test_tags": [],
       "interoperability_tools": [
         "kaptinlin/jsonschema v0.9.3",
-        "santhosh-tekuri/jsonschema/v6 v6.0.2"
+        "santhosh-tekuri/jsonschema/v6 v6.0.3"
       ],
       "specifications": [],
       "conformance_corpora": [
