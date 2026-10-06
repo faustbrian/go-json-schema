@@ -9,7 +9,7 @@
     },
     "kaptinlin": {
       "module": "github.com/kaptinlin/jsonschema",
-      "version": "v0.9.3"
+      "version": "v0.9.10"
     },
     "santhosh-tekuri": {
       "module": "github.com/santhosh-tekuri/jsonschema/v6",

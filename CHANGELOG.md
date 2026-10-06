@@ -7,6 +7,16 @@ Changelog structure and semantic versioning after v1.
 
 ### Changed
 
+- Adopt x/net v0.58.0 and x/text v0.41.0 while preserving the public
+  format-validation contract. Refresh maintained-peer observations for
+  Kaptinlin v0.9.10 with jsonpointer v0.4.28 and URI templates v3.0.2; all
+  four minimized policy cases retain their observed outcomes. Keep prior
+  decision digests and benchmark measurements intact.
+  Updated peer-observation records:
+  - JSONSCHEMA-DEC-001 sha256:9d458635b3830ce5b9b122cd4450380ee8117f143b52f59574ed8a4161b8c935
+  - JSONSCHEMA-DEC-009 sha256:1dbdbedc0648c98f27028c7c81f715f969722f88a4da73d8c4f93f19692f20ab
+  - JSONSCHEMA-DEC-011 sha256:e5a8f5ca34ea17cacbeeaabaaa52347590b53deb8daab06bc00601bbb7e8ae2e
+
 - Refresh maintained-peer observations for the selected JSON Schema
   comparator v6.0.3, retaining the same dialect, duplicate-member and
   regular-expression policy outcomes. Preserve historical benchmark data.

@@ -18,14 +18,16 @@ provides the short local regression run; release evidence should use multiple
 longer samples and preserve the raw output.
 
 `make benchmark-comparison BENCH_TIME=1s` runs a separate pinned benchmark
-module against `kaptinlin/jsonschema` v0.9.3 and
-`santhosh-tekuri/jsonschema` v6.0.2. It measures Draft 2020-12 compilation and
+module against `kaptinlin/jsonschema` v0.9.10 and
+`santhosh-tekuri/jsonschema` v6.0.3. It measures Draft 2020-12 compilation and
 precompiled validation of the same decoded value. The compile result is
 context, not a league table: this package performs official meta-schema
 validation during compilation, while competitor compilation policies differ.
 The separate module keeps benchmark-only dependencies out of the core module.
 The checked-in [comparison baseline](../benchmarks/comparison/baseline.txt)
-records the machine, toolchain, versions, command, and raw results.
+records the machine, toolchain, versions, command, and raw results from
+the earlier Kaptinlin v0.9.3 and santhosh-tekuri v6.0.2 selections. Those
+historical measurements do not characterize the currently selected versions.
 
 Record toolchain, GOOS/GOARCH, CPU, commit, benchmark count, and limits with
 published results. Measure compilation and validation separately for scalar,
