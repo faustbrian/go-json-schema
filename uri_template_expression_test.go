@@ -31,6 +31,9 @@ func TestURITemplateExpressionModifiers(t *testing.T) {
 			{"{}", false}, {"{a,,b}", false}, {"{a..b}", false},
 			{"{a.}", false}, {"{var:0}", false}, {"{var:01}", false},
 			{"{var:10000}", false}, {"{var*:1}", false},
+			{"{var:}", false}, {"{var-}", false}, {"{var,.a}", false},
+			{"{a,}", false}, {"{+}", false}, {"a{var", false}, {"a}var", false},
+			{"{_A0%41:12}", true}, {"{,var}", true}, {"{|var*}", true},
 		} {
 			raw, err := json.Marshal(test.value)
 			if err != nil {
