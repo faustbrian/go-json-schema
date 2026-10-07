@@ -6,6 +6,10 @@ under the BSD 3-Clause license by The Go Authors.
 
 This product includes github.com/dlclark/regexp2/v2, distributed under the
 MIT License by Doug Clark and contributors.
+Its supplementary Unicode 17.0.0 data and aliases derive from the Unicode
+Character Database and are covered by the Unicode License v3. The complete
+Unicode notice accompanies this distribution in UNICODE-LICENSE.txt;
+source and version details are recorded in docs/dependencies.md.
 
 The vendored JSON Schema Test Suite is distributed under the MIT License by
 the JSON Schema organization. The embedded official JSON Schema meta-schemas
