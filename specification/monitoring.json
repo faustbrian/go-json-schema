@@ -230,7 +230,7 @@
       "kind": "releases",
       "version": "",
       "url": "https://api.github.com/repos/json-schema-org/JSON-Schema-Test-Suite/commits/main",
-      "sha256": "a51b75ea276427deb43fb216f5736eb54ec0800a5573ad58b212b4b087f7237d",
+      "sha256": "c3adc493a828dc409449ef60216cd96d2ee142e32ac54270c44cb67145715e99",
       "specifications": [
         "JSON-Schema-Test-Suite"
       ]

@@ -55,6 +55,16 @@ one-commit range through `f6fd52a0a95472e079cbfc6ef7f089702b80e045`.
 The fixture records final hashes for all five changed test files and preserves
 the future v1 copy without executing it.
 
+`TestReviewedOfficialRecentFormatVectors` executes the 15 added format cases
+from the seven-commit range
+`f6fd52a0a95472e079cbfc6ef7f089702b80e045...5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8`.
+The fixture records SHA-256 identities for all 26 changed upstream files.
+Combined URI-template prefix and explode modifiers fail assertion; BMP and
+supplementary private-use literals remain valid. Each case runs only in its
+applicable supported dialects. Future v1 files remain provenance-only, and
+removed IPvFuture cases do not establish a new rejection requirement. The
+complete `c0b038ad` corpus remains unchanged.
+
 “Full suite compatibility” means this exact pinned corpus has zero failures
 and zero unexplained skips. It does not replace normative review, hostile-input
 testing, output correctness, coverage, fuzz, mutation, Bowtie, or release
@@ -67,7 +77,7 @@ the gates in [RELEASING.md](../RELEASING.md).
 | --- | --- | --- | --- |
 | JSONSCHEMA-DEC-001 | `json-schema-drafts-source` | `TestOfficialMetaSchemasCompileAgainstTheirDialect`, `TestOfficialVocabularyFixtures`, `TestCompoundResourcesUseTheirOwnVocabulary`, `TestCompileRejectsUnknownRequiredVocabulary`, `TestVocabularyPolicyHandlesOptionalAndPartialDeclarations`, `TestDialectFeaturePoliciesAreExact` | [Assessed](../specification/differential/maintained-peers.json); the minimized Draft 3 dialect disagreement is a deliberate policy difference. |
 | JSONSCHEMA-DEC-002 | `json-schema-drafts-source` | `TestOfficialOptionalCoreFixtures`, `TestRegisteredVocabularyCompilesAndEvaluatesCustomKeyword`, `TestOfficialAnnotationFixtures` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
-| JSONSCHEMA-DEC-003 | `json-schema-drafts-source` | `TestFormatAssertionIsExplicitAndCompilerOwned`, `TestOfficialFormatAnnotationFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialFormatAssertionVocabularyFixtures`, `TestStandardFormatsDoNotLeakAcrossDialects`, `TestReviewedOfficialFormatVectors`, `TestReviewedOfficialConformanceVectors`, `TestReviewedOfficialURITemplatePercentEncodingVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
+| JSONSCHEMA-DEC-003 | `json-schema-drafts-source` | `TestFormatAssertionIsExplicitAndCompilerOwned`, `TestOfficialFormatAnnotationFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialFormatAssertionVocabularyFixtures`, `TestStandardFormatsDoNotLeakAcrossDialects`, `TestReviewedOfficialFormatVectors`, `TestReviewedOfficialConformanceVectors`, `TestReviewedOfficialURITemplatePercentEncodingVectors`, `TestReviewedOfficialRecentFormatVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-004 | `json-schema-drafts-source` | `TestContentKeywordsAreAnnotationsByDefault`, `TestContentAssertionIsLimitedToDraft7`, `TestOfficialDraft7ContentAssertionFixtures`, `TestContentValidationCoversPermissiveAndStrictBranches`, `TestContentValidationSeparatesSyntaxAndResourceFailures` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-005 | `json-schema-drafts-source` | `TestOfficialAnnotationFixtures`, `TestOfficialArrayAnnotationFixtures`, `TestOfficialAnnotationKeywordFixtures`, `TestAnnotationAndOutputTraversalSkipUnappliedSchemas`, `TestApplicableAnnotationsContinueAfterInapplicableKeywords` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-006 | `json-schema-drafts-source` | `TestOfficialUnevaluatedPropertiesFixtures`, `TestUnevaluatedAndPatternKeywordsPropagateTrackingFailures`, `TestUnevaluatedOutputContinuesAfterEvaluatedEntries` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
@@ -79,4 +89,4 @@ the gates in [RELEASING.md](../RELEASING.md).
 | JSONSCHEMA-DEC-012 | `rfc3986-source` | `TestNormalizeURLAppliesRFCIdentityRules`, `TestCompileRejectsEquivalentDuplicateResourceIdentifiers`, `TestMapLoaderUsesNormalizedResourceIdentity`, `TestRemoveDotSegmentsPreservesURIPathStructure` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-013 | `json-schema-drafts-source` | `TestOfficialRemoteReferenceFixtures`, `TestLoaderPanicsAreContainedAndRedacted`, `TestLoaderErrorsAreRedactedAndPreserved`, `TestFSLoaderConfinesResourcesToItsBase`, `TestCompositeLoaderFallsThroughOnlyForMissingResources`, `TestResolutionErrorsRedactURISecrets` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
 | JSONSCHEMA-DEC-014 | `json-schema-output-source` | `TestOfficialBasicOutputFixtures`, `TestBasicOutputPreservesReferenceEvaluationPath`, `TestVerboseOutputIncludesEveryEvaluatedKeyword`, `TestVerboseOutputRetainsAnnotationResults`, `TestOutputBoundaryHelpersAreExact` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
-| JSONSCHEMA-DEC-015 | `json-schema-test-suite-source` | `TestOfficialMandatoryFixtures`, `TestOfficialOptionalFixtures`, `TestOfficialOptionalCoreFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialOptionalRegexFixtures`, `TestReviewedOfficialFormatVectors`, `TestReviewedOfficialConformanceVectors`, `TestReviewedOfficialURITemplatePercentEncodingVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |
+| JSONSCHEMA-DEC-015 | `json-schema-test-suite-source` | `TestOfficialMandatoryFixtures`, `TestOfficialOptionalFixtures`, `TestOfficialOptionalCoreFixtures`, `TestOfficialOptionalCoreFormatFixtures`, `TestOfficialOptionalRegexFixtures`, `TestReviewedOfficialFormatVectors`, `TestReviewedOfficialConformanceVectors`, `TestReviewedOfficialURITemplatePercentEncodingVectors`, `TestReviewedOfficialRecentFormatVectors` | Not assessed; maintained-peer evidence is tracked separately from official-corpus conformance. |

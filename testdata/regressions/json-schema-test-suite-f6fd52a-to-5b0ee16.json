@@ -1,0 +1,323 @@
+{
+  "source": "https://github.com/json-schema-org/JSON-Schema-Test-Suite",
+  "compare": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/compare/f6fd52a0a95472e079cbfc6ef7f089702b80e045...5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8",
+  "base_revision": "f6fd52a0a95472e079cbfc6ef7f089702b80e045",
+  "head_revision": "5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8",
+  "reviewed_at": "2026-10-07",
+  "classification": "conformance-significant behavior-changing",
+  "commits": [
+    "1d82f70b87bba8c6f5d47b6b7e256401215d635b",
+    "80c87e8fca8b207a7a7ae944b875f0fcf889f46a",
+    "ccfc856873ca01e14e9f20ae1f601cfc4a661f0c",
+    "ab079cc2bace029fdbb483be28a6ade526bcfbc2",
+    "7741b279ca22de18fb14bfd4d0f4fca011ffca1f",
+    "918251dafa0805c1987ed258b1b802b838bea481",
+    "5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8"
+  ],
+  "source_files": [
+    {
+      "path": "tests/draft2019-09/optional/format/idn-email.json",
+      "sha256": "b3fbea96508deb2804c474f95ad477b41ec58f6758ec174fb4653410d2e6b479"
+    },
+    {
+      "path": "tests/draft2019-09/optional/format/iri-reference.json",
+      "sha256": "aa9c6b5b2143107977e847167ee878978b374596ed0c23dab43b2723eb6c387e"
+    },
+    {
+      "path": "tests/draft2019-09/optional/format/iri.json",
+      "sha256": "6c7f3b6a12e6b585f8af9cd972aeb3a99f92aef4ea6d94f2af32bb20170f68b7"
+    },
+    {
+      "path": "tests/draft2019-09/optional/format/relative-json-pointer.json",
+      "sha256": "3809993057a53dee61c61c0b7a9ae15bd2b6970eb0b930305518f0c26a933086"
+    },
+    {
+      "path": "tests/draft2019-09/optional/format/uri-reference.json",
+      "sha256": "0936ba32149334d4ccd85af183a55202c5ab1ef672e5c57b949326e3c3d1c9bb"
+    },
+    {
+      "path": "tests/draft2019-09/optional/format/uri-template.json",
+      "sha256": "6a335d28bd66e2fad49416be77df1811afe235daeb1d10d1e59a21ad255b5930"
+    },
+    {
+      "path": "tests/draft2020-12/optional/format/idn-email.json",
+      "sha256": "800790e2d8122c05d2fbb5ebcd2d84c80979ceefb03c0f8dc7e307c35a975672"
+    },
+    {
+      "path": "tests/draft2020-12/optional/format/iri-reference.json",
+      "sha256": "c9807eba7de6833ce3c3b21d434926cadba5d1b1ed51607df68d300ea3c54680"
+    },
+    {
+      "path": "tests/draft2020-12/optional/format/iri.json",
+      "sha256": "2936dfa842668eef76a0077d8cc10b17df692a662f83af9880ef7011f1fdc5f7"
+    },
+    {
+      "path": "tests/draft2020-12/optional/format/relative-json-pointer.json",
+      "sha256": "8bbe1d6bd8a355435fdfafccf143ca338b2530fa486315ce696f109d8e1fb869"
+    },
+    {
+      "path": "tests/draft2020-12/optional/format/uri-reference.json",
+      "sha256": "3a9913d43edd31650d3c4f8cc75b2b701bd6670c514cc759f4586245f72c59cb"
+    },
+    {
+      "path": "tests/draft2020-12/optional/format/uri-template.json",
+      "sha256": "44f1fcbf06f74ea6f005e0d9ac5ea9ba3b03bf9d358e05feb90e76385599688a"
+    },
+    {
+      "path": "tests/draft6/optional/format/uri-reference.json",
+      "sha256": "6d8b36df4eda1e3c1c9a29abd24f66d365ec742febcb1344a09062db0a11e3c7"
+    },
+    {
+      "path": "tests/draft6/optional/format/uri-template.json",
+      "sha256": "c6b6a7b75e4486f810e64b0209c1340dea80d7ddbc2f319b3d1c63d54cdb4913"
+    },
+    {
+      "path": "tests/draft7/optional/format/idn-email.json",
+      "sha256": "67204ac73ae09de1394959143974f793a92e0360211d90341cc15b06ad622ead"
+    },
+    {
+      "path": "tests/draft7/optional/format/iri-reference.json",
+      "sha256": "79fbc96edb952216e829e8e253fe82337daccd775724f552de59b858931a3caf"
+    },
+    {
+      "path": "tests/draft7/optional/format/iri.json",
+      "sha256": "72903ab369251908ef8f44e6485422d7b3ae31bc4cabda3663c3452b39123170"
+    },
+    {
+      "path": "tests/draft7/optional/format/relative-json-pointer.json",
+      "sha256": "8e70c02b389e6d15c59a43b224ffe130a8f4062fb487c00181e74799f851b6d1"
+    },
+    {
+      "path": "tests/draft7/optional/format/uri-reference.json",
+      "sha256": "6d8b36df4eda1e3c1c9a29abd24f66d365ec742febcb1344a09062db0a11e3c7"
+    },
+    {
+      "path": "tests/draft7/optional/format/uri-template.json",
+      "sha256": "c6b6a7b75e4486f810e64b0209c1340dea80d7ddbc2f319b3d1c63d54cdb4913"
+    },
+    {
+      "path": "tests/v1/format/idn-email.json",
+      "sha256": "1398ecc7c6442e1ff5b7cdadaf843e8a8b66139b8017d290eeff2b2b60de390f"
+    },
+    {
+      "path": "tests/v1/format/iri-reference.json",
+      "sha256": "ea402b8d45c91d63c687847bb2a8c32fd8a3c179aecacb7c16f463668eae1110"
+    },
+    {
+      "path": "tests/v1/format/iri.json",
+      "sha256": "9d8f4c5f66a5ec6358dd55650cea465effff4f2d6e566ef1507d18dd587b37db"
+    },
+    {
+      "path": "tests/v1/format/relative-json-pointer.json",
+      "sha256": "e27b1542e20a6b08ecbf427d6c0e7562922ece15f6da41b70ffaa08e9cfeb894"
+    },
+    {
+      "path": "tests/v1/format/uri-reference.json",
+      "sha256": "28e75f7e254bb70aa5fde11024d9ab33807b9e860a574513ac80742ac7cb5901"
+    },
+    {
+      "path": "tests/v1/format/uri-template.json",
+      "sha256": "19136207519a6b40bfabf3de8372fc584948e691c48ebc8291ae638b38502d1b"
+    }
+  ],
+  "supported_dialects": [
+    "draft6",
+    "draft7",
+    "draft2019-09",
+    "draft2020-12"
+  ],
+  "unsupported_dialects": [
+    "v1"
+  ],
+  "decisions": [
+    "JSONSCHEMA-DEC-003",
+    "JSONSCHEMA-DEC-015"
+  ],
+  "disposition": "Retain the frozen complete corpus. Future v1 files are provenance-only. Removed IPvFuture cases do not establish a new rejection requirement. Combined URI-template prefix and explode modifiers require correction; the other added cases preserve existing behavior.",
+  "groups": [
+    {
+      "commit": "7741b279ca22de18fb14bfd4d0f4fca011ffca1f",
+      "behavior": "idn-email added format cases",
+      "schema": {
+        "format": "idn-email"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft2019-09",
+        "draft2020-12",
+        "draft7"
+      ],
+      "tests": [
+        {
+          "description": "a domain label starting with a hyphen is not valid",
+          "data": "δοκιμή@-example.com",
+          "valid": false
+        },
+        {
+          "description": "a domain label ending with a hyphen is not valid",
+          "data": "δοκιμή@example-.com",
+          "valid": false
+        },
+        {
+          "description": "a domain starting with a dot is not valid",
+          "data": "δοκιμή@.example.com",
+          "valid": false
+        },
+        {
+          "description": "a domain ending with a dot is not valid",
+          "data": "δοκιμή@example.com.",
+          "valid": false
+        },
+        {
+          "description": "two subsequent dots inside the domain are not valid",
+          "data": "δοκιμή@example..com",
+          "valid": false
+        },
+        {
+          "description": "domain is required",
+          "data": "δοκιμή@",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "commit": "ab079cc2bace029fdbb483be28a6ade526bcfbc2",
+      "behavior": "iri-reference added format cases",
+      "schema": {
+        "format": "iri-reference"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft2019-09",
+        "draft2020-12",
+        "draft7"
+      ],
+      "tests": [
+        {
+          "description": "invalid percent-encoding with non-hex digits",
+          "data": "/%6G",
+          "valid": false
+        },
+        {
+          "description": "incomplete percent-encoding triplet",
+          "data": "/%A",
+          "valid": false
+        },
+        {
+          "description": "lone percent sign is invalid",
+          "data": "/%",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "commit": "80c87e8fca8b207a7a7ae944b875f0fcf889f46a",
+      "behavior": "relative-json-pointer added format cases",
+      "schema": {
+        "format": "relative-json-pointer"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft2019-09",
+        "draft2020-12",
+        "draft7"
+      ],
+      "tests": [
+        {
+          "description": "a json-pointer part that does not start with a slash is invalid",
+          "data": "1foo",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "commit": "ab079cc2bace029fdbb483be28a6ade526bcfbc2",
+      "behavior": "uri-reference added format cases",
+      "schema": {
+        "format": "uri-reference"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft2019-09",
+        "draft2020-12",
+        "draft6",
+        "draft7"
+      ],
+      "tests": [
+        {
+          "description": "incomplete percent-encoding triplet",
+          "data": "/%A",
+          "valid": false
+        },
+        {
+          "description": "lone percent sign is invalid",
+          "data": "/%",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "commit": "ccfc856873ca01e14e9f20ae1f601cfc4a661f0c",
+      "behavior": "uri-template a private-use character in a literal is valid",
+      "schema": {
+        "format": "uri-template"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft2019-09",
+        "draft2020-12",
+        "draft6",
+        "draft7"
+      ],
+      "tests": [
+        {
+          "description": "a private-use character in a literal is valid",
+          "data": "a\ue000b",
+          "valid": true
+        }
+      ]
+    },
+    {
+      "commit": "5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8",
+      "behavior": "uri-template a supplementary private-use character in a literal is valid",
+      "schema": {
+        "format": "uri-template"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft2019-09",
+        "draft2020-12",
+        "draft6",
+        "draft7"
+      ],
+      "tests": [
+        {
+          "description": "a supplementary private-use character in a literal is valid",
+          "data": "a\udb80\udc00b",
+          "valid": true
+        }
+      ]
+    },
+    {
+      "commit": "918251dafa0805c1987ed258b1b802b838bea481",
+      "behavior": "uri-template combined prefix and explode modifiers are invalid",
+      "schema": {
+        "format": "uri-template"
+      },
+      "format_assertion": true,
+      "dialects": [
+        "draft2019-09",
+        "draft2020-12",
+        "draft6",
+        "draft7"
+      ],
+      "tests": [
+        {
+          "description": "combined prefix and explode modifiers are invalid",
+          "data": "{var:1*}",
+          "valid": false
+        }
+      ]
+    }
+  ]
+}

@@ -693,22 +693,86 @@ func validURITemplate(value string) bool {
 		return false
 	}
 
-	depth := 0
 	for index := 0; index < len(value); index++ {
 		switch value[index] {
 		case '{':
-			if depth != 0 {
+			end := strings.IndexByte(value[index+1:], '}')
+			if end < 0 || !validURITemplateExpression(value[index+1:index+1+end]) {
 				return false
 			}
-			depth = 1
+			index += end + 1
 		case '}':
-			if depth == 0 {
-				return false
-			}
-			depth = 0
+			return false
 		}
 	}
-	return depth == 0
+	return true
+}
+
+func validURITemplateExpression(expression string) bool {
+	if expression == "" {
+		return false
+	}
+	// RFC 6570 also reserves operators for future extensions; format validation
+	// checks their syntax, not whether a template processor implements expansion.
+	if strings.ContainsRune("+#./;?&=,!@|", rune(expression[0])) {
+		expression = expression[1:]
+	}
+	for {
+		variable, rest, more := strings.Cut(expression, ",")
+		if !validURITemplateVariable(variable) {
+			return false
+		}
+		if !more {
+			return true
+		}
+		expression = rest
+	}
+}
+
+func validURITemplateVariable(variable string) bool {
+	index := 0
+	for index < len(variable) {
+		character := variable[index]
+		switch {
+		case character >= 'a' && character <= 'z', character >= 'A' && character <= 'Z',
+			character >= '0' && character <= '9', character == '_':
+			index++
+		case character == '%':
+			// The complete template has already passed percent-triplet validation.
+			index += 3
+		case character == '.':
+			if index == 0 || variable[index-1] == '.' {
+				return false
+			}
+			index++
+		default:
+			goto modifier
+		}
+	}
+
+modifier:
+	if index == 0 || variable[index-1] == '.' {
+		return false
+	}
+	if index == len(variable) {
+		return true
+	}
+	if variable[index] == '*' {
+		return index+1 == len(variable)
+	}
+	if variable[index] != ':' {
+		return false
+	}
+	prefix := variable[index+1:]
+	if len(prefix) == 0 || len(prefix) > 4 || prefix[0] < '1' || prefix[0] > '9' {
+		return false
+	}
+	for index := 1; index < len(prefix); index++ {
+		if prefix[index] < '0' || prefix[index] > '9' {
+			return false
+		}
+	}
+	return true
 }
 
 func validUUID(value string) bool {

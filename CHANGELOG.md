@@ -5,7 +5,18 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+Updated decisions for the reviewed official-suite format correction:
+- JSONSCHEMA-DEC-003 sha256:b2448b01629f2377811b7878c922c0e84f57df68506d7494297b0149a602bf16
+- JSONSCHEMA-DEC-015 sha256:1988cb7c2fcdcad5740b12d3b19e2753f4f5406608afc868705b98e3917f39bc
+
 ### Changed
+
+- Reject URI-template expressions combining prefix and explode modifiers,
+  while preserving valid modifiers and BMP/supplementary private-use literals.
+  Review the next seven-commit official-suite range through `5b0ee161`, with
+  all 26 changed-file identities and 15 added format cases. Keep the complete
+  corpus pinned at `c0b038ad`; future v1 files remain provenance-only, and
+  removed IPvFuture cases do not introduce new rejection behavior.
 
 - Adopt regexp2/v2 v2.8.2 for bounded ECMAScript Unicode patterns and
   asserted regex formats. Support standard Unicode property expressions
