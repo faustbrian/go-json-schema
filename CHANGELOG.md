@@ -134,6 +134,26 @@ Changelog structure and semantic versioning after v1.
 - Document standalone repository tags instead of the obsolete monorepo tag
   convention.
 
+## 1.1.0 - 2026-10-07
+
+### Changed
+
+- Support bounded ECMAScript Unicode property expressions and asserted regex
+  formats with regexp2/v2 v2.8.2. Previously accepted nonstandard patterns
+  now reject; review stored expressions using the
+  [regular-expression migration](docs/dialects.md#regular-expression-migration).
+- Preserve canonical supplementary-plane hostname labels with updated
+  Unicode normalization while retaining canonical Punycode rejection.
+- Require Go 1.27.0 for builds and downstream consumers; Go 1.26 users must
+  upgrade their toolchain. The exported Go API remains compatible with v1.0.0.
+
+### Fixed
+
+- Reject malformed percent encodings in URI templates across the applicable
+  released dialects, with pinned official-suite regression vectors.
+- Correct Bowtie repository URLs and retain complete Unicode attribution
+  in source distributions.
+
 ## 1.0.0 - 2026-08-26
 
 ### Changed
