@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "packages": [
+    {
+      "module_directory": ".",
+      "package_directory": ".",
+      "source_digest": "8db1a102c1cf055cdc214c2d7f27b90c91a39e37e2094282a6fce75b48ebf328",
+      "gremlins_version": "v0.6.0",
+      "gremlins_verifier_sha256": "390cf4085a0063fe5dcaa29ce942ea4cb8c7876347da90376b65dc8c5c811104",
+      "mutations": [
+        {
+          "file_name": "formats.go",
+          "type": "CONDITIONALS_BOUNDARY",
+          "line": 700,
+          "column": 11,
+          "contract_domain": "Public URI-template format validation with immutable caller inputs; identical validity result, error classification and owned side effects for every expression",
+          "reason": "Independent reviewer /root/json_schema_expression_final_review supports narrow equivalence; date 2026-10-07; expiry 2026-11-06 or any bound source, verifier, expression admission or caller-contract change. Gremlins changes end<0 to end<=0. Negative and positive offsets select the same branches. At zero, the original passes the empty expression to validURITemplateExpression, which immediately returns false without side effects, and the mutant returns false directly. Both refuse the same template; existing public empty-expression controls exercise all four supported dialects. Exact private call traces are not promised public behavior. Native37627050441 remains FAILED with this coordinate LIVED; this disposition does not rewrite counters, admit timed-out mutations or accept any other survivor."
+        }
+      ]
+    }
+  ]
+}
