@@ -7,6 +7,10 @@ Changelog structure and semantic versioning after v1.
 
 ### Changed
 
+- Adopt x/net v0.59.0 and x/text v0.42.0. Preserve canonical
+  supplementary-plane hostname labels through Unicode normalization,
+  retaining canonical Punycode rejection and the maintained peer pins.
+
 - Adopt x/net v0.58.0 and x/text v0.41.0 while preserving the public
   format-validation contract. Refresh maintained-peer observations for
   Kaptinlin v0.9.10 with jsonpointer v0.4.28 and URI templates v3.0.2; all
