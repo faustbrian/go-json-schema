@@ -25,3 +25,25 @@ versus `dependentRequired` and `dependentSchemas`, exclusive-bound forms,
 contains limits, `$recursiveRef` versus `$dynamicRef`, `$defs`, unevaluated
 keywords, vocabulary declarations, content, and format assertion policy. Run
 both source and target official lanes plus application regressions.
+
+## Regular-expression migration
+
+`pattern` and `patternProperties` use ECMAScript regular expressions in
+Unicode mode. The regexp2/v2 v2.8.2 update recognizes standard property
+expressions such as `\p{Script=Greek}`. A matching `patternProperties` entry
+still validates the property's value and marks that property evaluated for
+`unevaluatedProperties`.
+
+Preflight stored schemas before adopting this update. Previously accepted
+nonstandard expressions such as `\p{Greek}`, `\p{GCB=RI}`, `^*`, and `(?=a)*`
+now fail schema compilation with `ErrInvalidSchema`. Use
+`\p{Script=Greek}` for the Greek script instead of the shorthand
+`\p{Greek}`. Consult the
+[ECMAScript Unicode property grammar](https://tc39.es/ecma262/2025/multipage/text-processing.html#prod-UnicodePropertyValueExpression)
+when rewriting other expressions.
+
+The built-in asserted `format: "regex"` checker also recognizes standard
+Unicode properties and rejects unsupported property names. Format annotation
+does not become assertion implicitly, and a registered custom `regex` format
+continues to replace the built-in checker. Existing regex byte, count,
+backtracking, and matching-time limits remain caller-configurable.

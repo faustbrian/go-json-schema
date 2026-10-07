@@ -7,6 +7,12 @@ Changelog structure and semantic versioning after v1.
 
 ### Changed
 
+- Adopt regexp2/v2 v2.8.2 for bounded ECMAScript Unicode patterns and
+  asserted regex formats. Support standard Unicode property expressions
+  such as `\p{Script=Greek}` and reject formerly accepted nonstandard
+  pattern syntax. Review stored expressions before upgrading; see
+  [regular-expression migration](docs/dialects.md#regular-expression-migration).
+
 - Adopt x/net v0.59.0 and x/text v0.42.0. Preserve canonical
   supplementary-plane hostname labels through Unicode normalization,
   retaining canonical Punycode rejection and the maintained peer pins.
