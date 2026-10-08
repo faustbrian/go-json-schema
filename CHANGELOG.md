@@ -5,6 +5,11 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+### Documentation
+
+- Clarify security support for each module's latest stable major release line
+  and link the shared vulnerability-management and coordinated-release policy.
+
 ### v2 release preparation
 
 - Prepare `v2.0.0` on main with the `/v2` Go module path and Go 1.27 minimum.

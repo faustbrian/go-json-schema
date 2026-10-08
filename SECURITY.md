@@ -9,12 +9,18 @@ fixtures, or affected deployment information.
 
 Include the affected module and version, impact, reproduction, preconditions,
 and any suggested mitigation. Reports are acknowledged as soon as practical;
-timelines depend on severity and verification.
+timelines depend on severity and verification. The repository maintainer follows
+the shared [vulnerability-management policy](https://github.com/faustbrian/go-library-tools/blob/main/docs/ecosystem/security/vulnerability-management.md)
+for severity, response targets, private evidence, embargoes, advisories, and
+coordinated publication of affected modules.
 
 ## Supported Versions
 
-The latest stable `v1` release line receives security fixes. Support windows
-are documented per module and in
+Security fixes are developed on `main` and published for the latest stable
+major release line of each independently versioned module. Earlier major
+releases remain available, but security backports are not guaranteed. A new
+root-module release does not update another module's minimum dependency
+version. Follow the affected module's upgrade guidance and
 [`COMPATIBILITY.md`](COMPATIBILITY.md).
 
 ## Security Gates
