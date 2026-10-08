@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func must[T any](value T, err error) T {

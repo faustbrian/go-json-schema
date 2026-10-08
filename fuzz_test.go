@@ -11,7 +11,7 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func FuzzCompileAndValidate(f *testing.F) {

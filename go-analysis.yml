@@ -1,5 +1,5 @@
 version: 1
 
 entrypoints:
-  - github.com/faustbrian/go-json-schema/cmd/bowtie-json-schema
-  - github.com/faustbrian/go-json-schema/internal/cmd/conformance-manifest
+  - github.com/faustbrian/go-json-schema/v2/cmd/bowtie-json-schema
+  - github.com/faustbrian/go-json-schema/v2/internal/cmd/conformance-manifest

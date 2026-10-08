@@ -5,14 +5,14 @@
   "modules": [
     {
       "directory": ".",
-      "module_path": "github.com/faustbrian/go-json-schema",
+      "module_path": "github.com/faustbrian/go-json-schema/v2",
       "go_version": "1.27.0",
       "packages": [
         {
           "module_directory": ".",
           "directory": ".",
           "name": "jsonschema",
-          "import_path": "github.com/faustbrian/go-json-schema",
+          "import_path": "github.com/faustbrian/go-json-schema/v2",
           "kind": "public",
           "production": true,
           "executable": true,
@@ -24,7 +24,7 @@
           "module_directory": ".",
           "directory": "cmd/bowtie-json-schema",
           "name": "main",
-          "import_path": "github.com/faustbrian/go-json-schema/cmd/bowtie-json-schema",
+          "import_path": "github.com/faustbrian/go-json-schema/v2/cmd/bowtie-json-schema",
           "kind": "command",
           "production": true,
           "executable": true,
@@ -36,7 +36,7 @@
           "module_directory": ".",
           "directory": "internal/cmd/conformance-manifest",
           "name": "main",
-          "import_path": "github.com/faustbrian/go-json-schema/internal/cmd/conformance-manifest",
+          "import_path": "github.com/faustbrian/go-json-schema/v2/internal/cmd/conformance-manifest",
           "kind": "tooling",
           "production": false,
           "executable": true,
@@ -67,10 +67,10 @@
         ],
         "public_package_identifier": "jsonschema",
         "primary_entry_packages": [
-          "github.com/faustbrian/go-json-schema"
+          "github.com/faustbrian/go-json-schema/v2"
         ],
         "package_selection": {
-          "github.com/faustbrian/go-json-schema": "Use jsonschema to compile and validate exact-number JSON Schema documents across Draft 3 through Draft 2020-12; use validation for application value and rule validation, and OpenAPI for complete OpenAPI documents."
+          "github.com/faustbrian/go-json-schema/v2": "Use jsonschema to compile and validate exact-number JSON Schema documents across Draft 3 through Draft 2020-12; use validation for application value and rule validation, and OpenAPI for complete OpenAPI documents."
         },
         "lifecycle_status": "active",
         "maturity": "stable",
@@ -120,7 +120,7 @@
           "examples": "docs/cookbook.md",
           "faq": "docs/faq.md",
           "changelog": "CHANGELOG.md",
-          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-json-schema",
+          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-json-schema/v2",
           "ecosystem_index": "https://github.com/faustbrian/go-library-tools/blob/v1.5.6/docs/ecosystem/README.md"
         },
         "known_good_compatibility_sets": [],
@@ -130,17 +130,10 @@
           "release": "not-started"
         }
       },
-      "version": "1.0.0",
+      "version": "2.0.0",
       "tag_prefix": "v",
       "owned_dependencies": [],
-      "reverse_owned_dependencies": [
-        "github.com/faustbrian/go-cloudevents/adapters/golib",
-        "github.com/faustbrian/go-json-schema/benchmarks/comparison",
-        "github.com/faustbrian/go-openapi",
-        "github.com/faustbrian/go-openapi/interoperability",
-        "github.com/faustbrian/go-schema-registry",
-        "github.com/faustbrian/go-schema-registry/providers/confluent"
-      ],
+      "reverse_owned_dependencies": [],
       "external_runtime_dependencies": [
         "github.com/dlclark/regexp2/v2",
         "golang.org/x/net"

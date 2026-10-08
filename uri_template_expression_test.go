@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func TestURITemplateExpressionModifiers(t *testing.T) {

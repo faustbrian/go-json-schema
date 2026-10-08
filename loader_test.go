@@ -8,7 +8,7 @@ import (
 	"testing"
 	"testing/fstest"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 type panickingFS struct{}

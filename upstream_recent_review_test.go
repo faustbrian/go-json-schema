@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func TestReviewedOfficialRecentFormatVectors(t *testing.T) {

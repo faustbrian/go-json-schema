@@ -8,7 +8,7 @@ import (
 	"io"
 	"os"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 var supportedDialects = []jsonschema.Dialect{

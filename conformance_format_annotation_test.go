@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func TestOfficialFormatAnnotationFixtures(t *testing.T) {

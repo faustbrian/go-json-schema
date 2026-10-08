@@ -5,7 +5,7 @@
 [![Coverage](https://img.shields.io/badge/coverage-100%25_required-blue)](CONTRIBUTING.md#verification)
 [![Mutation](https://img.shields.io/badge/mutation-100%25_required-blue)](CONTRIBUTING.md#verification)
 [![Documentation](https://img.shields.io/badge/docs-checked_in_CI-blue)](docs/)
-[![Go Reference](https://pkg.go.dev/badge/github.com/faustbrian/go-json-schema.svg)](https://pkg.go.dev/github.com/faustbrian/go-json-schema)
+[![Go Reference](https://pkg.go.dev/badge/github.com/faustbrian/go-json-schema/v2.svg)](https://pkg.go.dev/github.com/faustbrian/go-json-schema/v2)
 [![Release](https://img.shields.io/github/v/release/faustbrian/go-json-schema?sort=semver)](https://github.com/faustbrian/go-json-schema/releases)
 [![Go](https://img.shields.io/badge/go-1.27.0-00ADD8?logo=go)](https://go.dev/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -20,13 +20,13 @@ and optional fixture files with zero skips and zero failures. See
 [conformance](docs/conformance.md) for the supported surface and evidence
 policy.
 
-The module is active and has a stable v1 API. The minimum supported and tested
+The module is active and has a stable v2 API. The minimum supported and tested
 toolchain is Go 1.27.0.
 
 ## Installation
 
 ```sh
-go get github.com/faustbrian/go-json-schema@v1
+go get github.com/faustbrian/go-json-schema/v2@v2
 ```
 
 ## Quick start
@@ -38,7 +38,7 @@ import (
 	"context"
 	"fmt"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func main() {
@@ -111,7 +111,7 @@ through `WithVocabulary` for explicit extension seams. The
 
 | Path | Kind | Use |
 | --- | --- | --- |
-| `github.com/faustbrian/go-json-schema` | Public package | Compile and validate JSON Schema documents. |
+| `github.com/faustbrian/go-json-schema/v2` | Public package | Compile and validate JSON Schema documents. |
 | `cmd/bowtie-json-schema` | Command | Run the repository's Bowtie interoperability harness. |
 | `internal/cmd/conformance-manifest` | Internal harness | Regenerate repository-owned conformance evidence for maintainers. |
 | `benchmarks/comparison` | Internal nested module | Compare maintained peer implementations; it is not released independently. |

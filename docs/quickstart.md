@@ -4,7 +4,7 @@ Install the module using the version selected by your application's dependency
 policy:
 
 ```sh
-go get github.com/faustbrian/go-json-schema@v1
+go get github.com/faustbrian/go-json-schema/v2@v2
 ```
 
 Compile once and validate many times. This exact program is compiled and run
@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func main() {

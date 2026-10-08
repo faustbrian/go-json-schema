@@ -1,4 +1,4 @@
-module github.com/faustbrian/go-json-schema
+module github.com/faustbrian/go-json-schema/v2
 
 go 1.27.0
 

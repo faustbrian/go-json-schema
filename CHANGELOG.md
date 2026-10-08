@@ -5,6 +5,16 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+### v2 release preparation
+
+- Prepare `v2.0.0` on main with the `/v2` Go module path and Go 1.27 minimum.
+  Update imports and the toolchain when upgrading from v1. The exported API
+  remains unchanged; review stored expressions against the ECMAScript
+  migration guidance. The cumulative URI-template grammar, Unicode pattern
+  and canonical hostname corrections below are included in this new major.
+  The internal comparison harness retains its published v1 baseline until
+  v2 is publicly available; it does not yet qualify the new major.
+
 Updated decisions for the reviewed official-suite format correction:
 - JSONSCHEMA-DEC-003 sha256:b2448b01629f2377811b7878c922c0e84f57df68506d7494297b0149a602bf16
 - JSONSCHEMA-DEC-015 sha256:1988cb7c2fcdcad5740b12d3b19e2753f4f5406608afc868705b98e3917f39bc

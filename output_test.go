@@ -9,7 +9,7 @@ import (
 	"slices"
 	"testing"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func TestBasicOutputPreservesReferenceEvaluationPath(t *testing.T) {

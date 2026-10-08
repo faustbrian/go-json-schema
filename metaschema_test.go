@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func TestOfficialMetaSchemasCompileAgainstTheirDialect(t *testing.T) {

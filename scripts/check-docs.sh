@@ -50,14 +50,14 @@ python3 scripts/docs_contract.py --root "${root}" --output "${snippet_dir}"
 )
 
 for document in README.md docs/quickstart.md; do
-	if ! grep -Fq 'go get github.com/faustbrian/go-json-schema@v1' "${document}"; then
-		printf 'canonical v1 installation is missing from %s\n' "${document}" >&2
+	if ! grep -Fq 'go get github.com/faustbrian/go-json-schema/v2@v2' "${document}"; then
+		printf 'canonical v2 installation is missing from %s\n' "${document}" >&2
 		exit 1
 	fi
 done
 
 if grep -Fq 'under active development' doc.go api/baseline.txt; then
-	printf 'stable-v1 package documentation is stale\n' >&2
+	printf 'stable package documentation is stale\n' >&2
 	exit 1
 fi
 

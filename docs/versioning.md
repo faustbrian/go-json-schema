@@ -28,3 +28,23 @@ now fail construction with `ErrResourceUnavailable`.
 
 Module releases use repository tags such as `v1.0.0`. The release process is
 in [RELEASING.md](../RELEASING.md).
+
+## Migrating to v2
+
+The v2 module requires Go 1.27 and uses the import path
+`github.com/faustbrian/go-json-schema/v2`. Upgrade the toolchain and update
+imports before adopting `v2.0.0`; no version-specific source directory is used.
+The exported API is unchanged, but stored regular expressions should be
+reviewed against the [ECMAScript migration guidance](dialects.md#regular-expression-migration).
+URI-template grammar and canonical hostname handling now enforce the selected
+normative contracts.
+
+The internal comparison harness retains its published v1 dependency during
+root release preparation. That is a v1 consumer baseline, not v2 qualification;
+the harness will adopt v2 through public module resolution after publication.
+
+Pending direct-consumer adoption targets also include CloudEvents
+`adapters/golib` (through `adapters/jsonschema`), OpenAPI root and
+`interoperability`, and Schema Registry root and `providers/confluent`.
+They currently consume v1; no v2 reverse dependency is declared until that
+consumer has adopted and qualified the public new major.

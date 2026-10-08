@@ -166,10 +166,10 @@ def write_snippets(root: Path, output: Path, blocks: list[tuple[Path, str]]) -> 
     if not blocks:
         raise ValueError("public documentation contains no Go examples")
 
-    module = "github.com/faustbrian/go-json-schema"
+    module = "github.com/faustbrian/go-json-schema/v2"
     (output / "go.mod").write_text(
         "module documentation-snippets\n\ngo 1.27.0\n\n"
-        f"require {module} v0.0.0\n\nreplace {module} => {root}\n",
+        f"require {module} v2.0.0\n\nreplace {module} => {root}\n",
         encoding="utf-8",
     )
     fragments: list[tuple[Path, str]] = []
@@ -196,7 +196,7 @@ import (
     "errors"
     "os"
 
-    jsonschema "github.com/faustbrian/go-json-schema"
+    jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 var (

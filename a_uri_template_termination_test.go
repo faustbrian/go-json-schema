@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 func TestURITemplateValidationTerminatesForFiniteExpressions(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	jsonschema "github.com/faustbrian/go-json-schema"
+	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
 type fixtureGroup struct {

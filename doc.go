@@ -5,6 +5,6 @@
 // output shape, and resource limits are explicit compiler configuration. A
 // compiled schema is immutable and safe for concurrent use.
 //
-// The module provides a stable v1 API. Compliance claims are made only by the
+// The module provides a stable v2 API. Compliance claims are made only by the
 // generated conformance evidence committed with the module.
 package jsonschema
