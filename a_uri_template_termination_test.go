@@ -22,6 +22,8 @@ func TestURITemplateValidationTerminatesForFiniteExpressions(t *testing.T) {
 		// this is a test budget, not a public validation latency guarantee.
 		ctx, cancel := context.WithTimeout(t.Context(), 2*time.Second)
 		defer cancel()
+		// #nosec G204 -- os.Executable selects this test binary; fixed arguments,
+		// no input-derived command or shell, and the bounded process is waited.
 		command := exec.CommandContext(ctx, executable,
 			"-test.run=^TestURITemplateValidationTerminatesForFiniteExpressions$",
 			"-test.count=1")
