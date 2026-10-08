@@ -133,7 +133,9 @@
       "version": "2.0.0",
       "tag_prefix": "v",
       "owned_dependencies": [],
-      "reverse_owned_dependencies": [],
+      "reverse_owned_dependencies": [
+        "github.com/faustbrian/go-json-schema/benchmarks/comparison"
+      ],
       "external_runtime_dependencies": [
         "github.com/dlclark/regexp2/v2",
         "golang.org/x/net"
@@ -190,7 +192,7 @@
       "version": "unreleased",
       "tag_prefix": "benchmarks/comparison/v",
       "owned_dependencies": [
-        "github.com/faustbrian/go-json-schema"
+        "github.com/faustbrian/go-json-schema/v2"
       ],
       "reverse_owned_dependencies": [],
       "external_runtime_dependencies": [

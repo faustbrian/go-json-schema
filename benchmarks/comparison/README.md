@@ -6,6 +6,13 @@ peer dependencies from the public JSON Schema module. It compares Draft
 `santhosh-tekuri/jsonschema/v6`, and verifies the deliberately different
 outcomes recorded for selected specification decisions.
 
+The current harness consumes public `go-json-schema/v2` v2.0.0 and checks its
+released Unicode and URI-template grammar. Current three-implementation
+observations are in
+[`maintained-peers-v2.json`](../../specification/differential/maintained-peers-v2.json).
+The earlier observation file and benchmark measurements remain historical;
+adopting v2 does not remeasure or rewrite those results.
+
 The implementations do not expose identical compilation contracts. The local
 compiler validates schemas against the official meta-schema and enforces
 explicit context, resource, exact-number, output, and callback bounds. Results

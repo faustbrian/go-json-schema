@@ -13,12 +13,12 @@ import (
 	"reflect"
 	"testing"
 
-	owned "github.com/faustbrian/go-json-schema"
+	owned "github.com/faustbrian/go-json-schema/v2"
 	kaptin "github.com/kaptinlin/jsonschema"
 	tekuri "github.com/santhosh-tekuri/jsonschema/v6"
 )
 
-const differentialFixture = "../../specification/differential/maintained-peers.json"
+const differentialFixture = "../../specification/differential/maintained-peers-v2.json"
 
 type differentialReport struct {
 	SchemaVersion   int                       `json:"schema_version"`
@@ -117,7 +117,7 @@ func assertPeerVersions(t *testing.T, implementations map[string]implementation)
 		}
 		versions[module.Path] = module.Version
 	}
-	for _, name := range []string{"kaptinlin", "santhosh-tekuri"} {
+	for _, name := range []string{"faustbrian", "kaptinlin", "santhosh-tekuri"} {
 		identity := implementations[name]
 		if got := versions[identity.Module]; got != identity.Version {
 			t.Errorf("%s version = %q, want %q", identity.Module, got, identity.Version)

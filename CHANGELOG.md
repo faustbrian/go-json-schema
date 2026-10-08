@@ -5,6 +5,13 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+### Comparison module
+
+- Adopt public v2.0.0 in the internal comparison module and verify the
+  released Unicode and URI-template grammar alongside maintained peers.
+  Record current observations separately, preserving earlier evidence
+  and benchmark measurements. The root runtime and release are unchanged.
+
 ### Documentation
 
 - Clarify security support for each module's latest stable major release line

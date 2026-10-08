@@ -3,7 +3,7 @@ module github.com/faustbrian/go-json-schema/benchmarks/comparison
 go 1.27.0
 
 require (
-	github.com/faustbrian/go-json-schema v1.0.0
+	github.com/faustbrian/go-json-schema/v2 v2.0.0
 	github.com/kaptinlin/jsonschema v0.9.10
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
 )
