@@ -16,7 +16,7 @@ test realistic worst cases before reducing a value.
 | `MaxTotalSchemaBytes` | Aggregate schema resource bytes |
 | `MaxSchemaNodes` | Compiled schema and subschema plans |
 | `MaxCombinatorBranches` | Schema-array fan-out |
-| `MaxRegexCount` / `MaxRegexBytes` | Schema patterns and asserted regex format values |
+| `MaxRegexCount` / `MaxRegexBytes` | Compiled schema pattern count / each schema-pattern or asserted regex-format byte size |
 | `MaxRegexBacktracking` | Backtracking stack slots per match |
 | `MaxRegexMatchMilliseconds` | Approximate wall-clock duration per match |
 | `MaxReferenceDepth` | Nested reference evaluation |
@@ -29,8 +29,12 @@ test realistic worst cases before reducing a value.
 | `MaxAnnotationBytes` | One custom annotation |
 | `MaxOutputUnits` | Generated diagnostic and annotation units |
 
-All values must be positive. Exhaustion returns `*LimitError`, classifiable as
-`ErrLimitExceeded`, and identifies the resource. Cancellation is checked
+All values must be positive. Exhaustion is classifiable as `ErrLimitExceeded`;
+some parser limits return `JSONError`, while compiler/evaluator budgets use
+`LimitError`. These are selected counters, not total heap or instruction caps.
+Loaders and the JSON encoder can allocate before returned-byte admission.
+Output phases repeat evaluation and share the per-call counters; one custom
+annotation is bounded separately from total built-in annotations. Cancellation is checked
 through parsing, compilation callbacks, loaders, evaluation, output, and
 extension callbacks. Limits bound owned work; application callbacks must also
 honor their context and avoid hidden goroutines or unbounded external work.

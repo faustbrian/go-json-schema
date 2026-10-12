@@ -34,6 +34,10 @@ func compilePatternWithLimits(pattern string, limits Limits) (*ecmaPattern, erro
 	}, nil
 }
 
+// JSONSCHEMA-DEC-011 binds ECMA-262 16th edition to the pinned regexp2
+// ECMAScript+Unicode engine. Matching has
+// engine stack/time guards, not a context-interruptible call. Replace its
+// input-bearing errors with typed limits; regex_internal_test.go guards this.
 func (pattern *ecmaPattern) matchString(value string) (bool, error) {
 	matched, err := pattern.compiled.MatchString(value)
 	if err == nil {

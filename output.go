@@ -27,19 +27,30 @@ const (
 
 // OutputUnit is one unit in a standard JSON Schema validation output.
 type OutputUnit struct {
-	Valid                   bool         `json:"valid"`
-	KeywordLocation         string       `json:"keywordLocation"`
-	AbsoluteKeywordLocation string       `json:"absoluteKeywordLocation,omitempty"`
-	InstanceLocation        string       `json:"instanceLocation"`
-	Error                   string       `json:"error,omitempty"`
-	Errors                  []OutputUnit `json:"errors,omitempty"`
-	Annotations             []OutputUnit `json:"annotations,omitempty"`
-	Annotation              any          `json:"annotation,omitempty"`
-	format                  OutputFormat
+	// Valid is this unit's validity; inspect the method error before using a returned root.
+	Valid bool `json:"valid"`
+	// KeywordLocation is a JSON Pointer evaluation path, with reference applicators retained.
+	KeywordLocation string `json:"keywordLocation"`
+	// AbsoluteKeywordLocation is the canonical dereferenced resource location when available; it may contain application URI data.
+	AbsoluteKeywordLocation string `json:"absoluteKeywordLocation,omitempty"`
+	// InstanceLocation is the instance JSON Pointer; member names can be sensitive.
+	InstanceLocation string `json:"instanceLocation"`
+	// Error is a human-readable validation diagnostic, not a safe logging boundary.
+	Error string `json:"error,omitempty"`
+	// Errors holds caller-owned nested failure units; format controls hierarchy.
+	Errors []OutputUnit `json:"errors,omitempty"`
+	// Annotations holds caller-owned nested annotation units, not necessarily retained successful-path annotations.
+	Annotations []OutputUnit `json:"annotations,omitempty"`
+	// Annotation holds detached decoded annotation data; maps/slices are mutable and exact numbers use json.Number.
+	Annotation any `json:"annotation,omitempty"`
+	format     OutputFormat
 }
 
-// MarshalJSON emits the compact standard representation selected for the
-// root output unit.
+// MarshalJSON emits the representation selected for the root output unit;
+// Flag emits only validity. Other units use their JSON field tags: nil
+// Annotation is omitted, including a decoded explicit JSON null annotation.
+// This existing limitation is not full null-annotation output conformance.
+// Caller-modified Annotation can introduce ordinary encoding/json errors.
 func (unit OutputUnit) MarshalJSON() ([]byte, error) {
 	if unit.format == OutputFlag {
 		return json.Marshal(struct {
@@ -78,6 +89,12 @@ func (schema *Schema) CollectAnnotations(
 }
 
 // ValidateOutput validates raw JSON and returns the selected standard output.
+// Invalid instances produce Valid=false with nil error; parse, cancellation,
+// callback and limit failures return a zero unit and error, not partial output.
+// Non-flag forms repeat evaluation with shared counters and may invoke callbacks
+// again, so purity is required. Trees/annotation containers are detached and
+// mutable; locations and annotations may contain sensitive data.
+// See JSONSCHEMA-DEC-005/014.
 func (schema *Schema) ValidateOutput(
 	ctx context.Context,
 	raw []byte,

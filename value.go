@@ -8,7 +8,11 @@ import (
 )
 
 // ValidateValue validates a caller-provided value after bounded JSON
-// encoding. Integer types and json.Number retain exact decimal semantics.
+// encoding. Integer types and json.Number retain exact decimal semantics;
+// existing float rounding is not recovered. Inputs/custom MarshalJSON methods
+// are borrowed during encoding and must not mutate concurrently. Output byte
+// admission follows encoding/json internal buffering, so it is not a heap cap.
+// Callback panics are contained, but blocking marshalers cannot be interrupted.
 func (schema *Schema) ValidateValue(ctx context.Context, value any) (Result, error) {
 	raw, err := schema.encodeValue(ctx, value)
 	if err != nil {

@@ -14,6 +14,9 @@ Changelog structure and semantic versioning after v1.
 
 ### Documentation
 
+- Clarify schema/callback ownership, cooperative cancellation, budget admission
+  timing and diagnostic boundaries; document raw-reference error and null
+  annotation wire limitations without changing runtime or protocol policy.
 - Clarify security support for each module's latest stable major release line
   and link the shared vulnerability-management and coordinated-release policy.
 

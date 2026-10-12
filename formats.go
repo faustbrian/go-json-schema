@@ -16,13 +16,18 @@ import (
 
 // FormatChecker validates the string representation of a named format.
 type FormatChecker interface {
+	// Valid distinguishes assertion failure (false, nil) from operational error.
+	// Borrowed checkers may run concurrently and repeatedly for output; they
+	// must be deterministic and cooperate with context. Library containment
+	// hides custom callback panic/error text, not blocking or raw error causes.
 	Valid(context.Context, string) (bool, error)
 }
 
 // FormatFunc adapts a function to FormatChecker.
 type FormatFunc func(context.Context, string) (bool, error)
 
-// Valid implements FormatChecker.
+// Valid directly invokes the function. Nil functions and callback panics
+// propagate on direct use; Schema contains registered-checker panics.
 func (format FormatFunc) Valid(ctx context.Context, value string) (bool, error) {
 	return format(ctx, value)
 }

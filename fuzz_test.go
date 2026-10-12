@@ -14,6 +14,10 @@ import (
 	jsonschema "github.com/faustbrian/go-json-schema/v2"
 )
 
+// FuzzCompileAndValidate exercises hostile schema/instance bytes across every
+// released dialect, including pinned type seeds, large exponents and cycles.
+// Compile/validation refusal is allowed; the target guards panic/termination
+// boundaries, not agreement with an external specification oracle.
 func FuzzCompileAndValidate(f *testing.F) {
 	for _, seed := range []struct {
 		dialect  uint8
@@ -78,6 +82,9 @@ func addOfficialFuzzSeeds(f *testing.F) {
 	}
 }
 
+// FuzzValidationOutput traverses all four output forms for compiled hostile
+// schemas. It tolerates parse/budget refusal and exercises encoding on success;
+// it does not assert complete diagnostic equivalence or conformance.
 func FuzzValidationOutput(f *testing.F) {
 	f.Add(`{"properties":{"name":{"type":"string"}},"required":["name"]}`, `{"name":1}`)
 	f.Add(`{"prefixItems":[{"type":"integer"}],"items":false}`, `[1,2]`)
@@ -104,6 +111,9 @@ func FuzzValidationOutput(f *testing.F) {
 	})
 }
 
+// FuzzRawAndValueValidationAgree compares raw validation with a UseNumber
+// decoded value under an empty schema. UTF-8 and trailing-input filters avoid
+// intentional admission differences; this is not an independent JSON oracle.
 func FuzzRawAndValueValidationAgree(f *testing.F) {
 	for _, seed := range []string{
 		`null`, `true`, `1e1000`, `"text"`, `[1,{"x":2}]`, `{"a":0.3}`,
@@ -145,6 +155,8 @@ func FuzzRawAndValueValidationAgree(f *testing.F) {
 	})
 }
 
+// FuzzReferenceResolution exercises generated local definition names and
+// escaped JSON Pointer references; no network/custom loader participates.
 func FuzzReferenceResolution(f *testing.F) {
 	f.Add("value", `"ok"`)
 	f.Add("a~b/c", `0`)

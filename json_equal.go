@@ -72,6 +72,9 @@ func uniqueJSONPairwise(values []*jsonValue, state *evaluationState) (bool, erro
 	return true, nil
 }
 
+// Hashes only partition candidate equality checks: exact structural equality
+// remains authoritative on collisions. json_equal_internal_test.go forces
+// collisions; changing normalization independently can lose valid duplicates.
 func uniqueJSONWithHash(
 	values []*jsonValue,
 	state *evaluationState,
@@ -170,6 +173,9 @@ func equalNumber(left string, right string) bool {
 		leftNumber.scale.Cmp(rightNumber.scale) == 0
 }
 
+// JSONSCHEMA-DEC-010 keeps exponent magnitude symbolic rather than expanding
+// powers of ten. Normalized digits/scale unify decimal spellings and signed
+// zero for equality, hashing and exact comparison without float conversion.
 func normalizeNumber(number string) normalizedNumber {
 	negative := strings.HasPrefix(number, "-")
 	unsigned := strings.TrimPrefix(number, "-")

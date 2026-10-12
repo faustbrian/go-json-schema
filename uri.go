@@ -26,6 +26,9 @@ func normalizeResourceURL(identifier string) (*url.URL, error) {
 	return normalized, nil
 }
 
+// JSONSCHEMA-DEC-012 applies RFC3986 identity normalization, not a network
+// authorization policy. Reserved escapes and hierarchical path structure stay
+// distinct; uri_internal_test.go covers equivalent aliases and dot segments.
 func normalizeURL(source *url.URL) (*url.URL, error) {
 	if source == nil {
 		return nil, fmt.Errorf("nil URI")

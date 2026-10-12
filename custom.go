@@ -26,7 +26,11 @@ const (
 	ObjectKind
 )
 
-// Value is a read-only view of an exact schema or instance JSON value.
+// Value is a read-only, retainable view of decoded schema or instance JSON.
+// A zero Value reports NullKind but is absent from Index/Lookup failures.
+// Names returns a detached sorted slice; child views share immutable storage.
+// Number preserves lexical decimal text; strings use encoding/json escape
+// decoding, including its replacement of unpaired surrogate escapes.
 type Value struct {
 	value *jsonValue
 }
@@ -106,13 +110,19 @@ func (value Value) Names() []string {
 
 // KeywordCompiler compiles one keyword value into an immutable evaluator.
 type KeywordCompiler interface {
+	// Compile borrows a read-only exact keyword Value and returns a nonnil
+	// evaluator whose state supports concurrent reuse. Calls may overlap across
+	// compilations; return promptly under context cancellation. The registry
+	// does not deep-copy callbacks or roll back their side effects.
 	Compile(context.Context, Dialect, Value) (KeywordEvaluator, error)
 }
 
 // KeywordCompilerFunc adapts a function to KeywordCompiler.
 type KeywordCompilerFunc func(context.Context, Dialect, Value) (KeywordEvaluator, error)
 
-// Compile implements KeywordCompiler.
+// Compile directly invokes the function. Nil functions/direct callback panics
+// propagate here; Compiler supplies containment when compiling registered
+// keywords, not on arbitrary calls to this adapter.
 func (compiler KeywordCompilerFunc) Compile(
 	ctx context.Context,
 	dialect Dialect,
@@ -123,13 +133,20 @@ func (compiler KeywordCompilerFunc) Compile(
 
 // KeywordEvaluator evaluates a compiled custom keyword.
 type KeywordEvaluator interface {
+	// Evaluate borrows a read-only exact instance view. It may be called more
+	// than once for validation, tracking and output and concurrently across
+	// requests; results must be deterministic for an input and cancellation
+	// cooperative. Error is operational failure, not invalidity; callback
+	// panics are contained only through Schema entry points, not this interface.
 	Evaluate(context.Context, Value) (KeywordResult, error)
 }
 
 // KeywordEvaluatorFunc adapts a function to KeywordEvaluator.
 type KeywordEvaluatorFunc func(context.Context, Value) (KeywordResult, error)
 
-// Evaluate implements KeywordEvaluator.
+// Evaluate directly invokes the function without result copying or panic
+// containment. Schema entry points supply that boundary; nil functions panic
+// when called directly.
 func (evaluator KeywordEvaluatorFunc) Evaluate(
 	ctx context.Context,
 	value Value,
@@ -138,10 +155,14 @@ func (evaluator KeywordEvaluatorFunc) Evaluate(
 }
 
 // KeywordResult reports custom assertion validity and an optional exact JSON
-// annotation. A nil Annotation means no annotation; use `json.RawMessage("null")`
-// to annotate with JSON null.
+// annotation. Nil Annotation means no annotation; explicit JSON null creates
+// an annotation unit, but OutputUnit currently decodes it to nil and omits
+// the annotation field during JSON marshaling. This is a wire limitation,
+// not a different specification interpretation.
 type KeywordResult struct {
-	Valid      bool
+	// Valid is the assertion result when Evaluate returns no error.
+	Valid bool
+	// Annotation is borrowed JSON for retained output; keep bytes unchanged while consumed. Nil omits it; explicit JSON null decodes to nil and its output field is omitted. Flag validation ignores it.
 	Annotation json.RawMessage
 }
 
@@ -149,7 +170,12 @@ type registeredVocabulary struct {
 	keywords map[string]KeywordCompiler
 }
 
-// WithVocabulary registers one instance-owned custom vocabulary.
+// WithVocabulary registers an owned map of borrowed keyword compilers when
+// the option runs. Keep the supplied map unchanged through NewCompiler. An
+// absolute fragment-free URI, unique nonempty non-built-in keyword names and
+// nonnil compilers are required. Modern activation follows the resource
+// vocabulary declaration; historical drafts activate registered keywords.
+// See JSONSCHEMA-DEC-001/002; registration is not external IO authorization.
 func WithVocabulary(
 	identifier string,
 	keywords map[string]KeywordCompiler,

@@ -26,15 +26,20 @@ var (
 
 // JSONError describes a JSON ingestion failure without retaining input bytes.
 type JSONError struct {
+	// Offset is the decoder byte offset, or zero for failures before decoder creation.
 	Offset int64
-	Kind   error
-	Cause  error
+	// Kind is the broad invalid-JSON or limit classification used by errors.Is.
+	Kind error
+	// Cause retains the diagnostic cause; it may include member names or decoder text and is not a secrecy guarantee.
+	Cause error
 }
 
 // LimitError reports which deterministic work budget was exhausted.
 type LimitError struct {
+	// Resource names the exhausted budget, not the offending input value.
 	Resource string
-	Limit    int
+	// Limit is the configured bound for that resource.
+	Limit int
 }
 
 // Error implements error.

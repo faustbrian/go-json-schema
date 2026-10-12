@@ -27,8 +27,11 @@ HTTP retrieval is intentionally not built into the core. An application
 adapter must enforce scheme and host allowlists, redirect rules, DNS and proxy
 policy, authentication separation, TLS, timeouts, response byte limits, and
 cache ownership before returning bytes. Never accept credentials embedded in
-schema URIs. Package-generated resolution errors remove URI user information,
-query parameters, and fragments.
+schema URIs. Selected loader diagnostics remove URI user information, query
+parameters and fragments, but reference parse/anchor/pointer failures can still
+quote the raw schema reference. This existing diagnostic limitation does not
+relax the application rule against sensitive identifiers; restrict errors and
+output to trusted recipients.
 
 Loader calls receive cancellation. Returned schema documents are still
 subject to resource-count and aggregate schema-byte limits. Loader errors

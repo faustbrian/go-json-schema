@@ -3,7 +3,12 @@
 Schemas and instances are treated as hostile. The design prevents implicit
 network access, precision loss, duplicate-member ambiguity, invalid UTF-8,
 unbounded owned caches, global extension mutation, path traversal in the
-provided filesystem adapter, and credential-bearing resolution diagnostics.
+provided filesystem adapter. Callback rendering and selected loader errors
+redact details, but some reference parse/anchor/pointer failures still quote
+raw schema reference text. URI credentials/query/fragment data, member names,
+output locations and annotations can therefore appear in diagnostics. Reject
+sensitive identifiers at the application boundary and do not log untrusted
+errors/output as though the package were a complete redaction boundary.
 Malformed resource identifiers and ambiguous duplicate resource or anchor
 identities fail closed rather than changing resolution by traversal order.
 RFC-equivalent identifier aliases collapse to one cache key, preventing case,
@@ -20,10 +25,12 @@ mapping, contextual, bidi, canonical Punycode, and DNS length rules.
 Asserted `regex` format values use the same configured byte bound before
 compilation.
 
-Compiled schemas are immutable and race-tested. Validation state is local to
-one call. Resource and annotation bytes are copied across ownership
-boundaries. Exact number comparison never converts arbitrary JSON numbers to
-`float64`.
+Compiled plans are immutable and validation state is local to one call.
+Borrowed extension callbacks must additionally support concurrent use; owned
+registries do not deep-copy callback state. Parsed resources and returned
+annotation containers are detached, but inputs must remain stable while
+consumed and loader/encoder allocations can precede admission. Exact number
+comparison never converts arbitrary JSON numbers to `float64`.
 Large `uniqueItems` arrays use canonical hashes with exact equality fallback;
 hash collisions cannot change results and remain subject to the comparison
 work limit.

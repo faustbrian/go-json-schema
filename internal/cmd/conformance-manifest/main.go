@@ -1,4 +1,7 @@
-// Command conformance-manifest generates pinned official-suite evidence.
+// Command conformance-manifest inventories the trusted pinned official suite
+// into a deterministic digest/count manifest. It is not a validator execution
+// or fresh conformance result; regenerate only after the applicable suite
+// qualification. It writes a same-directory temporary file before rename.
 package main
 
 import (
@@ -123,6 +126,8 @@ func (generator manifestGenerator) generate(output string) error {
 			if err := json.Unmarshal(raw, &groups); err != nil {
 				return fmt.Errorf("parse %s: %w", path, err)
 			}
+			// Recorded pass counts mirror the qualified corpus size; this generator
+			// itself parses/counts fixture groups and never runs the evaluator.
 			cases := 0
 			for _, group := range groups {
 				cases += len(group.Tests)

@@ -21,6 +21,8 @@ var benchmarkSchema = []byte(`{
 
 var benchmarkInstance = []byte(`{"id":42,"tags":["one","two","three"]}`)
 
+// BenchmarkCompile measures one fixed object-schema compilation while reusing
+// a prepared compiler; constructor/meta-schema preparation is outside the loop.
 func BenchmarkCompile(b *testing.B) {
 	compiler, err := jsonschema.NewCompiler()
 	if err != nil {
@@ -34,6 +36,8 @@ func BenchmarkCompile(b *testing.B) {
 	}
 }
 
+// BenchmarkValidate includes raw instance parsing and evaluation; schema
+// compilation is outside the loop and SetBytes names the fixed input size.
 func BenchmarkValidate(b *testing.B) {
 	schema := compileBenchmarkSchema(b, benchmarkSchema)
 	b.ReportAllocs()
@@ -46,6 +50,8 @@ func BenchmarkValidate(b *testing.B) {
 	}
 }
 
+// BenchmarkValidateReference measures parsing/evaluation through one local
+// definition reference, not remote retrieval or compilation.
 func BenchmarkValidateReference(b *testing.B) {
 	schema := compileBenchmarkSchema(b, []byte(`{
 		"$defs":{"identifier":{"type":"integer","minimum":1}},
@@ -59,6 +65,9 @@ func BenchmarkValidateReference(b *testing.B) {
 	}
 }
 
+// BenchmarkValidateUniqueItemsScaling compares 10/100/500 distinct integer
+// items with schema/instance preparation outside each loop. It protects the
+// hashing crossover workload, not a universal adversarial complexity promise.
 func BenchmarkValidateUniqueItemsScaling(b *testing.B) {
 	schema := compileBenchmarkSchema(b, []byte(`{"type":"array","uniqueItems":true}`))
 	for _, size := range []int{10, 100, 500} {

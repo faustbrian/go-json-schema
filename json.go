@@ -43,6 +43,10 @@ type jsonTokenDecoder interface {
 	InputOffset() int64
 }
 
+// JSONSCHEMA-DEC-009 applies the RFC 8259 section 4 fail-closed duplicate
+// policy and byte-valid UTF-8 admission, not a normative uniqueness mandate.
+// UseNumber preserves decimal lexemes; decoder escape handling is still the
+// standard library behavior. Member names may appear in parse diagnostics.
 func decodeJSON(ctx context.Context, raw []byte, limits Limits) (*jsonValue, error) {
 	if ctx == nil {
 		return nil, fmt.Errorf("%w: nil context", ErrInvalidJSON)

@@ -101,6 +101,7 @@ type typePlan struct {
 
 // Result is the minimum flag output from an evaluation.
 type Result struct {
+	// Valid reports instance validity only when the accompanying error is nil; operational failures return a zero Result.
 	Valid bool `json:"valid"`
 }
 
@@ -358,6 +359,8 @@ func (compiler *schemaCompiler) compile(value *jsonValue) (*schemaPlan, error) {
 			plan.annotations[keyword] = annotation
 		}
 	}
+	// Cache the unfinished plan before following references so graph cycles
+	// share one node; validation depth/operation budgets stop cyclic evaluation.
 	compiler.plans[value] = plan
 	if compiler.resources[compiler.resourceFor[value]] == value {
 		plan.resource.root = plan
@@ -1175,6 +1178,9 @@ func (
 	return current, nil
 }
 
+// Per-Compile resource identity/cache accounting excludes duplicate loads.
+// IO/returned bytes belong to the loader until decode; byte admission follows
+// callback return, so deployment loaders must separately bound acquisition.
 func (compiler *schemaCompiler) loadResource(identifier string) (*jsonValue, error) {
 	if compiler.loadedResources >= compiler.limits.MaxSchemaResources {
 		return nil, &LimitError{
@@ -1763,7 +1769,11 @@ func compileTypeName(name string, dialect Dialect) (typePlan, error) {
 	return typePlan{}, fmt.Errorf("%w: unknown type %q", ErrInvalidSchema, name)
 }
 
-// Validate parses and evaluates a raw JSON instance.
+// Validate parses and evaluates raw JSON with fresh per-call counters.
+// Keep bytes unchanged during the call; parsed storage is not retained across
+// validations. Nil context rejects. A mismatch is Valid=false with nil error;
+// parse, callback, cancellation and budget failures return zero Result/error.
+// Cancellation is cooperative; a regex match uses its own engine timeout.
 func (schema *Schema) Validate(ctx context.Context, raw []byte) (Result, error) {
 	if schema == nil || schema.plan == nil {
 		return Result{}, fmt.Errorf("%w: nil compiled schema", ErrInvalidSchema)

@@ -26,6 +26,11 @@ output tree. Failed schema branches do not contribute to that list. Reference,
 dynamic-scope, applicator, content, format, metadata, unknown-keyword, and
 unevaluated-location propagation is covered by the official annotation corpus.
 
+Explicit JSON null currently becomes a nil `OutputUnit.Annotation`, whose
+`omitempty` tag omits the annotation field when marshaled. An annotation unit
+is present, but its null value is not preserved on the wire. This is an existing
+output limitation, not an intentional interpretation of the output requirement.
+
 Output generation repeats bounded diagnostic evaluation after the flag result
 and may therefore invoke custom callbacks again. Callbacks must be pure for a
 given input. `MaxOutputUnits`, `MaxAnnotationBytes`, callback budgets, total

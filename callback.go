@@ -90,6 +90,9 @@ func callJSONEncode(
 	return redactCallbackError("JSON marshaler", err)
 }
 
+// Fixed outer text is the rendering boundary, not destruction of the cause.
+// errors.Is/As/Unwrap deliberately preserve application diagnostics; callers
+// must not log them as if containment had sanitized the original error.
 func redactCallbackError(operation string, cause error) error {
 	if cause == nil {
 		return nil

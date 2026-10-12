@@ -76,7 +76,8 @@ package-level [`Example`](example_test.go) exercises the same workflow through
 Go's executable-example contract.
 
 Compilation validates the schema against the embedded official meta-schema.
-Compiled schemas are immutable and reusable concurrently. `Validate` accepts
+Compiled plans are immutable; concurrent use also requires concurrency-safe
+borrowed extension callbacks. `Validate` accepts
 raw JSON; `ValidateValue` accepts Go values and preserves `json.Number` text.
 `ValidateOutput` and `ValidateValueOutput` provide Flag, Basic, Detailed, and
 Verbose output units. `CollectAnnotations` returns retained successful-path
@@ -98,8 +99,9 @@ validation for business values and rules, and use
 complete OpenAPI document.
 
 The caller owns compiler configuration, input bytes, and any configured
-resource loader. A compiled `Schema` is immutable, safe for concurrent reuse,
-starts no background work, and requires no shutdown.
+resource loader and extension callback state. A compiled plan is immutable;
+concurrent reuse requires safe custom format/keyword callbacks. It starts no
+background work and requires no shutdown.
 
 The module has no dedicated testing-helper package. Tests can use `MapLoader`
 for deterministic in-memory resources, `ResourceLoaderFunc` for controlled

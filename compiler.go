@@ -19,15 +19,25 @@ type compilerConfig struct {
 	vocabularies  map[string]registeredVocabulary
 }
 
-// ResourceLoader retrieves an explicitly authorized schema resource.
+// ResourceLoader retrieves schema resources under application authorization
+// and IO policy. The compiler borrows the loader without closing it.
 type ResourceLoader interface {
+	// Load receives a normalized resource URI without a reference fragment.
+	// Return bytes stable until the consuming Compile call finishes; loading may
+	// overlap across compilations and must cooperate with a nonnil context.
+	// The compiler checks byte budgets only after Load returns. Classify misses
+	// as ErrResourceNotFound for composite fallback; other errors stop it.
+	// Package callback wrappers contain panics and hide error text, but preserve
+	// raw error causes and cannot interrupt arbitrary blocking.
 	Load(context.Context, string) ([]byte, error)
 }
 
 // ResourceLoaderFunc adapts a function to ResourceLoader.
 type ResourceLoaderFunc func(context.Context, string) ([]byte, error)
 
-// Load implements ResourceLoader.
+// Load directly invokes the function without copying bytes or containing
+// panic. A nil function panics on direct use; Compiler callback containment
+// applies only when the adapter is invoked through Compile.
 func (loader ResourceLoaderFunc) Load(ctx context.Context, identifier string) ([]byte, error) {
 	return loader(ctx, identifier)
 }
@@ -44,7 +54,8 @@ func WithDialect(dialect Dialect) Option {
 	}
 }
 
-// WithLimits replaces the compiler's resource limits.
+// WithLimits replaces the entire limits value; every field must be positive.
+// Start from DefaultLimits rather than a partially populated zero value.
 func WithLimits(limits Limits) Option {
 	return func(config *compilerConfig) error {
 		if err := limits.validate(); err != nil {
@@ -56,7 +67,9 @@ func WithLimits(limits Limits) Option {
 	}
 }
 
-// WithResourceLoader authorizes explicit schema retrieval during compilation.
+// WithResourceLoader installs a borrowed loader; nil and typed-nil values
+// reject. Bundled official meta-schemas resolve locally before this loader.
+// Registration is not scheme/host authorization or a network byte/time limit.
 func WithResourceLoader(loader ResourceLoader) Option {
 	return func(config *compilerConfig) error {
 		if resourceLoaderIsNil(loader) {
@@ -87,7 +100,9 @@ func WithContentAssertion() Option {
 	}
 }
 
-// WithFormat registers or replaces one compiler-owned format checker.
+// WithFormat registers or replaces a borrowed format checker in an owned
+// registry. Nil/typed-nil checkers and empty names reject. Registries are copied,
+// not checker state; callers own concurrency, cancellation and lifetime.
 func WithFormat(name string, checker FormatChecker) Option {
 	return func(config *compilerConfig) error {
 		if name == "" || formatCheckerIsNil(checker) {
@@ -127,7 +142,10 @@ func formatCheckerIsNil(checker FormatChecker) bool {
 	}
 }
 
-// Compiler owns immutable dialect and resource policy used during compilation.
+// Compiler owns immutable registry maps and resource policy, not the state of
+// borrowed loader/format/keyword callbacks. Concurrent Compile calls create
+// independent caches but require those callbacks to support concurrent use.
+// A zero Compiler is not a configured compiler; construct it with NewCompiler.
 type Compiler struct {
 	dialect       Dialect
 	limits        Limits
@@ -140,7 +158,11 @@ type Compiler struct {
 }
 
 // NewCompiler constructs an isolated compiler. Draft 2020-12 is the explicit
-// default when no dialect option is supplied.
+// default when no dialect option is supplied. Options run synchronously, in
+// order; nil options reject and option panics are not contained. Construction
+// prepares the bundled meta-schema with default budgets/background context,
+// without application IO. Application limits apply to later compile/evaluation
+// work rather than constructor meta-schema preparation.
 func NewCompiler(options ...Option) (*Compiler, error) {
 	config := compilerConfig{
 		dialect:      Draft202012,
@@ -184,14 +206,26 @@ func newCompiler(
 	return compiler, nil
 }
 
-// Schema is an immutable evaluation plan safe for concurrent validation.
+// Schema holds an immutable plan and per-call evaluation state. Concurrent
+// validation also requires borrowed format checkers and custom evaluators to
+// be safe for concurrent use. It owns no Close/shutdown or worker lifecycle.
+// A zero Schema rejects validation with ErrInvalidSchema.
 type Schema struct {
 	dialect Dialect
 	limits  Limits
 	plan    *schemaPlan
 }
 
-// Compile parses and compiles one schema document using the configured loader.
+// Compile parses one document and resolves reachable references into a
+// per-call cache. Input bytes are borrowed during parsing, not retained by the
+// plan, and must not change during the call. Nil context rejects; cancellation
+// is cooperative, not preemption of callbacks or every compilation step.
+// Configured dialect is the root fallback; recognized embedded dialects and
+// modern vocabulary policy are resource-scoped (JSONSCHEMA-DEC-001/008).
+// Schema meta-validation uses separate default budgets. Operational/budget
+// failures return no plan; callback side effects are not rolled back.
+// Parse/reference errors can contain schema names or raw reference text;
+// inspect typed classifications and keep untrusted diagnostics out of logs.
 func (compiler *Compiler) Compile(ctx context.Context, raw []byte) (*Schema, error) {
 	if compiler == nil {
 		return nil, fmt.Errorf("%w: nil compiler", ErrInvalidSchema)

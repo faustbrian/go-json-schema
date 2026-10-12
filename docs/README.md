@@ -52,5 +52,6 @@ explicit `KeywordCompiler` callbacks registered through `WithVocabulary`; the
 - [Compatibility](../COMPATIBILITY.md)
 - [Support](../SUPPORT.md)
 - [Security reporting](../SECURITY.md)
+- [Source documentation audit](source-documentation-audit.md)
 - [Changelog](../CHANGELOG.md)
 - [License](../LICENSE)

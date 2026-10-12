@@ -1,4 +1,9 @@
-// Command bowtie-json-schema implements the Bowtie harness protocol.
+// Command bowtie-json-schema implements Bowtie protocol version 1 for the
+// released JSON Schema dialects. It is a sequential fixture harness, not a
+// network service or bounded streaming parser: command JSON is decoded before
+// schema/instance limits apply. It borrows stdin/stdout and reports diagnostic
+// error/panic text to the harness, so use trusted test inputs, not production
+// schemas or credentials. Stop/EOF ends the loop without closing those streams.
 package main
 
 import (

@@ -12,8 +12,9 @@ The package has one compile-and-validate lifecycle:
 select a dialect, replace limits, authorize a resource loader, enable format
 assertions or Draft 7 content assertions, and register custom formats or
 vocabularies. Draft 2019-09 and Draft 2020-12 content keywords remain
-annotations even when `WithContentAssertion` is present. Options are copied
-into the compiler; there is no process-wide registry.
+annotations even when `WithContentAssertion` is present. Registry maps are
+copied, while loader/checker/compiler/evaluator implementations are borrowed;
+there is no process-wide registry or deep copy of callback state.
 
 `Compiler.Compile` accepts UTF-8 JSON bytes. It parses exact JSON numbers,
 validates the document against the selected official meta-schema, resolves

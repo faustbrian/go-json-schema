@@ -14,7 +14,10 @@ type MapLoader struct {
 	resources map[string][]byte
 }
 
-// NewMapLoader copies a set of resources into an immutable loader.
+// NewMapLoader copies map entries and bytes into an immutable loader. Nil
+// input creates an empty loader. Equivalent URI identities reject duplicates;
+// keep inputs stable during construction. Construction/copying has no byte
+// budget; Compiler applies document/aggregate limits after retrieval.
 func NewMapLoader(resources map[string][]byte) (*MapLoader, error) {
 	result := &MapLoader{resources: make(map[string][]byte, len(resources))}
 	for identifier, raw := range resources {
@@ -40,7 +43,10 @@ func NewMapLoader(resources map[string][]byte) (*MapLoader, error) {
 	return result, nil
 }
 
-// Load implements ResourceLoader and returns caller-owned bytes.
+// Load implements ResourceLoader and returns a detached caller-owned copy.
+// Require a nonnil context; cancellation is checked before copying, not
+// continuously during allocation. A zero MapLoader is an empty registry;
+// a nil receiver returns ErrResourceUnavailable.
 func (loader *MapLoader) Load(ctx context.Context, identifier string) ([]byte, error) {
 	if loader == nil {
 		return nil, fmt.Errorf("%w: nil map loader", ErrResourceUnavailable)
@@ -64,7 +70,9 @@ func (loader *MapLoader) Load(ctx context.Context, identifier string) ([]byte, e
 }
 
 // FSLoader confines hierarchical resource identifiers to a caller-provided
-// filesystem rooted at one absolute base URI.
+// filesystem rooted at one absolute base URI. URI confinement is not a
+// symlink/device sandbox: the caller owns filesystem capability, lifetime and
+// concurrent safety. Reads are synchronous and cannot be canceled mid-read.
 type FSLoader struct {
 	base       *url.URL
 	filesystem fs.FS
@@ -87,7 +95,11 @@ func NewFSLoader(baseIdentifier string, filesystem fs.FS) (*FSLoader, error) {
 	return &FSLoader{base: base, filesystem: filesystem}, nil
 }
 
-// Load implements ResourceLoader without permitting authority or path escape.
+// Load implements ResourceLoader by rejecting URI authority/path escape.
+// Require a nonnil context; cancellation is checked before the filesystem
+// callback, not enforced while it blocks. fs.ReadFile can allocate all bytes
+// before compiler admission. Filesystem panics are contained here; raw error
+// causes remain inspectable despite fixed callback diagnostic text.
 func (loader *FSLoader) Load(ctx context.Context, identifier string) ([]byte, error) {
 	if loader == nil || loader.base == nil || loader.filesystem == nil {
 		return nil, fmt.Errorf("%w: nil filesystem loader", ErrResourceUnavailable)
@@ -134,7 +146,9 @@ type CompositeLoader struct {
 	loaders []ResourceLoader
 }
 
-// NewCompositeLoader constructs an immutable ordered loader chain.
+// NewCompositeLoader copies the ordered interface slice, not loader state.
+// Empty input creates an always-missing chain; nil/typed-nil entries reject.
+// Caller owns nested loader lifecycle/concurrency and callback IO bounds.
 func NewCompositeLoader(loaders ...ResourceLoader) (*CompositeLoader, error) {
 	result := &CompositeLoader{loaders: make([]ResourceLoader, len(loaders))}
 	for index, loader := range loaders {
@@ -146,7 +160,10 @@ func NewCompositeLoader(loaders ...ResourceLoader) (*CompositeLoader, error) {
 	return result, nil
 }
 
-// Load implements ResourceLoader.
+// Load tries borrowed loaders until success or a non-missing failure. Empty
+// chains return ErrResourceNotFound. Callback wrappers contain nested panics
+// and hide cause text but preserve causes; they do not force cancellation or
+// copying. Components must honor the nonnil context and returned-byte lifetime.
 func (loader *CompositeLoader) Load(ctx context.Context, identifier string) ([]byte, error) {
 	if loader == nil {
 		return nil, fmt.Errorf("%w: nil composite loader", ErrResourceUnavailable)

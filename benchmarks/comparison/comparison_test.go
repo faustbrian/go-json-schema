@@ -1,3 +1,6 @@
+// Package comparison_test compares a pinned published owned release with
+// maintained peers. It does not execute this worktree's root implementation;
+// historical results/fixtures remain distinct from current source qualification.
 package comparison_test
 
 import (
@@ -32,6 +35,9 @@ var instanceValue = map[string]any{
 	},
 }
 
+// BenchmarkCompile includes constructor/registration/compilation for each
+// pinned implementation. These setup boundaries differ from the root reused-
+// compiler benchmark and must be preserved when comparing results.
 func BenchmarkCompile(b *testing.B) {
 	b.Run("faustbrian", func(b *testing.B) {
 		b.ReportAllocs()
@@ -73,6 +79,9 @@ func BenchmarkCompile(b *testing.B) {
 	})
 }
 
+// BenchmarkValidateDecoded uses precompiled schemas and one decoded object.
+// The owned ValidateValue path includes encoding/parsing while peers consume
+// decoded values; results compare those APIs, not identical internal work.
 func BenchmarkValidateDecoded(b *testing.B) {
 	ownedSchema := compileOwned(b)
 	kaptinSchema := compileKaptin(b)

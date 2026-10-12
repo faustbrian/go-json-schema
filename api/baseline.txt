@@ -5,7 +5,12 @@ access.
 
 Dialect selection, schema retrieval, extension registries, format policy,
 output shape, and resource limits are explicit compiler configuration.
-A compiled schema is immutable and safe for concurrent use.
+A compiled plan is immutable; concurrent calls additionally require borrowed
+loaders, custom format checkers and keyword evaluators to support concurrency.
+NewCompiler and Compile are normal entry points, followed by Schema.Validate.
+Supported dialects are Drafts 3, 4, 6, 7, 2019-09 and 2020-12; unknown dialects
+and required unknown vocabularies fail. Optional retrieval never adds implicit
+networking, and this module owns no callback/provider shutdown.
 
 The module provides a stable v2 API. Compliance claims are made only by the
 generated conformance evidence committed with the module.
@@ -36,14 +41,30 @@ TYPES
 type Compiler struct {
 	// Has unexported fields.
 }
-    Compiler owns immutable dialect and resource policy used during compilation.
+    Compiler owns immutable registry maps and resource policy, not the state of
+    borrowed loader/format/keyword callbacks. Concurrent Compile calls create
+    independent caches but require those callbacks to support concurrent use.
+    A zero Compiler is not a configured compiler; construct it with NewCompiler.
 
 func NewCompiler(options ...Option) (*Compiler, error)
     NewCompiler constructs an isolated compiler. Draft 2020-12 is the explicit
-    default when no dialect option is supplied.
+    default when no dialect option is supplied. Options run synchronously, in
+    order; nil options reject and option panics are not contained. Construction
+    prepares the bundled meta-schema with default budgets/background context,
+    without application IO. Application limits apply to later compile/evaluation
+    work rather than constructor meta-schema preparation.
 
 func (compiler *Compiler) Compile(ctx context.Context, raw []byte) (*Schema, error)
-    Compile parses and compiles one schema document using the configured loader.
+    Compile parses one document and resolves reachable references into a
+    per-call cache. Input bytes are borrowed during parsing, not retained by the
+    plan, and must not change during the call. Nil context rejects; cancellation
+    is cooperative, not preemption of callbacks or every compilation step.
+    Configured dialect is the root fallback; recognized embedded dialects and
+    modern vocabulary policy are resource-scoped (JSONSCHEMA-DEC-001/008).
+    Schema meta-validation uses separate default budgets. Operational/budget
+    failures return no plan; callback side effects are not rolled back.
+    Parse/reference errors can contain schema names or raw reference text;
+    inspect typed classifications and keep untrusted diagnostics out of logs.
 
 type CompositeLoader struct {
 	// Has unexported fields.
@@ -52,10 +73,16 @@ type CompositeLoader struct {
     classifies the resource as not found.
 
 func NewCompositeLoader(loaders ...ResourceLoader) (*CompositeLoader, error)
-    NewCompositeLoader constructs an immutable ordered loader chain.
+    NewCompositeLoader copies the ordered interface slice, not loader state.
+    Empty input creates an always-missing chain; nil/typed-nil entries reject.
+    Caller owns nested loader lifecycle/concurrency and callback IO bounds.
 
 func (loader *CompositeLoader) Load(ctx context.Context, identifier string) ([]byte, error)
-    Load implements ResourceLoader.
+    Load tries borrowed loaders until success or a non-missing failure. Empty
+    chains return ErrResourceNotFound. Callback wrappers contain nested panics
+    and hide cause text but preserve causes; they do not force cancellation
+    or copying. Components must honor the nonnil context and returned-byte
+    lifetime.
 
 type Dialect string
     Dialect identifies a released JSON Schema Core and Validation dialect.
@@ -78,15 +105,25 @@ type FSLoader struct {
 	// Has unexported fields.
 }
     FSLoader confines hierarchical resource identifiers to a caller-provided
-    filesystem rooted at one absolute base URI.
+    filesystem rooted at one absolute base URI. URI confinement is not a
+    symlink/device sandbox: the caller owns filesystem capability, lifetime and
+    concurrent safety. Reads are synchronous and cannot be canceled mid-read.
 
 func NewFSLoader(baseIdentifier string, filesystem fs.FS) (*FSLoader, error)
     NewFSLoader constructs a confined filesystem loader.
 
 func (loader *FSLoader) Load(ctx context.Context, identifier string) ([]byte, error)
-    Load implements ResourceLoader without permitting authority or path escape.
+    Load implements ResourceLoader by rejecting URI authority/path escape.
+    Require a nonnil context; cancellation is checked before the filesystem
+    callback, not enforced while it blocks. fs.ReadFile can allocate all bytes
+    before compiler admission. Filesystem panics are contained here; raw error
+    causes remain inspectable despite fixed callback diagnostic text.
 
 type FormatChecker interface {
+	// Valid distinguishes assertion failure (false, nil) from operational error.
+	// Borrowed checkers may run concurrently and repeatedly for output; they
+	// must be deterministic and cooperate with context. Library containment
+	// hides custom callback panic/error text, not blocking or raw error causes.
 	Valid(context.Context, string) (bool, error)
 }
     FormatChecker validates the string representation of a named format.
@@ -95,12 +132,16 @@ type FormatFunc func(context.Context, string) (bool, error)
     FormatFunc adapts a function to FormatChecker.
 
 func (format FormatFunc) Valid(ctx context.Context, value string) (bool, error)
-    Valid implements FormatChecker.
+    Valid directly invokes the function. Nil functions and callback panics
+    propagate on direct use; Schema contains registered-checker panics.
 
 type JSONError struct {
+	// Offset is the decoder byte offset, or zero for failures before decoder creation.
 	Offset int64
-	Kind   error
-	Cause  error
+	// Kind is the broad invalid-JSON or limit classification used by errors.Is.
+	Kind error
+	// Cause retains the diagnostic cause; it may include member names or decoder text and is not a secrecy guarantee.
+	Cause error
 }
     JSONError describes a JSON ingestion failure without retaining input bytes.
 
@@ -111,6 +152,10 @@ func (err *JSONError) Unwrap() []error
     Unwrap exposes both the classification and underlying cause.
 
 type KeywordCompiler interface {
+	// Compile borrows a read-only exact keyword Value and returns a nonnil
+	// evaluator whose state supports concurrent reuse. Calls may overlap across
+	// compilations; return promptly under context cancellation. The registry
+	// does not deep-copy callbacks or roll back their side effects.
 	Compile(context.Context, Dialect, Value) (KeywordEvaluator, error)
 }
     KeywordCompiler compiles one keyword value into an immutable evaluator.
@@ -123,9 +168,16 @@ func (compiler KeywordCompilerFunc) Compile(
 	dialect Dialect,
 	value Value,
 ) (KeywordEvaluator, error)
-    Compile implements KeywordCompiler.
+    Compile directly invokes the function. Nil functions/direct callback panics
+    propagate here; Compiler supplies containment when compiling registered
+    keywords, not on arbitrary calls to this adapter.
 
 type KeywordEvaluator interface {
+	// Evaluate borrows a read-only exact instance view. It may be called more
+	// than once for validation, tracking and output and concurrently across
+	// requests; results must be deterministic for an input and cancellation
+	// cooperative. Error is operational failure, not invalidity; callback
+	// panics are contained only through Schema entry points, not this interface.
 	Evaluate(context.Context, Value) (KeywordResult, error)
 }
     KeywordEvaluator evaluates a compiled custom keyword.
@@ -137,19 +189,27 @@ func (evaluator KeywordEvaluatorFunc) Evaluate(
 	ctx context.Context,
 	value Value,
 ) (KeywordResult, error)
-    Evaluate implements KeywordEvaluator.
+    Evaluate directly invokes the function without result copying or panic
+    containment. Schema entry points supply that boundary; nil functions panic
+    when called directly.
 
 type KeywordResult struct {
-	Valid      bool
+	// Valid is the assertion result when Evaluate returns no error.
+	Valid bool
+	// Annotation is borrowed JSON for retained output; keep bytes unchanged while consumed. Nil omits it; explicit JSON null decodes to nil and its output field is omitted. Flag validation ignores it.
 	Annotation json.RawMessage
 }
-    KeywordResult reports custom assertion validity and an optional
-    exact JSON annotation. A nil Annotation means no annotation; use
-    `json.RawMessage("null")` to annotate with JSON null.
+    KeywordResult reports custom assertion validity and an optional exact JSON
+    annotation. Nil Annotation means no annotation; explicit JSON null creates
+    an annotation unit, but OutputUnit currently decodes it to nil and omits
+    the annotation field during JSON marshaling. This is a wire limitation,
+    not a different specification interpretation.
 
 type LimitError struct {
+	// Resource names the exhausted budget, not the offending input value.
 	Resource string
-	Limit    int
+	// Limit is the configured bound for that resource.
+	Limit int
 }
     LimitError reports which deterministic work budget was exhausted.
 
@@ -160,32 +220,58 @@ func (err *LimitError) Unwrap() error
     Unwrap classifies the error as ErrLimitExceeded.
 
 type Limits struct {
-	MaxInputBytes             int
-	MaxNestingDepth           int
-	MaxTotalValues            int
-	MaxObjectMembers          int
-	MaxArrayItems             int
-	MaxNumberBytes            int
-	MaxSchemaResources        int
-	MaxTotalSchemaBytes       int
-	MaxEvaluationOps          int
-	MaxUniqueComparisons      int
-	MaxFormatChecks           int
-	MaxSchemaNodes            int
-	MaxReferenceDepth         int
-	MaxDynamicScopeDepth      int
-	MaxCombinatorBranches     int
-	MaxRegexCount             int
-	MaxRegexBytes             int
-	MaxRegexBacktracking      int
+	// MaxInputBytes caps bytes in each parsed document, default 16 MiB; value encoding checks writer output, not encoder-internal allocation.
+	MaxInputBytes int
+	// MaxNestingDepth caps parser value recursion with root depth one; default 256.
+	MaxNestingDepth int
+	// MaxTotalValues caps values per parsed document, excluding member names; default 1000000.
+	MaxTotalValues int
+	// MaxObjectMembers caps members of each object, not aggregate object cardinality; default 1000000.
+	MaxObjectMembers int
+	// MaxArrayItems caps items of each array; default 1000000.
+	MaxArrayItems int
+	// MaxNumberBytes caps exact number token text, including exponent, after token decoding; default 4096.
+	MaxNumberBytes int
+	// MaxSchemaResources caps the root plus newly loaded documents per Compile, not every embedded resource identity; default 1024.
+	MaxSchemaResources int
+	// MaxTotalSchemaBytes caps root plus returned loaded-document bytes per Compile; default 64 MiB, checked after loaders return.
+	MaxTotalSchemaBytes int
+	// MaxEvaluationOps caps counted evaluation/output visits per public call; default 1000000, not instruction or elapsed-time bounds.
+	MaxEvaluationOps int
+	// MaxUniqueComparisons caps pair/hash-bucket comparison accounting for uniqueItems; default 1000000, not each recursively compared value.
+	MaxUniqueComparisons int
+	// MaxFormatChecks caps built-in/custom asserted format invocations per evaluation/output call; default 100000.
+	MaxFormatChecks int
+	// MaxSchemaNodes caps cached compiled schema plans per Compile; default 100000.
+	MaxSchemaNodes int
+	// MaxReferenceDepth caps nested reference evaluation, not reference graph compilation depth; default 256.
+	MaxReferenceDepth int
+	// MaxDynamicScopeDepth caps checked reference dynamic scope during evaluation; default 256.
+	MaxDynamicScopeDepth int
+	// MaxCombinatorBranches caps aggregate admitted schema-array entries per Compile; default 100000.
+	MaxCombinatorBranches int
+	// MaxRegexCount caps compiled schema pattern occurrences per Compile; default 10000, not asserted regex-format calls.
+	MaxRegexCount int
+	// MaxRegexBytes caps each schema pattern or asserted regex-format string before compilation; default 1 MiB.
+	MaxRegexBytes int
+	// MaxRegexBacktracking sets the regexp2 backtracking stack bound per match; default 100000.
+	MaxRegexBacktracking int
+	// MaxRegexMatchMilliseconds sets the regexp2 approximate match timeout; default 100 milliseconds, not a context deadline.
 	MaxRegexMatchMilliseconds int
-	MaxOutputUnits            int
-	MaxCustomKeywordCompiles  int
-	MaxCustomKeywordCalls     int
-	MaxAnnotationBytes        int
+	// MaxOutputUnits caps accounted diagnostic/annotation units; default 100000, not all intermediate output allocations.
+	MaxOutputUnits int
+	// MaxCustomKeywordCompiles caps registered keyword compiler calls per Compile; default 100000.
+	MaxCustomKeywordCompiles int
+	// MaxCustomKeywordCalls caps evaluator calls shared across validation/output traversals; default 100000.
+	MaxCustomKeywordCalls int
+	// MaxAnnotationBytes caps each retained custom annotation before JSON decoding; default 1 MiB, not built-in annotation totals.
+	MaxAnnotationBytes int
 }
-    Limits bounds JSON ingestion work. Additional compile and evaluation limits
-    will be added as their corresponding evaluator components are introduced.
+    Limits supplies positive per-document, compilation and evaluation budgets.
+    Counters bound selected owned operations, not every CPU instruction,
+    total heap allocation or callback IO. Loader/encoder allocations can precede
+    admission; cancellation and external work remain cooperative. Output phases
+    share evaluation counters and can repeat callback calls.
 
 func DefaultLimits() Limits
     DefaultLimits returns conservative standalone defaults.
@@ -196,10 +282,16 @@ type MapLoader struct {
     MapLoader is an immutable in-memory schema resource loader.
 
 func NewMapLoader(resources map[string][]byte) (*MapLoader, error)
-    NewMapLoader copies a set of resources into an immutable loader.
+    NewMapLoader copies map entries and bytes into an immutable loader. Nil
+    input creates an empty loader. Equivalent URI identities reject duplicates;
+    keep inputs stable during construction. Construction/copying has no byte
+    budget; Compiler applies document/aggregate limits after retrieval.
 
 func (loader *MapLoader) Load(ctx context.Context, identifier string) ([]byte, error)
-    Load implements ResourceLoader and returns caller-owned bytes.
+    Load implements ResourceLoader and returns a detached caller-owned copy.
+    Require a nonnil context; cancellation is checked before copying,
+    not continuously during allocation. A zero MapLoader is an empty registry;
+    a nil receiver returns ErrResourceUnavailable.
 
 type Option func(*compilerConfig) error
     Option configures a Compiler without mutating shared global state.
@@ -212,22 +304,33 @@ func WithDialect(dialect Dialect) Option
     WithDialect selects the dialect used to compile schemas.
 
 func WithFormat(name string, checker FormatChecker) Option
-    WithFormat registers or replaces one compiler-owned format checker.
+    WithFormat registers or replaces a borrowed format checker in an owned
+    registry. Nil/typed-nil checkers and empty names reject. Registries are
+    copied, not checker state; callers own concurrency, cancellation and
+    lifetime.
 
 func WithFormatAssertion() Option
     WithFormatAssertion enables format validation for recognized formats.
 
 func WithLimits(limits Limits) Option
-    WithLimits replaces the compiler's resource limits.
+    WithLimits replaces the entire limits value; every field must be positive.
+    Start from DefaultLimits rather than a partially populated zero value.
 
 func WithResourceLoader(loader ResourceLoader) Option
-    WithResourceLoader authorizes explicit schema retrieval during compilation.
+    WithResourceLoader installs a borrowed loader; nil and typed-nil values
+    reject. Bundled official meta-schemas resolve locally before this loader.
+    Registration is not scheme/host authorization or a network byte/time limit.
 
 func WithVocabulary(
 	identifier string,
 	keywords map[string]KeywordCompiler,
 ) Option
-    WithVocabulary registers one instance-owned custom vocabulary.
+    WithVocabulary registers an owned map of borrowed keyword compilers when
+    the option runs. Keep the supplied map unchanged through NewCompiler.
+    An absolute fragment-free URI, unique nonempty non-built-in keyword names
+    and nonnil compilers are required. Modern activation follows the resource
+    vocabulary declaration; historical drafts activate registered keywords.
+    See JSONSCHEMA-DEC-001/002; registration is not external IO authorization.
 
 type OutputFormat string
     OutputFormat selects one of the standard JSON Schema output forms.
@@ -243,34 +346,56 @@ const (
 	OutputVerbose OutputFormat = "verbose"
 )
 type OutputUnit struct {
-	Valid                   bool         `json:"valid"`
-	KeywordLocation         string       `json:"keywordLocation"`
-	AbsoluteKeywordLocation string       `json:"absoluteKeywordLocation,omitempty"`
-	InstanceLocation        string       `json:"instanceLocation"`
-	Error                   string       `json:"error,omitempty"`
-	Errors                  []OutputUnit `json:"errors,omitempty"`
-	Annotations             []OutputUnit `json:"annotations,omitempty"`
-	Annotation              any          `json:"annotation,omitempty"`
+	// Valid is this unit's validity; inspect the method error before using a returned root.
+	Valid bool `json:"valid"`
+	// KeywordLocation is a JSON Pointer evaluation path, with reference applicators retained.
+	KeywordLocation string `json:"keywordLocation"`
+	// AbsoluteKeywordLocation is the canonical dereferenced resource location when available; it may contain application URI data.
+	AbsoluteKeywordLocation string `json:"absoluteKeywordLocation,omitempty"`
+	// InstanceLocation is the instance JSON Pointer; member names can be sensitive.
+	InstanceLocation string `json:"instanceLocation"`
+	// Error is a human-readable validation diagnostic, not a safe logging boundary.
+	Error string `json:"error,omitempty"`
+	// Errors holds caller-owned nested failure units; format controls hierarchy.
+	Errors []OutputUnit `json:"errors,omitempty"`
+	// Annotations holds caller-owned nested annotation units, not necessarily retained successful-path annotations.
+	Annotations []OutputUnit `json:"annotations,omitempty"`
+	// Annotation holds detached decoded annotation data; maps/slices are mutable and exact numbers use json.Number.
+	Annotation any `json:"annotation,omitempty"`
 	// Has unexported fields.
 }
     OutputUnit is one unit in a standard JSON Schema validation output.
 
 func (unit OutputUnit) MarshalJSON() ([]byte, error)
-    MarshalJSON emits the compact standard representation selected for the root
-    output unit.
+    MarshalJSON emits the representation selected for the root output unit;
+    Flag emits only validity. Other units use their JSON field tags: nil
+    Annotation is omitted, including a decoded explicit JSON null annotation.
+    This existing limitation is not full null-annotation output conformance.
+    Caller-modified Annotation can introduce ordinary encoding/json errors.
 
 type ResourceLoader interface {
+	// Load receives a normalized resource URI without a reference fragment.
+	// Return bytes stable until the consuming Compile call finishes; loading may
+	// overlap across compilations and must cooperate with a nonnil context.
+	// The compiler checks byte budgets only after Load returns. Classify misses
+	// as ErrResourceNotFound for composite fallback; other errors stop it.
+	// Package callback wrappers contain panics and hide error text, but preserve
+	// raw error causes and cannot interrupt arbitrary blocking.
 	Load(context.Context, string) ([]byte, error)
 }
-    ResourceLoader retrieves an explicitly authorized schema resource.
+    ResourceLoader retrieves schema resources under application authorization
+    and IO policy. The compiler borrows the loader without closing it.
 
 type ResourceLoaderFunc func(context.Context, string) ([]byte, error)
     ResourceLoaderFunc adapts a function to ResourceLoader.
 
 func (loader ResourceLoaderFunc) Load(ctx context.Context, identifier string) ([]byte, error)
-    Load implements ResourceLoader.
+    Load directly invokes the function without copying bytes or containing
+    panic. A nil function panics on direct use; Compiler callback containment
+    applies only when the adapter is invoked through Compile.
 
 type Result struct {
+	// Valid reports instance validity only when the accompanying error is nil; operational failures return a zero Result.
 	Valid bool `json:"valid"`
 }
     Result is the minimum flag output from an evaluation.
@@ -278,7 +403,10 @@ type Result struct {
 type Schema struct {
 	// Has unexported fields.
 }
-    Schema is an immutable evaluation plan safe for concurrent validation.
+    Schema holds an immutable plan and per-call evaluation state. Concurrent
+    validation also requires borrowed format checkers and custom evaluators to
+    be safe for concurrent use. It owns no Close/shutdown or worker lifecycle.
+    A zero Schema rejects validation with ErrInvalidSchema.
 
 func (schema *Schema) CollectAnnotations(
 	ctx context.Context,
@@ -289,7 +417,11 @@ func (schema *Schema) CollectAnnotations(
     contribute annotations.
 
 func (schema *Schema) Validate(ctx context.Context, raw []byte) (Result, error)
-    Validate parses and evaluates a raw JSON instance.
+    Validate parses and evaluates raw JSON with fresh per-call counters.
+    Keep bytes unchanged during the call; parsed storage is not retained across
+    validations. Nil context rejects. A mismatch is Valid=false with nil error;
+    parse, callback, cancellation and budget failures return zero Result/error.
+    Cancellation is cooperative; a regex match uses its own engine timeout.
 
 func (schema *Schema) ValidateOutput(
 	ctx context.Context,
@@ -297,10 +429,20 @@ func (schema *Schema) ValidateOutput(
 	format OutputFormat,
 ) (OutputUnit, error)
     ValidateOutput validates raw JSON and returns the selected standard output.
+    Invalid instances produce Valid=false with nil error; parse, cancellation,
+    callback and limit failures return a zero unit and error, not partial
+    output. Non-flag forms repeat evaluation with shared counters and may invoke
+    callbacks again, so purity is required. Trees/annotation containers are
+    detached and mutable; locations and annotations may contain sensitive data.
+    See JSONSCHEMA-DEC-005/014.
 
 func (schema *Schema) ValidateValue(ctx context.Context, value any) (Result, error)
     ValidateValue validates a caller-provided value after bounded JSON encoding.
-    Integer types and json.Number retain exact decimal semantics.
+    Integer types and json.Number retain exact decimal semantics; existing float
+    rounding is not recovered. Inputs/custom MarshalJSON methods are borrowed
+    during encoding and must not mutate concurrently. Output byte admission
+    follows encoding/json internal buffering, so it is not a heap cap. Callback
+    panics are contained, but blocking marshalers cannot be interrupted.
 
 func (schema *Schema) ValidateValueOutput(
 	ctx context.Context,
@@ -313,7 +455,11 @@ func (schema *Schema) ValidateValueOutput(
 type Value struct {
 	// Has unexported fields.
 }
-    Value is a read-only view of an exact schema or instance JSON value.
+    Value is a read-only, retainable view of decoded schema or instance JSON.
+    A zero Value reports NullKind but is absent from Index/Lookup failures.
+    Names returns a detached sorted slice; child views share immutable storage.
+    Number preserves lexical decimal text; strings use encoding/json escape
+    decoding, including its replacement of unpaired surrogate escapes.
 
 func (value Value) Bool() (bool, bool)
     Bool returns a boolean value and whether the kind matched.
@@ -356,5 +502,13 @@ const (
 	// ObjectKind identifies a JSON object.
 	ObjectKind
 )
-Command bowtie-json-schema implements the Bowtie harness protocol.
-Command conformance-manifest generates pinned official-suite evidence.
+Command bowtie-json-schema implements Bowtie protocol version 1 for the released
+JSON Schema dialects. It is a sequential fixture harness, not a network service
+or bounded streaming parser: command JSON is decoded before schema/instance
+limits apply. It borrows stdin/stdout and reports diagnostic error/panic text to
+the harness, so use trusted test inputs, not production schemas or credentials.
+Stop/EOF ends the loop without closing those streams.
+Command conformance-manifest inventories the trusted pinned official suite into
+a deterministic digest/count manifest. It is not a validator execution or fresh
+conformance result; regenerate only after the applicable suite qualification.
+It writes a same-directory temporary file before rename.
