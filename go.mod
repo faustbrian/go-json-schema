@@ -3,7 +3,7 @@ module github.com/faustbrian/go-json-schema/v2
 go 1.27.0
 
 require (
-	github.com/dlclark/regexp2/v2 v2.8.2
+	github.com/dlclark/regexp2/v2 v2.8.4
 	golang.org/x/net v0.59.0
 )
 
