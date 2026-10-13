@@ -23,7 +23,11 @@ received by their `Load` method.
 ## A format or content value is not rejected
 
 Format is an annotation unless assertion behavior is explicitly enabled with
-`WithFormatAssertion`. `WithContentAssertion` enables the optional Draft 7
+`WithFormatAssertion` or activated by an assertion vocabulary. A required
+format-assertion vocabulary rejects unsupported formats during compilation;
+register a custom checker when using a format outside the dialect's built-ins.
+Application opt-in and optional vocabulary declarations keep unknown formats as
+annotations. `WithContentAssertion` enables the optional Draft 7
 content assertion behavior only. Draft 2019-09 and Draft 2020-12 content
 keywords remain annotations and cannot make the enclosing instance invalid.
 Also confirm the keyword exists in the selected dialect and vocabulary.

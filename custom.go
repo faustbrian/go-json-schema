@@ -156,13 +156,11 @@ func (evaluator KeywordEvaluatorFunc) Evaluate(
 
 // KeywordResult reports custom assertion validity and an optional exact JSON
 // annotation. Nil Annotation means no annotation; explicit JSON null creates
-// an annotation unit, but OutputUnit currently decodes it to nil and omits
-// the annotation field during JSON marshaling. This is a wire limitation,
-// not a different specification interpretation.
+// an annotation unit with nil Go value and an explicit null JSON field.
 type KeywordResult struct {
 	// Valid is the assertion result when Evaluate returns no error.
 	Valid bool
-	// Annotation is borrowed JSON for retained output; keep bytes unchanged while consumed. Nil omits it; explicit JSON null decodes to nil and its output field is omitted. Flag validation ignores it.
+	// Annotation is borrowed JSON for retained output; keep bytes unchanged while consumed. Nil omits it; explicit JSON null remains present on the wire. Flag validation ignores it.
 	Annotation json.RawMessage
 }
 
@@ -183,10 +181,10 @@ func WithVocabulary(
 	return func(config *compilerConfig) error {
 		parsed, err := url.Parse(identifier)
 		if err != nil || !parsed.IsAbs() || parsed.Fragment != "" {
-			return fmt.Errorf("%w: invalid vocabulary identifier %q", ErrInvalidSchema, identifier)
+			return fmt.Errorf("%w: invalid vocabulary identifier %q", ErrInvalidSchema, safeResourceIdentifier(identifier))
 		}
 		if _, exists := config.vocabularies[identifier]; exists {
-			return fmt.Errorf("%w: duplicate vocabulary %q", ErrInvalidSchema, identifier)
+			return fmt.Errorf("%w: duplicate vocabulary %q", ErrInvalidSchema, safeResourceIdentifier(identifier))
 		}
 		registered := registeredVocabulary{keywords: make(map[string]KeywordCompiler, len(keywords))}
 		for name, compiler := range keywords {

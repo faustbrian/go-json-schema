@@ -50,7 +50,7 @@ func compileOfficialMetaSchemaFrom(
 	identifier := strings.TrimSuffix(string(dialect), "#")
 	path, exists := paths[identifier]
 	if !exists {
-		return nil, fmt.Errorf("%w: %q", ErrUnsupportedDialect, dialect)
+		return nil, fmt.Errorf("%w: %q", ErrUnsupportedDialect, safeResourceIdentifier(string(dialect)))
 	}
 	raw, err := fs.ReadFile(filesystem, path)
 	if err != nil {
@@ -71,7 +71,7 @@ func loadOfficialMetaSchema(ctx context.Context, identifier string) ([]byte, err
 		return nil, err
 	}
 	if !found {
-		return nil, fmt.Errorf("unknown official meta-schema %q", identifier)
+		return nil, fmt.Errorf("unknown official meta-schema %q", safeResourceIdentifier(identifier))
 	}
 	return raw, nil
 }

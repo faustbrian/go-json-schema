@@ -6,12 +6,12 @@
 Schemas and instances are treated as hostile. The design prevents implicit
 network access, precision loss, duplicate-member ambiguity, invalid UTF-8,
 unbounded owned caches, global extension mutation, path traversal in the
-provided filesystem adapter. Callback rendering and selected loader errors
-redact details, but some reference parse/anchor/pointer failures still quote
-raw schema reference text. URI credentials/query/fragment data, member names,
-output locations and annotations can therefore appear in diagnostics. Reject
-sensitive identifiers at the application boundary and do not log untrusted
-errors/output as though the package were a complete redaction boundary.
+provided filesystem adapter. URI diagnostics redact user information, query and
+fragment components, including reference parse/anchor/pointer failures and loaded
+resource parse errors. Callback rendering redacts callback error text. Resource
+paths, JSON member names, output locations and annotations may still contain
+sensitive application data; do not log untrusted errors/output as though the
+package were a complete redaction boundary.
 Malformed resource identifiers and ambiguous duplicate resource or anchor
 identities fail closed rather than changing resolution by traversal order.
 RFC-equivalent identifier aliases collapse to one cache key, preventing case,

@@ -5,6 +5,20 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+### Fixed
+
+- Redact URI user information, query and fragment components across reference,
+  resource parsing, dialect and vocabulary diagnostics without losing typed
+  error classifications.
+- Preserve explicit-null annotations on the wire while keeping their nil Go
+  values, and avoid duplicate null units in verbose output.
+- Reject unsupported formats when a required assertion vocabulary mandates
+  support, restoring JSONSCHEMA-DEC-003. Application opt-in and optional
+  vocabulary declarations retain unknown-format annotation behavior; registered
+  custom formats remain supported.
+- Exclude duplicate JSON names, including escaped aliases and nested objects,
+  from raw/value agreement fuzzing without masking other parser disagreements.
+
 ### Comparison module
 
 - Adopt public v2.0.0 in the internal comparison module and verify the

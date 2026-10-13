@@ -133,11 +133,12 @@ type schemaCompiler struct {
 }
 
 type vocabularyPolicy struct {
-	validation  bool
-	applicator  bool
-	unevaluated bool
-	formats     bool
-	keywords    map[string]KeywordCompiler
+	validation     bool
+	applicator     bool
+	unevaluated    bool
+	formats        bool
+	requireFormats bool
+	keywords       map[string]KeywordCompiler
 }
 
 func newSchemaCompiler(
@@ -243,12 +244,12 @@ func (compiler *schemaCompiler) vocabularyPolicy(value *jsonValue) (vocabularyPo
 			return vocabularyPolicy{}, fmt.Errorf(
 				"%w: vocabulary requirement %q must be boolean",
 				ErrInvalidSchema,
-				identifier,
+				safeResourceIdentifier(identifier),
 			)
 		}
 		kind := compiler.knownVocabulary(identifier, dialect)
 		if kind == "" && required.boolean {
-			return vocabularyPolicy{}, fmt.Errorf("%w: %q", ErrUnsupportedVocabulary, identifier)
+			return vocabularyPolicy{}, fmt.Errorf("%w: %q", ErrUnsupportedVocabulary, safeResourceIdentifier(identifier))
 		}
 		switch kind {
 		case "validation":
@@ -259,6 +260,7 @@ func (compiler *schemaCompiler) vocabularyPolicy(value *jsonValue) (vocabularyPo
 			policy.unevaluated = true
 		case "format-assertion":
 			policy.formats = true
+			policy.requireFormats = required.boolean
 		case "custom":
 			for name, keywordCompiler := range compiler.vocabularies[identifier].keywords {
 				policy.keywords[name] = keywordCompiler
@@ -495,6 +497,9 @@ func (compiler *schemaCompiler) compile(value *jsonValue) (*schemaPlan, error) {
 			}
 			if !custom && format.text == "time" && plan.dialect == Draft3 {
 				plan.format = simpleFormatFunc(validLegacyTime)
+			}
+			if plan.format == nil && policy.requireFormats {
+				return nil, fmt.Errorf("%w: required format assertion is unsupported", ErrInvalidSchema)
 			}
 		}
 	}
@@ -1094,7 +1099,7 @@ func (
 ) resolveReference(source *jsonValue, reference string) (*jsonValue, error) {
 	parsed, err := url.Parse(reference)
 	if err != nil {
-		return nil, fmt.Errorf("%w: invalid reference %q", ErrInvalidSchema, reference)
+		return nil, fmt.Errorf("%w: invalid reference %q", ErrInvalidSchema, safeResourceIdentifier(reference))
 	}
 	sourceBase := compiler.bases[source]
 	if sourceBase == nil {
@@ -1123,7 +1128,7 @@ func (
 	if !strings.HasPrefix(fragment, "/") {
 		target, exists := compiler.anchors[resource+"#"+fragment]
 		if !exists {
-			return nil, fmt.Errorf("%w: unresolved anchor %q", ErrInvalidSchema, reference)
+			return nil, fmt.Errorf("%w: unresolved anchor %q", ErrInvalidSchema, safeResourceIdentifier(reference))
 		}
 		return target, nil
 	}
@@ -1141,21 +1146,21 @@ func (
 				return nil, fmt.Errorf(
 					"%w: unresolved local $ref %q",
 					ErrInvalidSchema,
-					reference,
+					safeResourceIdentifier(reference),
 				)
 			}
 			current = child
 		case kindArray:
 			if token == "" || token != "0" && strings.HasPrefix(token, "0") {
-				return nil, fmt.Errorf("%w: invalid array index in $ref %q", ErrInvalidSchema, reference)
+				return nil, fmt.Errorf("%w: invalid array index in $ref %q", ErrInvalidSchema, safeResourceIdentifier(reference))
 			}
 			index, err := strconv.Atoi(token)
 			if err != nil || index < 0 || index >= len(current.array) {
-				return nil, fmt.Errorf("%w: unresolved local $ref %q", ErrInvalidSchema, reference)
+				return nil, fmt.Errorf("%w: unresolved local $ref %q", ErrInvalidSchema, safeResourceIdentifier(reference))
 			}
 			current = current.array[index]
 		default:
-			return nil, fmt.Errorf("%w: unresolved local $ref %q", ErrInvalidSchema, reference)
+			return nil, fmt.Errorf("%w: unresolved local $ref %q", ErrInvalidSchema, safeResourceIdentifier(reference))
 		}
 	}
 
@@ -1222,7 +1227,7 @@ func (compiler *schemaCompiler) loadResource(identifier string) (*jsonValue, err
 	}
 	value, err := decodeJSON(compiler.ctx, raw, compiler.limits)
 	if err != nil {
-		return nil, fmt.Errorf("parse schema resource %q: %w", identifier, err)
+		return nil, fmt.Errorf("parse schema resource %q: %w", safeResourceIdentifier(identifier), err)
 	}
 	compiler.indexLocations(value, "")
 	base, err := normalizeResourceURL(identifier)

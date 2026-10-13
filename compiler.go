@@ -224,7 +224,8 @@ type Schema struct {
 // modern vocabulary policy are resource-scoped (JSONSCHEMA-DEC-001/008).
 // Schema meta-validation uses separate default budgets. Operational/budget
 // failures return no plan; callback side effects are not rolled back.
-// Parse/reference errors can contain schema names or raw reference text;
+// URI diagnostics redact user information, query and fragment components.
+// Parse/schema errors can still contain schema names;
 // inspect typed classifications and keep untrusted diagnostics out of logs.
 func (compiler *Compiler) Compile(ctx context.Context, raw []byte) (*Schema, error) {
 	if compiler == nil {

@@ -112,11 +112,12 @@ func FuzzValidationOutput(f *testing.F) {
 }
 
 // FuzzRawAndValueValidationAgree compares raw validation with a UseNumber
-// decoded value under an empty schema. UTF-8 and trailing-input filters avoid
+// decoded value under an empty schema. UTF-8, trailing-input and duplicate-name filters avoid
 // intentional admission differences; this is not an independent JSON oracle.
 func FuzzRawAndValueValidationAgree(f *testing.F) {
 	for _, seed := range []string{
 		`null`, `true`, `1e1000`, `"text"`, `[1,{"x":2}]`, `{"a":0.3}`,
+		`{"x":1,"x":2}`, `{"outer":{"x":1,"\u0078":2}}`,
 	} {
 		f.Add(seed)
 	}
@@ -144,6 +145,11 @@ func FuzzRawAndValueValidationAgree(f *testing.F) {
 		if err := decoder.Decode(&trailing); err != io.EOF {
 			return
 		}
+		// encoding/json collapses duplicate names, including escaped aliases.
+		// Exclude only that intentional admission difference, not all parser errors.
+		if hasDuplicateJSONMembers(raw) {
+			return
+		}
 		rawResult, rawErr := schema.Validate(context.Background(), []byte(raw))
 		valueResult, valueErr := schema.ValidateValue(context.Background(), value)
 		if (rawErr == nil) != (valueErr == nil) {
@@ -153,6 +159,69 @@ func FuzzRawAndValueValidationAgree(f *testing.F) {
 			t.Fatalf("raw valid %t; value valid %t", rawResult.Valid, valueResult.Valid)
 		}
 	})
+}
+
+func hasDuplicateJSONMembers(raw string) bool {
+	type objectFrame struct {
+		names    map[string]struct{}
+		nameNext bool
+	}
+	decoder := json.NewDecoder(strings.NewReader(raw))
+	decoder.UseNumber()
+	var frames []objectFrame
+	for {
+		token, err := decoder.Token()
+		if err != nil {
+			return false // The caller already admitted exactly one JSON value.
+		}
+		if delimiter, ok := token.(json.Delim); ok && (delimiter == '}' || delimiter == ']') {
+			frames = frames[:len(frames)-1]
+			continue
+		}
+		if len(frames) > 0 && frames[len(frames)-1].names != nil {
+			frame := &frames[len(frames)-1]
+			if frame.nameNext {
+				name, ok := token.(string)
+				if !ok {
+					return false
+				}
+				if _, exists := frame.names[name]; exists {
+					return true
+				}
+				frame.names[name] = struct{}{}
+				frame.nameNext = false
+				continue
+			}
+			frame.nameNext = true
+		}
+		if delimiter, ok := token.(json.Delim); ok {
+			frame := objectFrame{}
+			if delimiter == '{' {
+				frame.names = make(map[string]struct{})
+				frame.nameNext = true
+			}
+			frames = append(frames, frame)
+		}
+	}
+}
+
+func TestFuzzAgreementDuplicateAdmission(t *testing.T) {
+	for _, test := range []struct {
+		raw       string
+		duplicate bool
+	}{
+		{`{"x":1,"x":2}`, true},
+		{`{"outer":{"x":1,"\u0078":2}}`, true},
+		{`[{"x":1,"x":2}]`, true},
+		{`{"x":{"x":1},"y":{"x":2}}`, false},
+		{`[{"x":1},{"x":2}]`, false},
+		{`{"x":[1,2],"y":{},"z":"x"}`, false},
+		{`[null,true,1e1000,"x"]`, false},
+	} {
+		if got := hasDuplicateJSONMembers(test.raw); got != test.duplicate {
+			t.Errorf("duplicate=%t, want %t for %s", got, test.duplicate, test.raw)
+		}
+	}
 }
 
 // FuzzReferenceResolution exercises generated local definition names and

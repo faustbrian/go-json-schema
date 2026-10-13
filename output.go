@@ -41,15 +41,16 @@ type OutputUnit struct {
 	Errors []OutputUnit `json:"errors,omitempty"`
 	// Annotations holds caller-owned nested annotation units, not necessarily retained successful-path annotations.
 	Annotations []OutputUnit `json:"annotations,omitempty"`
-	// Annotation holds detached decoded annotation data; maps/slices are mutable and exact numbers use json.Number.
+	// Annotation holds detached decoded annotation data; maps/slices are mutable and exact numbers use json.Number. Explicit JSON null is nil in Go but is preserved by MarshalJSON.
 	Annotation any `json:"annotation,omitempty"`
 	format     OutputFormat
+	// hasAnnotation distinguishes a decoded JSON null from an absent value.
+	hasAnnotation bool
 }
 
 // MarshalJSON emits the representation selected for the root output unit;
-// Flag emits only validity. Other units use their JSON field tags: nil
-// Annotation is omitted, including a decoded explicit JSON null annotation.
-// This existing limitation is not full null-annotation output conformance.
+// Flag emits only validity. Other units preserve explicit JSON null annotations,
+// represented by nil Annotation in Go, while omitting absent annotations.
 // Caller-modified Annotation can introduce ordinary encoding/json errors.
 func (unit OutputUnit) MarshalJSON() ([]byte, error) {
 	if unit.format == OutputFlag {
@@ -58,7 +59,14 @@ func (unit OutputUnit) MarshalJSON() ([]byte, error) {
 		}{Valid: unit.Valid})
 	}
 	type outputUnit OutputUnit
-	return json.Marshal(outputUnit(unit))
+	var annotation *any
+	if unit.hasAnnotation || unit.Annotation != nil {
+		annotation = &unit.Annotation
+	}
+	return json.Marshal(struct {
+		outputUnit
+		Annotation *any `json:"annotation,omitempty"`
+	}{outputUnit: outputUnit(unit), Annotation: annotation})
 }
 
 // CollectAnnotations validates raw JSON and returns the retained annotation
@@ -393,7 +401,7 @@ func outputContainsAnnotationAt(units []OutputUnit, annotation OutputUnit) bool 
 			unit.KeywordLocation,
 			unitKeywordSuffix(annotation.KeywordLocation),
 		)
-		if unit.Annotation != nil && unit.InstanceLocation == annotation.InstanceLocation &&
+		if (unit.hasAnnotation || unit.Annotation != nil) && unit.InstanceLocation == annotation.InstanceLocation &&
 			(sameLocation || sameKeyword && reflect.DeepEqual(
 				unit.Annotation, annotation.Annotation,
 			)) {
@@ -2115,6 +2123,7 @@ func (plan *schemaPlan) keywordAnnotationAt(
 		KeywordLocation:  joinEvaluationPath(evaluationPath, keyword),
 		InstanceLocation: instanceLocation,
 		Annotation:       jsonValueOutput(value),
+		hasAnnotation:    true,
 	}
 	if referenced {
 		unit.AbsoluteKeywordLocation = plan.absoluteKeywordLocation(
@@ -2146,6 +2155,7 @@ func (plan *schemaPlan) keywordAnnotation(
 		AbsoluteKeywordLocation: plan.absoluteKeywordLocation(location),
 		InstanceLocation:        instanceLocation,
 		Annotation:              jsonValueOutput(value),
+		hasAnnotation:           true,
 	}
 }
 
@@ -2161,6 +2171,7 @@ func (plan *schemaPlan) customKeywordAnnotation(
 		AbsoluteKeywordLocation: plan.absoluteKeywordLocation(location),
 		InstanceLocation:        instanceLocation,
 		Annotation:              jsonValueOutput(value),
+		hasAnnotation:           true,
 	}
 }
 

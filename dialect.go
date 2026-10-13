@@ -25,7 +25,7 @@ func (dialect Dialect) validate() error {
 	case Draft3, Draft4, Draft6, Draft7, Draft201909, Draft202012:
 		return nil
 	default:
-		return fmt.Errorf("%w: %q", ErrUnsupportedDialect, dialect)
+		return fmt.Errorf("%w: %q", ErrUnsupportedDialect, safeResourceIdentifier(string(dialect)))
 	}
 }
 
