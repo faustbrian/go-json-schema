@@ -152,6 +152,7 @@ func TestRequiredAssertionVocabularyRejectsUnsupportedFormats(t *testing.T) {
 }
 
 func TestIdentifierFailuresRedactURIComponents(t *testing.T) {
+	// #nosec G101 -- Synthetic user-info tests URI redaction; it is never an authentication credential.
 	identifier := "https://user-marker:password-marker@example.test/schema?query-marker=hidden#fragment-marker"
 	_, err := jsonschema.NewCompiler(jsonschema.WithDialect(jsonschema.Dialect(identifier)))
 	if !errors.Is(err, jsonschema.ErrUnsupportedDialect) {
@@ -215,6 +216,7 @@ func TestCustomNullAnnotationDiffersFromAbsentAnnotation(t *testing.T) {
 }
 
 func TestVocabularyRegistrationRedactsURIComponents(t *testing.T) {
+	// #nosec G101 -- Synthetic user-info tests URI redaction; it is never an authentication credential.
 	identifier := "https://user-marker:password-marker@example.test/vocab?query-marker=hidden"
 	for _, options := range [][]jsonschema.Option{
 		{jsonschema.WithVocabulary(identifier+"#fragment-marker", nil)},
