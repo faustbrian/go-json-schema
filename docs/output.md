@@ -1,5 +1,8 @@
 # Validation output
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 `ValidateOutput` and `ValidateValueOutput` accept one of `OutputFlag`,
 `OutputBasic`, `OutputDetailed`, or `OutputVerbose` and return detached
 `OutputUnit` values.

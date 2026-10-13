@@ -1,5 +1,8 @@
 # Dialect selection and migration
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 Select a released dialect explicitly with `WithDialect`. Draft 2020-12 is the
 documented constructor default, but applications should still select a dialect
 at trust boundaries so a future schema cannot silently change interpretation.

@@ -1,5 +1,8 @@
 # Compatibility, deprecation, and versioning
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: Adoption](adoption.md)
+
 The [specification decision register](specification-decisions.md) is part of
 the observable compatibility contract. A change to a resolved parsing,
 resolution, validation, annotation, or output decision requires compatibility

@@ -1,5 +1,8 @@
 # Troubleshooting
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 ## A valid schema is rejected during compilation
 
 The compiler validates against the selected dialect's embedded official

@@ -1,5 +1,8 @@
 # Adoption
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: Security and threat model](security.md)
+
 ## Service boundary
 
 Create one compiler during startup, select the dialect, configure limits and

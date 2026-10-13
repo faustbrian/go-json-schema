@@ -1,5 +1,8 @@
 # Normative and conformance inputs
 
+[Documentation map](../docs/index.md) · [Repository README](../README.md)
+[Next: Documentation map](../docs/index.md)
+
 [`manifest.json`](manifest.json) is the structured provenance index for the
 official suite, published meta-schemas, and Bowtie evidence. Its source pins
 and referenced local digests are checked by

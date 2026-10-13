@@ -1,5 +1,8 @@
 # Security and threat model
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: Adoption](adoption.md)
+
 Schemas and instances are treated as hostile. The design prevents implicit
 network access, precision loss, duplicate-member ambiguity, invalid UTF-8,
 unbounded owned caches, global extension mutation, path traversal in the

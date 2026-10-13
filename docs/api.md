@@ -1,5 +1,8 @@
 # API guide
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: Security and threat model](security.md)
+
 The package has one compile-and-validate lifecycle:
 
 1. construct an isolated `Compiler` with options;

@@ -1,5 +1,8 @@
 # FAQ and troubleshooting
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 ## Why did a remote `$ref` fail?
 
 No loader means no remote retrieval. Register the exact resource in a

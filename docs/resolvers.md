@@ -1,5 +1,8 @@
 # Resolvers and secure loading
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 The core has no implicit network, environment, or filesystem access. A schema
 that needs an unavailable non-local resource returns
 `ErrResourceUnavailable`. Configure retrieval with `WithResourceLoader`.

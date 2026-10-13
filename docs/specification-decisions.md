@@ -1,5 +1,8 @@
 # JSON Schema specification decisions
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 This register records observable choices where a supported JSON Schema
 dialect, vocabulary, output specification, referenced standard, or official
 conformance corpus permits or appears to permit more than one implementation.

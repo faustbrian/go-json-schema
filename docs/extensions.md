@@ -1,5 +1,8 @@
 # Custom vocabularies, keywords, and formats
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 All extensions are registered through `NewCompiler` options and copied into
 that compiler. There is no global registry.
 

@@ -1,5 +1,8 @@
 # Architecture
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 The package separates exact JSON ingestion, schema-resource indexing,
 dialect and vocabulary processing, immutable plan compilation, evaluation,
 annotation propagation, output construction, format/content policy, and

@@ -1,5 +1,8 @@
 # JSON Schema comparison benchmarks
 
+[Documentation map](../../docs/index.md) · [Repository README](../../README.md)
+[Next: Documentation map](../../docs/index.md)
+
 This non-releasable benchmark and interoperability module isolates maintained
 peer dependencies from the public JSON Schema module. It compares Draft
 2020-12 compilation and validation with `kaptinlin/jsonschema` and
@@ -30,4 +33,4 @@ limits, and raw output. The checked-in baseline and interpretation guidance
 live in the parent module's
 [performance guide](../../docs/performance.md). Shared construction,
 ownership, lifecycle, and composition expectations are in the versioned
-[Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md).
+[Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.8.4/docs/ecosystem/README.md).

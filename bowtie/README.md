@@ -1,5 +1,8 @@
 # Bowtie interoperability
 
+[Documentation map](../docs/index.md) · [Repository README](../README.md)
+[Next: Documentation map](../docs/index.md)
+
 The harness implements Bowtie protocol version 1 over newline-delimited JSON
 on standard input and output. It advertises all six released dialects, accepts
 implicit-dialect changes, preserves arbitrary JSON sequence identifiers, and

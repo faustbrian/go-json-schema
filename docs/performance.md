@@ -1,5 +1,8 @@
 # Performance methodology
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 Correctness, exact numbers, deterministic output, cancellation, and bounded
 behavior take priority over benchmark scores. Compile once and reuse `Schema`
 concurrently; compilation includes meta-schema validation and resource

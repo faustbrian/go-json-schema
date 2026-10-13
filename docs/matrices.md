@@ -1,5 +1,8 @@
 # Dialect and keyword matrices
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 Legend: ✓ is defined by the dialect; form notes identify incompatible shapes.
 Unknown keywords do not assert and may contribute annotations where the
 dialect's annotation model applies.

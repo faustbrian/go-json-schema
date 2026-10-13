@@ -1,5 +1,8 @@
 # Quick start
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: Security and threat model](security.md)
+
 Install the module using the version selected by your application's dependency
 policy:
 

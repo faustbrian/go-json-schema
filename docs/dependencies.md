@@ -1,5 +1,8 @@
 # Dependency review
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 ## `golang.org/x/net/idna`
 
 - Purpose: IDNA2008, UTS #46 mapping, registration validation, bidi rules,

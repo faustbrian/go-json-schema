@@ -1,5 +1,8 @@
 # Resource limits
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 `DefaultLimits` returns conservative standalone defaults. Copy it, change the
 fields needed for the deployment, validate it through `WithLimits`, and load
 test realistic worst cases before reducing a value.

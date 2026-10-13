@@ -1,5 +1,8 @@
 # Source documentation audit
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 ## Pre-edit scope and smallest sufficient proof
 
 Base `fa376a219063445f0256e4775e33943105d0b457`, detached main-source

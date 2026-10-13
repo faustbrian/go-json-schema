@@ -1,5 +1,8 @@
 # Conformance
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: API guide](api.md)
+
 The authoritative executable evidence is pinned to JSON Schema Test Suite
 revision `c0b038ad7244712cf73650f44e90d0bc5704e8c7`.
 Fixture results are interpreted through the explicit

@@ -1,5 +1,8 @@
 # Documentation
 
+[Documentation map](index.md) · [Repository README](../README.md)
+[Next: Documentation map](index.md)
+
 `json-schema` compiles and validates JSON Schema documents across Draft 3
 through Draft 2020-12. Start with the quickstart, then use the sections below
 for the contract you need.
