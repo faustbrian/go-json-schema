@@ -5,6 +5,8 @@ Changelog structure and semantic versioning after v1.
 
 ## Unreleased
 
+## [2.0.1] - 2026-10-13
+
 ### Fixed
 
 - Redact URI user information, query and fragment components across reference,
@@ -31,6 +33,37 @@ Changelog structure and semantic versioning after v1.
 - Clarify schema/callback ownership, cooperative cancellation, budget admission
   timing and diagnostic boundaries; document raw-reference error and null
   annotation wire limitations without changing runtime or protocol policy.
+### Maintenance
+
+- Adopt bounded selected verification, owned fuzz targets, patched Go 1.27.2
+  producers and authenticated shared tooling. Preserve the public Go minimum
+  and runtime dependencies; expand dependency-update coverage and local
+  contribution guidance without requiring a comparison-module release.
+
+### Source accountability
+
+- [52e76b43](https://github.com/faustbrian/go-json-schema/commit/52e76b4373dedf2dce9bb70cbbb8fc673dd8dbed) — test(comparison): adopt public JSON Schema v2.
+- [a232ba62](https://github.com/faustbrian/go-json-schema/commit/a232ba6249e0edb2f69c748265002c6b1cb90251) — ci: declare owned native fuzz targets.
+- [0b379ba9](https://github.com/faustbrian/go-json-schema/commit/0b379ba955d471dab7370aeb84e7610437a5308e) — ci: adopt bounded published verification.
+- [c4bf322b](https://github.com/faustbrian/go-json-schema/commit/c4bf322bce9db96e0318e37474a60d17838e00d5) — ci: add bounded selected assurance.
+- [1fd3f996](https://github.com/faustbrian/go-json-schema/commit/1fd3f99676eac7c023549d5348220e35ab2c9c77) — docs: standardize repository development policy.
+- [ef7a8455](https://github.com/faustbrian/go-json-schema/commit/ef7a8455de2ba9f01a09e292603b89889817f6b4) — chore: cover non-Go dependency updates.
+- [e0fadd36](https://github.com/faustbrian/go-json-schema/commit/e0fadd36988959a39191f4b216a6c90120106c1f) — chore: pin patched Go build toolchain.
+- [fa376a21](https://github.com/faustbrian/go-json-schema/commit/fa376a219063445f0256e4775e33943105d0b457) — chore: adopt supply-chain tooling v2.3.0.
+- [31f2c52d](https://github.com/faustbrian/go-json-schema/commit/31f2c52de05c228498ed303e6334c51be1bb2e29) — docs(json-schema): clarify validation boundaries.
+- [7e85de68](https://github.com/faustbrian/go-json-schema/commit/7e85de68d44aa50ca9000e22a117e77d266edde1) — chore: enforce source documentation contracts.
+- [8d37e61d](https://github.com/faustbrian/go-json-schema/commit/8d37e61d514574aa771542c11b491ca2199bed7c) — docs: improve package adoption navigation.
+- [0837218b](https://github.com/faustbrian/go-json-schema/commit/0837218b5811bced1d00ff0e2d35371c987b4ba4) — fix: preserve schema diagnostic and annotation contracts.
+- [8338a6ea](https://github.com/faustbrian/go-json-schema/commit/8338a6ea3030260c56a5551cfd0ae0fd231f2ea7) — test: identify synthetic URI redaction fixtures.
+
+## [2.0.0] - 2026-10-08
+
+The notes below were already present in the published v2.0.0 source, where
+they remained under Unreleased. They are retained verbatim as historical
+major-release notes, not changes introduced by v2.0.1.
+
+### Documentation
+
 - Clarify security support for each module's latest stable major release line
   and link the shared vulnerability-management and coordinated-release policy.
 

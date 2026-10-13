@@ -23,8 +23,11 @@ toolchain is Go 1.27.0.
 ## Adoption entry points
 
 The root module is `github.com/faustbrian/go-json-schema/v2` (stable).
-It requires Go 1.27.0. Pin the published `v2.0.0` root tag
-with `go get github.com/faustbrian/go-json-schema/v2@v2.0.0`.
+It requires Go 1.27.0 and uses the stable `/v2` module identity.
+To receive the diagnostic, annotation and required-format fixes, select
+`github.com/faustbrian/go-json-schema/v2@v2.0.1` after that patch is published.
+Require the public tag to resolve before adoption; a dated changelog alone
+is not publication evidence.
 Install only the modules your application imports; nested module status and
 migration boundaries remain documented separately.
 
